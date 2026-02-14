@@ -1,1 +1,54 @@
 @import "tailwindcss";
+
+@font-face {
+  font-family: "Clagio";
+  font-style: normal;
+  src: url("/fonts/clagio/Clagio-Regular.otf") format("opentype");
+}
+
+@font-face {
+  font-family: "Cravelo";
+  font-style: normal;
+  src: url("/fonts/cravelo-demo/Cravelo\ DEMO.otf") format("opentype");
+}
+
+@font-face {
+  font-family: "Crown-Avenue";
+  font-style: normal;
+  src: url("/fonts/crown-avenue/CrownAvenue-Regular.otf") format("opentype");
+}
+
+@font-face {
+  font-family: "Modern-Romance";
+  font-style: normal;
+  src: url("/fonts/modern-romance/Modern\ Romance.otf") format("opentype");
+}
+
+@font-face {
+  font-family: "Swanley";
+  font-style: normal;
+  src: url("/fonts/swanley-free/Swanley\ Free.otf") format("opentype");
+}
+
+@font-face {
+  font-family: "Orange-Avenue";
+  font-style: normal;
+  src: url("/fonts/orange-avenue-demo/OrangeAvenueDEMO-Regular.otf")
+    format("opentype");
+}
+
+@theme inline {
+  --color-black-red: #2e0101;
+  --color-dried-mustard: #f38d02;
+  --color-ghost-white: #f8f8ff;
+  --color-snow: #fffafa;
+  --color-bright-snow: #f7f7f7;
+  --color-onyx: #111111;
+  --color-carbon-black: #1b1b1b;
+  --font-clagio: "Clagio";
+  --font-cravelo: "Cravelo";
+  --font-crown-avenue: "Crown-Avenue";
+  --font-modern-romance: "Modern-Romance";
+  --font-swanley: "Swanley";
+  --font-orange-avenue: "Orange-Avenue";
+}
