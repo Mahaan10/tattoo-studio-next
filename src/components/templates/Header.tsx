@@ -27,7 +27,7 @@ function Header() {
         <div className="hidden h-full lg:gap-4 xl:flex">
           <Link
             href="/booking"
-            className="inline-flex justify-center w-full md:w-fit h-12 transition-all duration-300 bg-snow text-onyx hover:bg-onyx hover:text-snow flex-nowrap p-4 rounded-full items-center text-center"
+            className="inline-flex justify-center w-full md:w-fit h-12 transition-all duration-300 bg-snow text-onyx hover:bg-dried-mustard flex-nowrap p-4 rounded-full items-center text-center"
           >
             Book an appointment
           </Link>

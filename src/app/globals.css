@@ -33,8 +33,7 @@
 @font-face {
   font-family: "Orange-Avenue";
   font-style: normal;
-  src: url("/fonts/orange-avenue-demo/OrangeAvenueDEMO-Regular.otf")
-    format("opentype");
+  src: url("/fonts/orange-avenue-demo/OrangeAvenueDEMO-Regular.otf") format("opentype");
 }
 
 @theme inline {
@@ -51,4 +50,18 @@
   --font-modern-romance: "Modern-Romance";
   --font-swanley: "Swanley";
   --font-orange-avenue: "Orange-Avenue";
+}
+
+@layer base {
+
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+}
+
+@layer components {
+  .submit-btn {
+    @apply bg-black-red text-snow max-w-lg rounded-lg p-2.5 hover:bg-red-950 transition-all duration-300 disabled:cursor-not-allowed disabled:opacity-75 disabled:hover:bg-black-red
+  }
 }
