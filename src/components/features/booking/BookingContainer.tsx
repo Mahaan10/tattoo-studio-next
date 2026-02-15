@@ -18,7 +18,7 @@ function BookingContainer() {
 
   const methods = useForm<BookingAppointmentFormData>({
     resolver: zodResolver(BookingAppointmentSchema),
-    mode: "onChange"
+    mode: "onSubmit"
   })
 
   const { trigger, handleSubmit } = methods
@@ -52,7 +52,7 @@ function BookingContainer() {
               {/* Step indicator */}
               <div className="flex justify-between mb-8">
                 {[1, 2, 3].map((s) => (
-                  <div key={s} className={`flex-1 h-2 mx-1 rounded-full ${s <= step ? "bg-onyx" : "bg-gray-500"}`} />
+                  <div key={s} className={`flex-1 h-2 mx-1 rounded-full ${s <= step ? "bg-carbon-black" : "bg-neutral-700/70"}`} />
                 ))}
               </div>
 

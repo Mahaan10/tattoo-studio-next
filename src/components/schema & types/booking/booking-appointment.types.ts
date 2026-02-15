@@ -1,4 +1,4 @@
-export interface ClientInfoSchemaProps {
+export interface ClientInfoProps {
   firstName: string;
   lastName: string;
   email: string;
@@ -11,7 +11,7 @@ export interface BookingRequestProps {
   budgetRange: string;
   studioChooses: boolean;
   source: string;
-  referrer: string;
+  file: string[]
 }
 
 export interface MedicalDeclarationProps {
@@ -32,7 +32,7 @@ export interface ConsentProps {
 }
 
 export interface BookingAppointmentProps {
-  client: ClientInfoSchemaProps;
+  client: ClientInfoProps;
   bookingRequest: BookingRequestProps;
   medicalDeclaration: MedicalDeclarationProps;
   consent: ConsentProps;
