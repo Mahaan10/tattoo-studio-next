@@ -1,47 +1,73 @@
-import { makeBookingAppointmentSchema } from "@/components/schema/booking/make-booking-appointement.schema";
-import InputField from "@/components/ui/InputField"
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { BookingAppointmentFormData } from "@/components/schema & types/booking/booking-appointement.schema";
+import InputField from "@/components/ui/InputField";
+import { useFormContext } from "react-hook-form";
+
 
 interface ClientInfoProps {
-    setStep: (step: number) => void
+  onNext: () => void
 }
 
-function ClientInfo({ setStep }: ClientInfoProps) {
-    const {
-        register,
-        formState: { errors, isValid },
-    } = useForm({
-        resolver: zodResolver(makeBookingAppointmentSchema),
-        mode: "onSubmit",
-    });
+function ClientInfo({ onNext }: ClientInfoProps) {
+  const { register, formState: { errors } } = useFormContext<BookingAppointmentFormData>()
 
-    const nextStepHandler = () => {
-        setStep(2)
-    }
+  return (
+    <>
+      {/* First Name */}
+      <InputField
+        label="First name"
+        name="client.firstName"
+        errors={errors.client?.firstName}
+        register={register}
+        required
+      />
 
-    return (
-        <>
-            {/* First Name */}
-            <InputField label="First name" name={"client.firstName"} errors={errors.client?.firstName} register={register} required />
+      {/* Last Name */}
+      <InputField
+        label="Last name"
+        name="client.lastName"
+        errors={errors.client?.lastName}
+        register={register}
+        required
+      />
 
-            {/* Last Name */}
-            <InputField label="Last name" name={"client.lastName"} errors={errors.client?.lastName} register={register} required />
+      {/* Email */}
+      <InputField
+        label="Email"
+        name="client.email"
+        errors={errors.client?.email}
+        register={register}
+        type="email"
+        required
+      />
 
-            {/* Email */}
-            <InputField label="Email" name={"client.email"} errors={errors.client?.email} register={register} type="Email" required />
+      {/* Phone Number */}
+      <InputField
+        label="Phone number"
+        name="client.phone"
+        errors={errors.client?.phone}
+        register={register}
+        type="tel"
+        required
+      />
 
-            {/* Phone Number */}
-            <InputField label="Phone number" name={"client.phone"} errors=
-                {errors.client?.phone} register={register} type="tel" required />
+      {/* Birthday */}
+      <InputField
+        label="Birthday"
+        name="client.birthday"
+        errors={errors.client?.birthday} register={register}
+        type="date"
+        required />
 
-            {/* Birthday */}
-
-
-            {/* Next step btn */}
-            <button onClick={nextStepHandler} className="submit-btn" disabled={!isValid}>Next</button>
-        </>
-    )
+      {/* Next step btn */}
+      <button
+        type="button"
+        onClick={onNext}
+        className="submit-btn"
+      >
+        Next
+      </button>
+    </>
+  );
 }
 
-export default ClientInfo
+export default ClientInfo;

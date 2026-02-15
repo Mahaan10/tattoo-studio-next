@@ -1,11 +1,11 @@
 import { AxiosResponse } from "axios"
 import http from "./httpService"
-import { MakeBookingAppointmentSchema } from "@/components/schema/booking/make-booking-appointement.schema"
+import { BookingAppointmentProps } from "@/components/schema & types/booking/booking-appointment.types"
 
-export default function makeBookingAppointmentApi(newBookingIntake: FormData): Promise<MakeBookingAppointmentSchema> {
+export default function BookingAppointmentApi(newBookingIntake: FormData): Promise<BookingAppointmentProps> {
     return http.post("/public/booking-intake", newBookingIntake, {
         headers: {
             "Content-Type": "multipart/form-data"
         }
-    }).then(({ data }: AxiosResponse<MakeBookingAppointmentSchema>) => data)
+    }).then(({ data }: AxiosResponse<BookingAppointmentProps>) => data)
 }
