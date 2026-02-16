@@ -13,7 +13,7 @@ function ClientInfo({ onNext }: ClientInfoProps) {
   return (
     <>
       {/* First Name */}
-      <InputField
+      <InputField<BookingAppointmentFormData>
         label="First name"
         name="client.firstName"
         errors={errors.client?.firstName}
@@ -22,7 +22,7 @@ function ClientInfo({ onNext }: ClientInfoProps) {
       />
 
       {/* Last Name */}
-      <InputField
+      <InputField<BookingAppointmentFormData>
         label="Last name"
         name="client.lastName"
         errors={errors.client?.lastName}
@@ -31,7 +31,7 @@ function ClientInfo({ onNext }: ClientInfoProps) {
       />
 
       {/* Email */}
-      <InputField
+      <InputField<BookingAppointmentFormData>
         label="Email"
         name="client.email"
         errors={errors.client?.email}
@@ -41,7 +41,7 @@ function ClientInfo({ onNext }: ClientInfoProps) {
       />
 
       {/* Phone Number */}
-      <InputField
+      <InputField<BookingAppointmentFormData>
         label="Phone number"
         name="client.phone"
         errors={errors.client?.phone}
@@ -51,7 +51,7 @@ function ClientInfo({ onNext }: ClientInfoProps) {
       />
 
       {/* Birthday */}
-      <InputField
+      <InputField<BookingAppointmentFormData>
         label="Birthday"
         name="client.birthday"
         errors={errors.client?.birthday} register={register}

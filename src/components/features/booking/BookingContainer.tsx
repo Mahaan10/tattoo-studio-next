@@ -1,7 +1,6 @@
 "use client";
 
-import { FormProvider, useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import { useState } from "react";
 import ClientInfo from "./client/ClientInfo";
 import {
@@ -11,14 +10,26 @@ import {
 import BookingRequest from "./booking-request/BookingRequest";
 import useBooking from "./useBooking";
 import MedicalDeclaration from "./medical-declaration/MedicalDeclaration";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 function BookingContainer() {
   const [step, setStep] = useState<number>(1);
   const { bookingAppointment, bookingAppointmentIsPending } = useBooking();
 
   const methods = useForm<BookingAppointmentFormData>({
-    resolver: zodResolver(BookingAppointmentSchema),
-    mode: "onSubmit"
+    resolver: zodResolver(BookingAppointmentSchema as any),
+    mode: "onTouched",
+    defaultValues: {
+      // medicalDeclaration: {
+      //   hasAllergies: undefined,
+      //   hasDiabetes: undefined,
+      //   hasHeartCondition: undefined,
+      //   hasSkinCondition: undefined,
+      //   isPregnantOrNursing: undefined,
+      //   takesBloodThinners: undefined,
+      //   takesMedication: undefined
+      // }
+    }
   })
 
   const { trigger, handleSubmit } = methods
@@ -31,12 +42,13 @@ function BookingContainer() {
   const prevStep = () => setStep((prev) => prev - 1)
 
 
-  const onSubmit = async (data: BookingAppointmentFormData) => {
-    console.log(data);
+  const onSubmit: SubmitHandler<BookingAppointmentFormData> = async (data) => {
+    console.log("data =>", data);
     const formData = new FormData()
     formData.append("data", JSON.stringify(data))
+    console.log("formData =>", formData)
 
-    //await bookingAppointment(formData)
+    await bookingAppointment(formData)
   };
 
 

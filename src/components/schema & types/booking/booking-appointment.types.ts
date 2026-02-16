@@ -7,7 +7,7 @@ export interface ClientInfoProps {
 }
 
 export interface BookingRequestProps {
-  description: string;
+  description?: string;
   budgetRange: string;
   studioChooses: boolean;
   source: string;

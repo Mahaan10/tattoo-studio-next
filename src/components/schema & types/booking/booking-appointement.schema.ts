@@ -6,28 +6,29 @@ import * as z from "zod";
 
 export const ClientInfoValidationSchema = z.object({
   firstName: z
-    .string()
+    .string({ message: "First name is required" })
     .min(3, "First name must be at least 3 characters")
     .max(10, "First name must be at most 10 characters"),
 
 
   lastName: z
-    .string()
+    .string({ message: "Last name is required" })
     .min(3, "Last name must be at least 3 characters")
     .max(20, "Last name must be at most 20 characters"),
 
 
   email: z
-    .string()
+    .string({ message: "Email is required" })
+    .min(1, "Email is required")
     .email("Please enter a valid email address"),
 
 
   phone: z
-    .string()
+    .string({ message: "Phone number is required" })
     .min(8, "Phone number is required"),
 
   birthday: z
-    .string()
+    .string({ message: "Birthday is required" })
     .min(1, "Birthday is required"),
 });
 
@@ -36,15 +37,15 @@ export const ClientInfoValidationSchema = z.object({
 export const BookingRequestValidationSchema = z.object({
   description: z
     .string()
-    .min(5, "Please describe what you want"),
+    .max(300, "you can describe at most 300 characters")
+    .optional(),
 
   budgetRange: z
-    .string()
+    .string({ message: "Please select a budget range" })
     .min(1, "Please select a budget range"),
 
-  studioChooses: z.boolean({
-    error: "Please choose an option",
-  }),
+  // studioChooses: z
+  //   .boolean({ message: "Please choose an option" }),
 
   // source: z
   //   .string()
@@ -71,28 +72,28 @@ export const BookingRequestValidationSchema = z.object({
 // Medical Declaration validation
 
 export const MedicalDeclarationValidationSchema = z.object({
-  hasAllergies: z.boolean({
-    error: "Please answer this question",
+  hasAllergies: z.coerce.boolean({
+    message: "Please answer this question",
   }),
-  hasSkinCondition: z.boolean({
-    error: "Please answer this question",
+  hasSkinCondition: z.coerce.boolean({
+    message: "Please answer this question",
   }),
-  isPregnantOrNursing: z.boolean({
-    error: "Please answer this question",
+  isPregnantOrNursing: z.coerce.boolean({
+    message: "Please answer this question",
   }),
-  hasHeartCondition: z.boolean({
-    error: "Please answer this question",
+  hasHeartCondition: z.coerce.boolean({
+    message: "Please answer this question",
   }),
-  hasDiabetes: z.boolean({
-    error: "Please answer this question",
+  hasDiabetes: z.coerce.boolean({
+    message: "Please answer this question",
   }),
-  takesBloodThinners: z.boolean({
-    error: "Please answer this question",
+  takesBloodThinners: z.coerce.boolean({
+    message: "Please answer this question",
   }),
-  takesMedication: z.boolean({
-    error: "Please answer this question",
+  takesMedication: z.coerce.boolean({
+    message: "Please answer this question",
   }),
-  otherNotes: z.string().max(250).optional(),
+  otherNotes: z.string().max(300, "you can describe your medical at most 300 characters").optional(),
 });
 
 // consent validation
