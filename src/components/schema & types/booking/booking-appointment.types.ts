@@ -3,15 +3,15 @@ export interface ClientInfoProps {
   lastName: string;
   email: string;
   phone: string;
-  birthday: string;
+  birthday?: string;
 }
 
 export interface BookingRequestProps {
   description?: string;
   budgetRange: string;
-  studioChooses: boolean;
-  source: string;
-  file: string[]
+  studioChooses?: boolean;
+  source?: string;
+  file?: string[];
 }
 
 export interface MedicalDeclarationProps {

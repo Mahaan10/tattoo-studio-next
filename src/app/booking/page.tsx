@@ -1,9 +1,7 @@
-import BookingContainer from "@/components/features/booking/BookingContainer"
+import BookingContainer from "@/components/features/booking/BookingContainer";
 
 function BookingPage() {
-  return (
-    <BookingContainer/>
-  )
+  return <BookingContainer />;
 }
 
-export default BookingPage
+export default BookingPage;

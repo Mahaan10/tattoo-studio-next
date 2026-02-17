@@ -8,28 +8,27 @@ export const ClientInfoValidationSchema = z.object({
   firstName: z
     .string({ message: "First name is required" })
     .min(3, "First name must be at least 3 characters")
-    .max(10, "First name must be at most 10 characters"),
-
+    .max(80, "First name must be at most 80 characters"),
 
   lastName: z
     .string({ message: "Last name is required" })
     .min(3, "Last name must be at least 3 characters")
-    .max(20, "Last name must be at most 20 characters"),
-
+    .max(80, "Last name must be at most 80 characters"),
 
   email: z
     .string({ message: "Email is required" })
-    .min(1, "Email is required")
+    //.min(1, "Email is required")
     .email("Please enter a valid email address"),
 
-
-  phone: z
-    .string({ message: "Phone number is required" })
-    .min(8, "Phone number is required"),
+  phone: z.string({ message: "Phone number is required" }),
+  // .regex(/^(?:\+49|0049|0)1[5-7]\d{1,2}[\s-]?\d{7,8}$/, {
+  //   message: "Please enter a valid german mobile number",
+  // }),
 
   birthday: z
     .string({ message: "Birthday is required" })
-    .min(1, "Birthday is required"),
+    //.min(1, "Birthday is required")
+    .optional(),
 });
 
 // Booking Request Validation
@@ -37,8 +36,8 @@ export const ClientInfoValidationSchema = z.object({
 export const BookingRequestValidationSchema = z.object({
   description: z
     .string()
-    .max(300, "you can describe at most 300 characters")
-    .optional(),
+    .min(1, "Tattoo description is required")
+    .max(2000, "you can describe at most 2000 characters"),
 
   budgetRange: z
     .string({ message: "Please select a budget range" })
@@ -51,78 +50,73 @@ export const BookingRequestValidationSchema = z.object({
   //   .string()
   //   .min(1, "Please select how you found us"),
 
-  referrer: z
-    .string()
-    .optional(),
+  referrer: z.string().optional(),
 
-  file: z.array(
-    z
-      .instanceof(File)
-      .refine((file) => file.size <= 6 * 1024 * 1024, {
-        message: "Each image must be less than 6MG"
-      })
-      .refine((file) => file.type.startsWith("image/"), {
-        message: "Only image files are allowed"
-      })
-  )
-    .max(10, "You can upload maxmimum 10 images")
-    .optional()
+  file: z
+    .array(
+      z
+        .instanceof(File)
+        .refine((file) => file.size <= 10 * 1024 * 1024, {
+          message: "Each image must be less than 10MG",
+        })
+        .refine((file) => file.type.startsWith("image/"), {
+          message: "Only image files are allowed",
+        }),
+    )
+    .max(10, "You can upload maxmimum 10 images"),
 });
 
 // Medical Declaration validation
 
 export const MedicalDeclarationValidationSchema = z.object({
-  hasAllergies: z.coerce.boolean({
+  hasAllergies: z.boolean({
     message: "Please answer this question",
   }),
-  hasSkinCondition: z.coerce.boolean({
+  hasSkinCondition: z.boolean({
     message: "Please answer this question",
   }),
-  isPregnantOrNursing: z.coerce.boolean({
+  isPregnantOrNursing: z.boolean({
     message: "Please answer this question",
   }),
-  hasHeartCondition: z.coerce.boolean({
+  hasHeartCondition: z.boolean({
     message: "Please answer this question",
   }),
-  hasDiabetes: z.coerce.boolean({
+  hasDiabetes: z.boolean({
     message: "Please answer this question",
   }),
-  takesBloodThinners: z.coerce.boolean({
+  takesBloodThinners: z.boolean({
     message: "Please answer this question",
   }),
-  takesMedication: z.coerce.boolean({
+  takesMedication: z.boolean({
     message: "Please answer this question",
   }),
-  otherNotes: z.string().max(300, "you can describe your medical at most 300 characters").optional(),
+  otherNotes: z
+    .string()
+    .max(1000, "you can describe your medical at most 1000 characters")
+    .optional(),
 });
 
 // consent validation
 
 export const ConsentValidationSchema = z.object({
-  isAdultConfirmed: z
-    .boolean()
-    .refine((val) => val === true, {
-      message: "You must confirm you are 18+"
-    }),
+  isAdultConfirmed: z.literal(true, {
+    message: "You must confirm you are 18+",
+  }),
 
-  termsAccepted: z
-    .boolean()
-    .refine((val) => val === true, {
-      message: "You must accept the terms",
-    }),
+  termsAccepted: z.literal(true, {
+    message: "You must accept the terms",
+  }),
 
-  privacyAccepted: z
-    .boolean()
-    .refine((val) => val === true, {
-      message: "You must accept the privacy policy",
-    }),
+  privacyAccepted: z.literal(true, {
+    message: "You must accept the privacy policy",
+  }),
 });
 
 export const BookingAppointmentSchema = z.object({
   client: ClientInfoValidationSchema,
   bookingRequest: BookingRequestValidationSchema,
   medicalDeclaration: MedicalDeclarationValidationSchema,
-  consent: ConsentValidationSchema
+  consent: ConsentValidationSchema,
 });
 
 export type BookingAppointmentFormData = z.infer<
