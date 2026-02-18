@@ -102,7 +102,7 @@ function BookingContainer() {
       <div className="h-full">
         <div className="container">
           <div className="flex justify-center">
-            <div className="w-full max-w-xl bg-snow text-onyx rounded-2xl p-5 sm:p-6 md:p-8 lg:p-10 shadow shadow-bright-snow">
+            <div className="w-full max-w-xl bg-carbon-black text-snow dark:bg-snow dark:text-onyx rounded-2xl p-5 sm:p-6 md:p-8 lg:p-10 shadow dark:shadow-bright-snow shadow-onyx">
               <h1 className="text-3xl mb-5 font-bold">Tattoo Request</h1>
 
               {/* Step indicator */}
@@ -110,7 +110,7 @@ function BookingContainer() {
                 {[1, 2, 3].map((s) => (
                   <div
                     key={s}
-                    className={`flex-1 h-2 mx-1 rounded-full ${s <= step ? "bg-carbon-black" : "bg-neutral-700/70"}`}
+                    className={`flex-1 h-2 mx-1 rounded-full ${s <= step ? "bg-snow dark:bg-carbon-black" : "bg-neutral-300/75 dark:bg-neutral-700/70"}`}
                   />
                 ))}
               </div>

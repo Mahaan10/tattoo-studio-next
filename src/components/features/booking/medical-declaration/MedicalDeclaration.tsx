@@ -83,7 +83,7 @@ function MedicalDeclaration() {
 
         <h2 className="text-xl font-semibold mb-2">Final Consent</h2>
 
-        <div className="flex flex-col gap-3 bg-snow/50 p-4 rounded-lg border border-onyx/10">
+        <div className="flex flex-col gap-3 dark:bg-snow/50 bg-onyx/20 p-4 rounded-lg border dark:border-onyx/10 border-onyx/85">
           <CheckBoxInput<BookingAppointmentFormData>
             label="I confirm that I am 18 years of age or older."
             name="consent.isAdultConfirmed"
