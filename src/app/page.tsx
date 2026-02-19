@@ -1,17 +1,17 @@
 function Home() {
   return (
-    <div className="relative h-dvh w-full overflow-hidden flex items-center justify-center">
+    <div className="relative min-h-dvh w-full overflow-hidden flex items-center justify-center flex-col">
       {/* Background Video */}
-      {/* <video
+      <video
         autoPlay
         loop
         muted
         playsInline
         className="absolute z-0 min-w-full min-h-full object-cover"
       >
-        <source src="/path-to-your-video.mp4" type="video/mp4" />
+        <source src="/videos/video.mp4" type="video/mp4" />
         Your browser does not support the video tag.
-      </video> */}
+      </video>
 
       {/* Content */}
       <div className="z-20 text-center">
