@@ -4,7 +4,11 @@ import RadioInput from "@/components/ui/RadioInput";
 import TextAreaField from "@/components/ui/TextAreaField";
 import { useFormContext } from "react-hook-form";
 
-function MedicalDeclaration() {
+interface MedicalDeclarationProps {
+  onBack: () => void;
+}
+
+function MedicalDeclaration({ onBack }: MedicalDeclarationProps) {
   const {
     register,
     formState: { errors },
@@ -13,7 +17,12 @@ function MedicalDeclaration() {
   return (
     <div className="flex flex-col gap-6">
       <div className="grid grid-cols-1 gap-4">
-        <h2 className="text-xl font-semibold mb-2">Medical Information</h2>
+        <div className="flex items-center justify-between">
+          <h2 className="text-xl mb-2">Medical Information</h2>
+          <button type="button" className="" onClick={onBack}>
+            Back
+          </button>
+        </div>
 
         <RadioInput<BookingAppointmentFormData>
           label="Do you have any allergies?"
@@ -81,7 +90,7 @@ function MedicalDeclaration() {
 
         <hr className="border-onyx/10 my-2" />
 
-        <h2 className="text-xl font-semibold mb-2">Final Consent</h2>
+        <h2 className="text-xl mb-2">Final Consent</h2>
 
         <div className="flex flex-col gap-3 dark:bg-snow/50 bg-onyx/20 p-4 rounded-lg border dark:border-onyx/10 border-onyx/85">
           <CheckBoxInput<BookingAppointmentFormData>

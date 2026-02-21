@@ -14,11 +14,11 @@ export default function useBooking() {
       queryClient.invalidateQueries({
         queryKey: ["booking"],
       });
-      // toast.success("Welldone!!");
+      toast.success("Welldone!!");
       console.log("successData =>", data);
     },
     onError: (data) => {
-      // toast.error(data?.message);
+      toast.error(data?.message);
       console.log("errorData =>", data);
     },
   });

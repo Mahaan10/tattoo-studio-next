@@ -11,6 +11,7 @@ import BookingRequest from "./booking-request/BookingRequest";
 import useBooking from "./useBooking";
 import MedicalDeclaration from "./medical-declaration/MedicalDeclaration";
 import { zodResolver } from "@hookform/resolvers/zod";
+import BookingBreadCrumb from "@/components/templates/BookingBreadCrumb";
 
 function BookingContainer() {
   const [step, setStep] = useState<number>(1);
@@ -102,18 +103,24 @@ function BookingContainer() {
       <div className="h-full">
         <div className="container">
           <div className="flex justify-center">
-            <div className="w-full max-w-xl bg-carbon-black text-snow dark:bg-snow dark:text-onyx rounded-2xl p-5 sm:p-6 md:p-8 lg:p-10 shadow dark:shadow-bright-snow shadow-onyx">
+            <div className="w-full max-w-xl bg-alabaster text-onyx rounded-2xl p-5 sm:p-6 md:p-8 lg:p-10 shadow shadow-bright-snow">
               <h1 className="text-3xl mb-5 font-bold">Tattoo Request</h1>
 
               {/* Step indicator */}
-              <div className="flex justify-between mb-8">
+              {/* <div className="flex justify-between mb-8">
                 {[1, 2, 3].map((s) => (
                   <div
                     key={s}
-                    className={`flex-1 h-2 mx-1 rounded-full ${s <= step ? "bg-snow dark:bg-carbon-black" : "bg-neutral-300/75 dark:bg-neutral-700/70"}`}
+                    className={`flex-1 h-2 mx-1 rounded-full ${s <= step ? "bg-carbon-black" : "bg-neutral-700/70"}`}
                   />
                 ))}
-              </div>
+              </div> */}
+
+              <BookingBreadCrumb
+                step={step}
+                setStep={setStep}
+                trigger={trigger}
+              />
 
               <FormProvider {...methods}>
                 <form
@@ -129,7 +136,7 @@ function BookingContainer() {
                     />
                   ) : (
                     <>
-                      <MedicalDeclaration />
+                      <MedicalDeclaration onBack={prevStep} />
                       <button
                         type="submit"
                         disabled={bookingAppointmentIsPending}
@@ -138,13 +145,6 @@ function BookingContainer() {
                         {bookingAppointmentIsPending
                           ? "Submitting ..."
                           : "Submit Booking"}
-                      </button>
-                      <button
-                        type="button"
-                        onClick={prevStep}
-                        className="submit-btn"
-                      >
-                        Back
                       </button>
                     </>
                   )}

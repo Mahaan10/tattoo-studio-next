@@ -30,11 +30,8 @@ function HeaderMenu({ isOpen, onOpenChange }: HeaderMenuProps) {
 
   return (
     <Sheet open={isOpen} onOpenChange={onOpenChange}>
-      <SheetContent
-        side="left"
-        className="dark:bg-onyx bg-snow dark:text-snow text-onyx overflow-y-auto"
-      >
-        <SheetHeader className="border-b dark:border-snow/5 border-onyx/10">
+      <SheetContent side="left" className="bg-onyx text-snow overflow-y-auto">
+        <SheetHeader className="border-b border-snow/5">
           <SheetTitle className="flex flex-col font-bebas-neue">
             <div className="relative w-12 h-12">
               <Image
@@ -54,7 +51,7 @@ function HeaderMenu({ isOpen, onOpenChange }: HeaderMenuProps) {
             <Link
               key={item.id}
               href={item.href}
-              className={`transition-colors duration-200 ${pathname === item?.href ? "dark:text-dried-mustard text-black-red" : "dark:hover:text-dried-mustard hover:text-black-red"}`}
+              className={`transition-colors duration-200 ${pathname === item?.href ? "text-dried-mustard" : "hover:text-dried-mustard"}`}
               //onClose={() => onOpenChange(false)}
             >
               <span>{item.title}</span>

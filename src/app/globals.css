@@ -1,7 +1,6 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
-@custom-variant dark (&:where(.dark, .dark *));
 
 @font-face {
   font-family: "Bebas Neue";
@@ -29,13 +28,12 @@
 }
 
 @theme inline {
-  --color-black-red: #2e0101;
+  --color-driedbg-dried-mustard: #2e0101;
   --color-dried-mustard: #f38d02;
-  --color-ghost-white: #f8f8ff;
   --color-snow: #fffafa;
-  --color-bright-snow: #f7f7f7;
   --color-onyx: #111111;
   --color-carbon-black: #1b1b1b;
+  --color-alabaster: #e5e4e2;
   --font-bebas-neue: "Bebas Neue";
   --font-eb-garamond: "EB Garamond";
   --font-day-roman: "Day Roman";
@@ -95,17 +93,17 @@
 
 @layer components {
   .submit-btn {
-    @apply dark:bg-black-red bg-dried-mustard dark:text-snow text-onyx max-w-lg rounded-lg p-2.5 dark:hover:bg-red-950 hover:bg-amber-600 transition-all duration-300 disabled:cursor-not-allowed disabled:opacity-75 dark:disabled:hover:bg-black-red disabled:bg-dried-mustard;
+    @apply bg-dried-mustard text-onyx max-w-lg rounded-lg p-2.5 hover:bg-amber-600 transition-all duration-300 disabled:cursor-not-allowed disabled:opacity-75 disabled:hover:bg-dried-mustard;
   }
 
   .custom-radio {
-    @apply appearance-none w-4 h-4 border dark:border-carbon-black border-snow rounded cursor-pointer transition-all duration-200;
+    @apply appearance-none w-4 h-4 border border-carbon-black rounded cursor-pointer transition-all duration-200;
   }
 
   .custom-radio:checked {
-    @apply dark:border-carbon-black dark:bg-onyx border-snow bg-snow;
+    @apply border-carbon-black bg-onyx;
   }
-  /* Need to define check background for light mode!! */
+
   .custom-radio:checked::after {
     content: "";
     background-image: url("data:image/svg+xml,%3Csvg%20aria-hidden%3D%27true%27%20xmlns%3D%27http://www.w3.org/2000/svg%27%20fill%3D%27none%27%20viewBox%3D%270%200%2016%2012%27%3E%3Cpath%20stroke%3D%27white%27%20stroke-linecap%3D%27round%27%20stroke-linejoin%3D%27round%27%20stroke-width%3D%273%27%20d%3D%27M1%205.917%205.724%2010.5%2015%201.5%27/%3E%3C/svg%3E");

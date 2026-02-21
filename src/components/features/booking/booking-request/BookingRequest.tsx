@@ -4,6 +4,7 @@ import InputFile from "@/components/ui/InputFile";
 import SelectBox from "@/components/ui/SelectBox";
 import TextAreaField from "@/components/ui/TextAreaField";
 import { FieldError, useFormContext } from "react-hook-form";
+import { MdArrowRightAlt } from "react-icons/md";
 
 interface BookingRequestProps {
   onNext: () => void;
@@ -20,6 +21,12 @@ const budgetRange = [
   { id: 7, label: "over 2000 €", value: "OVER_2000" },
 ];
 
+const bookingType = [
+  { id: 1, label: "Appointment", value: "APPOINTMENT" },
+  { id: 2, label: "Consultation", value: "CONSULTATION" },
+  { id: 3, label: "Cover up", value: "COVER_UP" },
+];
+
 const studioChooses = [
   { id: 1, label: "Block 13", value: "BLOCK_13" },
   { id: 2, label: "SES Studio", value: "SES_STUDIO" },
@@ -34,9 +41,30 @@ function BookingRequest({ onNext, onBack }: BookingRequestProps) {
 
   return (
     <>
+      <div className="flex items-center justify-between">
+        <h2 className="text-xl mb-2">Booking Request</h2>
+        <button
+          type="button"
+          className="flex items-center justify-center gap-x-4"
+          onClick={onBack}
+        >
+          <span>Back</span>
+          <MdArrowRightAlt size={22} />
+        </button>
+      </div>
       {/* Studio Chooses */}
 
       {/* <SelectBox<BookingAppointmentFormData> label="Studio Chooses" name="bookingRequest.studioChooses" register={register} errors={errors.bookingRequest?.studioChooses} options={studioChooses} required /> */}
+
+      {/* Booking Type */}
+      <SelectBox<BookingAppointmentFormData>
+        label="Booking Type"
+        name="bookingRequest.bookingType"
+        register={register}
+        errors={errors.bookingRequest?.bookingType}
+        options={bookingType}
+        required
+      />
 
       {/* Budget Range */}
       <SelectBox<BookingAppointmentFormData>
@@ -73,25 +101,10 @@ function BookingRequest({ onNext, onBack }: BookingRequestProps) {
         errors={errors.bookingRequest?.description}
       />
 
-      <div className="flex items-center justify-center gap-x-2 w-full">
-        {/* Next step btn */}
-        <button
-          type="button"
-          onClick={onNext}
-          className="submit-btn min-w-63.75"
-        >
-          Next
-        </button>
-
-        {/* Back step btn */}
-        <button
-          type="button"
-          onClick={onBack}
-          className="submit-btn min-w-63.75"
-        >
-          Back
-        </button>
-      </div>
+      {/* Next step btn */}
+      <button type="button" onClick={onNext} className="submit-btn w-full">
+        Next
+      </button>
     </>
   );
 }

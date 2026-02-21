@@ -4,7 +4,6 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { headerMenu } from "../constants/Navigation";
 import { usePathname } from "next/navigation";
-import ThemeToggle from "./ThemeToggle";
 import { LuMenu } from "react-icons/lu";
 import HeaderMenu from "./HeaderMenu";
 import Image from "next/image";
@@ -28,18 +27,18 @@ function Header() {
   return (
     <>
       <header
-        className={`absolute top-0 z-50 flex w-full items-center justify-between text-lg font-bebas-neue tracking-widest px-[5%] ${isScrolled ? "fixed top-0 py-5 bg-snow dark:bg-carbon-black" : "pt-10"}`}
+        className={`absolute top-0 z-50 flex w-full items-center justify-between text-lg font-bebas-neue tracking-widest px-[5%] ${isScrolled ? "fixed top-0 py-5 bg-carbon-black" : "pt-10"}`}
       >
         {/* small devices menu */}
-        <div className="lg:hidden flex items-center justify-center">
+        <div className="lg:hidden flex items-center justify-center order-2">
           <button
-            className="group relative h-12 w-12 flex items-center justify-center rounded-full bg-carbon-black dark:bg-snow border border-bright-snow/50 dark:border-onyx/20 transition-all duration-300 hover:scale-110 active:scale-95 z-50"
+            className="group relative h-12 w-12 flex items-center justify-center rounded-full bg-snow border border-onyx/20 transition-all duration-300 hover:scale-110 active:scale-95 z-50"
             onClick={() => setIsDrawerOpen(true)}
           >
-            <LuMenu size={22} className="dark:text-onyx text-snow" />
+            <LuMenu size={22} className="text-onyx" />
           </button>
         </div>
-        <div className="relative w-14 h-14">
+        <div className="relative w-18 h-18 order-1 lg:order-0">
           <Image
             src="/images/Logo.png"
             alt="Logo"
@@ -48,13 +47,13 @@ function Header() {
             className="object-cover"
           />
         </div>
-        <nav className="w-[75%] lg:flex hidden lg:items-center lg:justify-center">
+        <nav className="w-[85%] mx-auto lg:flex hidden lg:items-center lg:justify-center">
           <ul className="w-full lg:static overflow-hidden  lg:rounded-full gap-x-8  lg:flex lg:items-center lg:justify-between px-1">
             {headerMenu.map((item) => (
               <li key={item.id} className="">
                 <Link
                   href={item.href}
-                  className={`transition-colors duration-200 ${pathname === item?.href ? "dark:text-dried-mustard text-black-red" : "dark:hover:text-dried-mustard hover:text-black-red"}`}
+                  className={`transition-colors duration-200 ${pathname === item?.href ? "text-dried-mustard" : "hover:text-dried-mustard"}`}
                 >
                   {item.title}
                 </Link>
@@ -62,9 +61,6 @@ function Header() {
             ))}
           </ul>
         </nav>
-
-        {/* Theme Toggle */}
-        <ThemeToggle />
       </header>
 
       <HeaderMenu isOpen={isDrawerOpen} onOpenChange={setIsDrawerOpen} />

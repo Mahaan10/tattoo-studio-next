@@ -1,7 +1,7 @@
 import Header from "@/components/templates/Header";
 import "./globals.css";
 import Providers from "@/components/providers/Providers";
-import ThemeModeProvider from "@/components/context/ThemeModeContext";
+import { ToastContainer } from "react-toastify";
 
 export default function RootLayout({
   children,
@@ -11,14 +11,19 @@ export default function RootLayout({
   return (
     <html lang="en">
       <Providers>
-        <ThemeModeProvider>
-          <body className="antialiased dark:bg-carbon-black bg-snow">
-            <main className="container max-w-screen 2xl:max-w-screen-2xl 2xl:mx-auto overflow-x-hidden 2xl:relative bg-snow text-onyx dark:bg-carbon-black dark:text-snow min-h-dvh font-crismon">
-              <Header />
-              {children}
-            </main>
-          </body>
-        </ThemeModeProvider>
+        <body className="antialiased bg-carbon-black">
+          <main className="container max-w-screen 2xl:max-w-screen-2xl 2xl:mx-auto overflow-x-hidden 2xl:relative bg-carbon-black text-snow min-h-dvh font-crismon">
+            <Header />
+            {children}
+          </main>
+          <ToastContainer
+            position="top-left"
+            autoClose={3000}
+            closeOnClick
+            pauseOnHover
+            newestOnTop
+          />
+        </body>
       </Providers>
     </html>
   );

@@ -52,6 +52,10 @@ export const BookingRequestValidationSchema = z.object({
 
   referrer: z.string().optional(),
 
+  bookingType: z
+    .string({ message: "Please select a booking type" })
+    .min(1, "Please select a booking type"),
+
   file: z
     .array(
       z

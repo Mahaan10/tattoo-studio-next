@@ -19,16 +19,14 @@ function CheckBoxInput<T extends Record<string, any>>({
         <input
           type="checkbox"
           {...register(name)}
-          className="w-5 h-5 mt-0.5 dark:accent-onyx accent-snow rounded dark:border-onyx/20 border-snow/75 cursor-pointer"
+          className="w-5 h-5 mt-0.5 accent-onyx rounded border-onyx/20 cursor-pointer"
         />
-        <span className="text-sm text-body dark:group-hover:text-onyx group-hover:text-snow transition-colors">
+        <span className="text-sm text-body group-hover:text-onyx transition-colors">
           {label}
         </span>
       </label>
       {errors && (
-        <p className="dark:text-red-700 text-red-500 text-[10px] ml-8">
-          {errors.message}
-        </p>
+        <p className="text-red-700 text-[10px] ml-8">{errors.message}</p>
       )}
     </div>
   );
