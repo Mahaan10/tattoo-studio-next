@@ -11,7 +11,7 @@ import BookingRequest from "./booking-request/BookingRequest";
 import useBooking from "./useBooking";
 import MedicalDeclaration from "./medical-declaration/MedicalDeclaration";
 import { zodResolver } from "@hookform/resolvers/zod";
-import BookingBreadCrumb from "@/components/templates/BookingBreadCrumb";
+import BookingBreadCrumb from "@/components/templates/booking/BookingBreadCrumb";
 
 function BookingContainer() {
   const [step, setStep] = useState<number>(1);
