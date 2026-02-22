@@ -21,10 +21,10 @@ function InputField<T extends Record<string, any>>({
     <div className="relative">
       <input
         type={type}
-        placeholder=""
+        placeholder=" "
         {...register(name)}
         id={label}
-        className="block w-full px-3 pb-2.5 pt-4 text-sm bg-transparent border border-onyx/50 hover:border-onyx/75 focus:border-onyx transition-all duration-300 focus:shadow-xs focus:shadow-black-red appearance-none focus:outline-none peer rounded-lg"
+        className="block w-full px-3 pb-2.5 pt-4 text-sm bg-transparent border border-onyx/50 hover:border-onyx/75 focus:border-onyx transition-all duration-300 focus:shadow-xs focus:shadow-onyx appearance-none focus:outline-none peer rounded-lg"
       />
       <label
         htmlFor={label}

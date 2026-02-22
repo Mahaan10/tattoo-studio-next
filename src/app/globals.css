@@ -127,6 +127,53 @@
   animation: inkSpread 350ms ease-out;
 }
 
+/* Swiper bullet pagination*/
+
+.custom-bullet {
+  width: 10px;
+  height: 10px;
+  background: var(--color-black); /* neutral */
+  border-radius: 9999px;
+  transition: all 0.3s ease;
+  opacity: 0.6;
+  cursor: pointer;
+}
+
+.swiper-pagination-bullet-active.custom-bullet {
+  width: 28px;
+  background: var(--color-dried-mustard); /* your dried-mustard */
+  opacity: 1;
+}
+
+/* ===== Toast Container ===== */
+
+.custom-toast {
+  background: var(--color-onyx) !important; /* carbon-black */
+  color: var(--color-snow) !important; /* snow */
+  border-radius: 14px !important;
+  padding: 14px 18px !important;
+  font-family: inherit;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Toast Body */
+.custom-toast-body {
+  font-size: 15px;
+  letter-spacing: 0.5px;
+}
+
+/* Progress Bar */
+.custom-toast-progress {
+  background: var(--color-dried-mustard) !important; /* dried-mustard */
+  height: 3px !important;
+}
+
+/* Remove default icon spacing */
+.Toastify__toast-icon {
+  margin-inline-end: 10px;
+}
+
 /* :root {
   --radius: 0.625rem;
   --background: oklch(1 0 0);

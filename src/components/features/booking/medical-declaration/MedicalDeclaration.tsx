@@ -3,6 +3,7 @@ import CheckBoxInput from "@/components/ui/CheckBoxInput";
 import RadioInput from "@/components/ui/RadioInput";
 import TextAreaField from "@/components/ui/TextAreaField";
 import { useFormContext } from "react-hook-form";
+import { HiArrowLongLeft } from "react-icons/hi2";
 
 interface MedicalDeclarationProps {
   onBack: () => void;
@@ -17,10 +18,14 @@ function MedicalDeclaration({ onBack }: MedicalDeclarationProps) {
   return (
     <div className="flex flex-col gap-6">
       <div className="grid grid-cols-1 gap-4">
-        <div className="flex items-center justify-between">
-          <h2 className="text-xl mb-2">Medical Information</h2>
-          <button type="button" className="" onClick={onBack}>
-            Back
+        <div className="flex items-center justify-start">
+          <button
+            type="button"
+            className="flex items-center justify-center gap-x-2 hover:underline hover:underline-offset-4"
+            onClick={onBack}
+          >
+            <HiArrowLongLeft size={22} />
+            <span>Back</span>
           </button>
         </div>
 
@@ -90,9 +95,7 @@ function MedicalDeclaration({ onBack }: MedicalDeclarationProps) {
 
         <hr className="border-onyx/10 my-2" />
 
-        <h2 className="text-xl mb-2">Final Consent</h2>
-
-        <div className="flex flex-col gap-3 dark:bg-snow/50 bg-onyx/20 p-4 rounded-lg border dark:border-onyx/10 border-onyx/85">
+        <div className="flex flex-col gap-3 bg-snow/20 p-4 rounded-lg border border-onyx/10">
           <CheckBoxInput<BookingAppointmentFormData>
             label="I confirm that I am 18 years of age or older."
             name="consent.isAdultConfirmed"

@@ -2,6 +2,8 @@
 
 import { UseFormTrigger } from "react-hook-form";
 import { BookingAppointmentFormData } from "@/components/schema & types/booking/booking-appointement.schema";
+import { MdOutlineArrowRight } from "react-icons/md";
+import { HiOutlineCheck } from "react-icons/hi2";
 
 type StepConfig = {
   id: number;
@@ -27,13 +29,13 @@ const steps: StepConfig[] = [
 
 function BookingBreadCrumb({ step, setStep, trigger }: BookingBreadCrumbProps) {
   const handleClick = async (targetStep: StepConfig) => {
-    // Always allow going backwards
+    // Allow going backwards freely
     if (targetStep.id < step) {
       setStep(targetStep.id);
       return;
     }
 
-    // Prevent skipping multiple steps
+    // Prevent skipping steps
     if (targetStep.id > step + 1) return;
 
     // Validate current step before moving forward
@@ -48,13 +50,13 @@ function BookingBreadCrumb({ step, setStep, trigger }: BookingBreadCrumbProps) {
 
   return (
     <nav aria-label="Booking steps" className="mb-8">
-      <ol className="flex items-center justify-between text-sm font-medium">
+      <ul className="flex items-center justify-center gap-6 text-sm">
         {steps.map((item, index) => {
           const isActive = step === item.id;
           const isCompleted = step > item.id;
 
           return (
-            <li key={item.id} className="flex items-center w-full">
+            <li key={item.id} className="flex items-center">
               <button
                 type="button"
                 onClick={() => handleClick(item)}
@@ -62,11 +64,12 @@ function BookingBreadCrumb({ step, setStep, trigger }: BookingBreadCrumbProps) {
               >
                 <div
                   className={`flex items-center justify-center w-8 h-8 rounded-full border transition
-                    ${isActive
-                      ? "bg-carbon-black text-white border-carbon-black"
-                      : isCompleted
-                        ? "bg-carbon-black/80 text-white border-carbon-black"
-                        : "bg-transparent border-neutral-500 text-neutral-400"
+                    ${
+                      isActive
+                        ? "bg-carbon-black text-snow border-carbon-black"
+                        : isCompleted
+                          ? "bg-carbon-black/80 text-snow border-carbon-black"
+                          : "bg-transparent border-neutral-500 text-neutral-400"
                     }`}
                 >
                   {item.id}
@@ -74,9 +77,10 @@ function BookingBreadCrumb({ step, setStep, trigger }: BookingBreadCrumbProps) {
 
                 <span
                   className={`ml-2 hidden sm:inline transition
-                    ${isActive || isCompleted
-                      ? "text-carbon-black"
-                      : "text-neutral-400"
+                    ${
+                      isActive || isCompleted
+                        ? "text-carbon-black"
+                        : "text-neutral-400"
                     }`}
                 >
                   {item.label}
@@ -84,15 +88,24 @@ function BookingBreadCrumb({ step, setStep, trigger }: BookingBreadCrumbProps) {
               </button>
 
               {index < steps.length - 1 && (
-                <div
-                  className={`flex-1 h-px mx-3 transition
-                    ${isCompleted ? "bg-carbon-black" : "bg-neutral-600"}`}
-                />
+                <div className="mx-4 flex items-center">
+                  {isCompleted ? (
+                    <HiOutlineCheck
+                      className="text-neutral-500 transition"
+                      size={25}
+                    />
+                  ) : (
+                    <MdOutlineArrowRight
+                      className="text-neutral-500 transition"
+                      size={25}
+                    />
+                  )}
+                </div>
               )}
             </li>
           );
         })}
-      </ol>
+      </ul>
     </nav>
   );
 }

@@ -4,7 +4,7 @@ import InputFile from "@/components/ui/InputFile";
 import SelectBox from "@/components/ui/SelectBox";
 import TextAreaField from "@/components/ui/TextAreaField";
 import { FieldError, useFormContext } from "react-hook-form";
-import { MdArrowRightAlt } from "react-icons/md";
+import { HiArrowLongLeft } from "react-icons/hi2";
 
 interface BookingRequestProps {
   onNext: () => void;
@@ -41,15 +41,14 @@ function BookingRequest({ onNext, onBack }: BookingRequestProps) {
 
   return (
     <>
-      <div className="flex items-center justify-between">
-        <h2 className="text-xl mb-2">Booking Request</h2>
+      <div className="flex items-center justify-start">
         <button
           type="button"
-          className="flex items-center justify-center gap-x-4"
+          className="flex items-center justify-center gap-x-2 hover:underline hover:underline-offset-4"
           onClick={onBack}
         >
+          <HiArrowLongLeft size={22} />
           <span>Back</span>
-          <MdArrowRightAlt size={22} />
         </button>
       </div>
       {/* Studio Chooses */}
@@ -90,6 +89,15 @@ function BookingRequest({ onNext, onBack }: BookingRequestProps) {
         name="bookingRequest.file"
         setValue={setValue}
         errors={errors.bookingRequest?.file as unknown as FieldError}
+      />
+
+      {/* Placement */}
+
+      <TextAreaField<BookingAppointmentFormData>
+        label="Placement ..."
+        name="bookingRequest.placement"
+        register={register}
+        errors={errors.bookingRequest?.placement}
       />
 
       {/* Description / Idea */}

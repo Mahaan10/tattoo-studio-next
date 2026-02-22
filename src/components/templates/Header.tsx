@@ -27,7 +27,8 @@ function Header() {
   return (
     <>
       <header
-        className={`absolute top-0 z-50 flex w-full items-center justify-between text-lg font-bebas-neue tracking-widest px-[5%] ${isScrolled ? "fixed top-0 py-3 bg-onyx" : "pt-6"}`}
+        className={`fixed top-0 left-0 z-50 w-full flex items-center justify-between text-lg font-bebas-neue tracking-widest px-[5%] transition-all duration-500 ease-in-out ${isScrolled ? "py-3 bg-onyx backdrop-blur-md shadow-md shadow-black" : "py-6 bg-transparent"}
+  `}
       >
         {/* small devices menu */}
         <div className="lg:hidden flex items-center justify-center order-2">

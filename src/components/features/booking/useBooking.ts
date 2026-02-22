@@ -10,16 +10,16 @@ export default function useBooking() {
     mutateAsync: bookingAppointment,
   } = useMutation({
     mutationFn: makeBookingAppointmentApi,
-    onSuccess: (data) => {
+    onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["booking"],
       });
-      toast.success("Welldone!!");
-      console.log("successData =>", data);
+      toast.success(
+        "Booking request submitted! We'll contact you within 48 hours.",
+      );
     },
-    onError: (data) => {
-      toast.error(data?.message);
-      console.log("errorData =>", data);
+    onError: () => {
+      toast.error("Failed to submit booking. Please try again.");
     },
   });
 

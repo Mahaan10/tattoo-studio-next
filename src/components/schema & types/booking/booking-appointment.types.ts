@@ -12,6 +12,7 @@ export interface BookingRequestProps {
   bookingType: string;
   studioChooses?: boolean;
   source?: string;
+  placement: string;
   file?: string[];
 }
 

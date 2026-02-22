@@ -103,7 +103,7 @@ function BookingContainer() {
       <div className="h-full">
         <div className="container">
           <div className="flex justify-center">
-            <div className="w-full max-w-xl bg-alabaster text-onyx rounded-2xl p-5 sm:p-6 md:p-8 lg:p-10 shadow shadow-bright-snow">
+            <div className="w-full max-w-xl bg-alabaster text-onyx rounded-2xl p-5 sm:p-6 md:p-6 shadow shadow-snow">
               <h1 className="text-3xl mb-5 font-bold">Tattoo Request</h1>
 
               {/* Step indicator */}

@@ -20,7 +20,9 @@ export const ClientInfoValidationSchema = z.object({
     //.min(1, "Email is required")
     .email("Please enter a valid email address"),
 
-  phone: z.string({ message: "Phone number is required" }),
+  phone: z
+    .string({ message: "Phone number is required" })
+    .min(1, { message: "Phone number is required" }),
   // .regex(/^(?:\+49|0049|0)1[5-7]\d{1,2}[\s-]?\d{7,8}$/, {
   //   message: "Please enter a valid german mobile number",
   // }),
@@ -55,6 +57,11 @@ export const BookingRequestValidationSchema = z.object({
   bookingType: z
     .string({ message: "Please select a booking type" })
     .min(1, "Please select a booking type"),
+
+  placement: z
+    .string()
+    .min(1, "Placement is required")
+    .max(120, "you can describe at most 120 characters"),
 
   file: z
     .array(

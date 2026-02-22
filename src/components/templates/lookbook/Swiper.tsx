@@ -1,60 +1,70 @@
-"use client"
+"use client";
 
-import { Swiper, SwiperSlide } from "swiper/react"
-import { EffectCoverflow, Pagination, Autoplay } from "swiper/modules"
+import { Swiper, SwiperSlide } from "swiper/react";
+import { EffectCoverflow, Pagination, Autoplay } from "swiper/modules";
 
-import "swiper/css"
-import "swiper/css/effect-coverflow"
-import "swiper/css/pagination"
+import "swiper/css";
+import "swiper/css/effect-coverflow";
 
-import Image from "next/image"
+import Image from "next/image";
 
 type ImageType = {
-    id: number
-    src: string
-}
+  id: number;
+  src: string;
+};
 
 type LookBookSwiperProps = {
-    images: ImageType[]
-}
+  images: ImageType[];
+};
 
 export default function LookBookSwiper({ images }: LookBookSwiperProps) {
-    return (
-        <Swiper
-            effect={"coverflow"}
-            grabCursor={true}
-            centeredSlides={true}
-            slidesPerView={3}
-            loop={true}
-            autoplay={{
-                delay: 3000,
-                disableOnInteraction: false,
-            }}
-            coverflowEffect={{
-                rotate: 25,
-                stretch: 0,
-                depth: 120,
-                modifier: 1,
-                slideShadows: true,
-            }}
-            pagination={{ clickable: true }}
-            modules={[EffectCoverflow, Pagination, Autoplay]}
-            className="w-full"
-        >
-            {images.slice(0, 6).map((img) => (
-                <SwiperSlide key={img.id}>
-                    <div className="relative w-full h-[400px] rounded-2xl overflow-hidden">
-                        <Image
-                            src={img.src}
-                            alt="Tattoo style"
-                            fill
-                            sizes="(max-width: 1024px) 100vw, 50vw"
-                            className="object-cover"
-                            priority={img.id === 1}
-                        />
-                    </div>
-                </SwiperSlide>
-            ))}
-        </Swiper>
-    )
+  return (
+    <div className="relative w-full">
+      <Swiper
+        effect="coverflow"
+        grabCursor={true}
+        centeredSlides={true}
+        slidesPerView={3}
+        loop={true}
+        autoplay={{
+          delay: 3000,
+          disableOnInteraction: false,
+        }}
+        coverflowEffect={{
+          rotate: 25,
+          stretch: 0,
+          depth: 120,
+          modifier: 1,
+          slideShadows: true,
+        }}
+        pagination={{
+          clickable: true,
+          el: ".custom-pagination",
+          renderBullet: (index, className) => {
+            return `<span class="${className} custom-bullet"></span>`;
+          },
+        }}
+        modules={[EffectCoverflow, Pagination, Autoplay]}
+        className="w-full"
+      >
+        {images.slice(0, 6).map((img) => (
+          <SwiperSlide key={img.id}>
+            <div className="relative w-full h-100 rounded-2xl overflow-hidden">
+              <Image
+                src={img.src}
+                alt="Tattoo style"
+                fill
+                loading="lazy"
+                sizes="(max-width: 1024px) 100vw, 50vw"
+                className="object-cover"
+                //priority={img.id === 1}
+              />
+            </div>
+          </SwiperSlide>
+        ))}
+      </Swiper>
+      {/* Custom Pagination Container */}
+      <div className="custom-pagination flex justify-center mt-6 gap-3" />
+    </div>
+  );
 }
