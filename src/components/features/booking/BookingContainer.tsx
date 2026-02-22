@@ -99,7 +99,7 @@ function BookingContainer() {
   };
 
   return (
-    <section className="py-10 md:py-15 relative">
+    <div className="py-10 md:py-15 relative container mx-auto">
       <div className="h-full">
         <div className="container">
           <div className="flex justify-center">
@@ -154,7 +154,7 @@ function BookingContainer() {
           </div>
         </div>
       </div>
-    </section>
+    </div>
   );
 }
 export default BookingContainer;

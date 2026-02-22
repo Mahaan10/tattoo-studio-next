@@ -33,7 +33,7 @@ function Header() {
         {/* small devices menu */}
         <div className="lg:hidden flex items-center justify-center order-2">
           <button
-            className="group relative h-12 w-12 flex items-center justify-center rounded-full bg-snow border border-onyx/20 transition-all duration-300 hover:scale-110 active:scale-95 z-50"
+            className="group relative h-14 w-14 flex items-center justify-center rounded-full bg-snow border border-onyx/20 transition-all duration-300 hover:scale-110 active:scale-95 z-50"
             onClick={() => setIsDrawerOpen(true)}
           >
             <LuMenu size={22} className="text-onyx" />

@@ -32,7 +32,7 @@ function HeaderMenu({ isOpen, onOpenChange }: HeaderMenuProps) {
     <Sheet open={isOpen} onOpenChange={onOpenChange}>
       <SheetContent side="left" className="bg-onyx text-snow overflow-y-auto">
         <SheetHeader className="border-b border-snow/5">
-          <SheetTitle className="flex flex-col font-bebas-neue">
+          <SheetTitle className="flex flex-col">
             <div className="relative w-12 h-12">
               <Image
                 src="/images/Logo.png"
@@ -52,7 +52,7 @@ function HeaderMenu({ isOpen, onOpenChange }: HeaderMenuProps) {
               key={item.id}
               href={item.href}
               className={`transition-colors duration-200 ${pathname === item?.href ? "text-dried-mustard" : "hover:text-dried-mustard"}`}
-              //onClose={() => onOpenChange(false)}
+              onClick={() => onOpenChange(false)}
             >
               <span>{item.title}</span>
             </Link>
