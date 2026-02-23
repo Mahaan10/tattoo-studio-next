@@ -28,9 +28,8 @@ export const ClientInfoValidationSchema = z.object({
   // }),
 
   birthday: z
-    .string({ message: "Birthday is required" })
-    //.min(1, "Birthday is required")
-    .optional(),
+    .date({ message: "Birthday is reqired" })
+    .transform((date) => date.toISOString())
 });
 
 // Booking Request Validation
@@ -62,6 +61,14 @@ export const BookingRequestValidationSchema = z.object({
     .string()
     .min(1, "Placement is required")
     .max(120, "you can describe at most 120 characters"),
+
+  preferredDateFrom: z
+    .date({ message: "Preferred date from is reqired" })
+    .transform((date) => date.toISOString()),
+
+  // preferredDateTo: z
+  //   .date({ message: "Preferred date to is reqired" })
+  //   .transform((date) => date.toISOString()),
 
   file: z
     .array(

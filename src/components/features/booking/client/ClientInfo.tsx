@@ -60,6 +60,7 @@ function ClientInfo({ onNext }: ClientInfoProps) {
         control={control}
         errors={errors.client?.birthday}
         required
+        disableFuture
       />
 
       {/* Phone Number */}

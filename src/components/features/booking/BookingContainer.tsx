@@ -20,17 +20,6 @@ function BookingContainer() {
   const methods = useForm<BookingAppointmentFormData>({
     resolver: zodResolver(BookingAppointmentSchema as any),
     mode: "onTouched",
-    defaultValues: {
-      // medicalDeclaration: {
-      //   hasAllergies: undefined,
-      //   hasDiabetes: undefined,
-      //   hasHeartCondition: undefined,
-      //   hasSkinCondition: undefined,
-      //   isPregnantOrNursing: undefined,
-      //   takesBloodThinners: undefined,
-      //   takesMedication: undefined
-      // }
-    },
   });
 
   const { trigger, handleSubmit } = methods;
@@ -55,37 +44,6 @@ function BookingContainer() {
       consent: data?.consent,
     };
 
-    // const payload = {
-    //   client: {
-    //     firstName: data.client.firstName,
-    //     lastName: data.client.lastName,
-    //     email: data.client.email || undefined,
-    //     phone: data.client.phone || undefined,
-    //     //birthday: data.client.birthday || undefined,
-    //   },
-    //   bookingRequest: {
-    //     description: bookingRequestData.description,
-    //     budgetRange: bookingRequestData.budgetRange, // Ensure this is "_200_400" etc.
-    //     referrer: bookingRequestData.referrer || "",
-    //     // Add other optional fields if your form has them, otherwise omit
-    //   },
-    //   medicalDeclaration: {
-    //     hasAllergies: !!data.medicalDeclaration.hasAllergies,
-    //     hasSkinCondition: !!data.medicalDeclaration.hasSkinCondition,
-    //     isPregnantOrNursing: !!data.medicalDeclaration.isPregnantOrNursing,
-    //     hasHeartCondition: !!data.medicalDeclaration.hasHeartCondition,
-    //     hasDiabetes: !!data.medicalDeclaration.hasDiabetes,
-    //     takesBloodThinners: !!data.medicalDeclaration.takesBloodThinners,
-    //     takesMedication: !!data.medicalDeclaration.takesMedication,
-    //     otherNotes: data.medicalDeclaration.otherNotes || undefined,
-    //   },
-    //   consent: {
-    //     isAdultConfirmed: !!data.consent.isAdultConfirmed,
-    //     termsAccepted: !!data.consent.termsAccepted,
-    //     privacyAccepted: !!data.consent.privacyAccepted,
-    //   },
-    // };
-
     formData.append("payload", JSON.stringify(payload));
 
     if (file && file.length > 0) {
@@ -106,15 +64,7 @@ function BookingContainer() {
             <div className="w-full max-w-xl bg-alabaster text-onyx rounded-2xl p-5 sm:p-6 md:p-6 shadow shadow-snow">
               <h1 className="text-3xl mb-5 font-bold">Tattoo Request</h1>
 
-              {/* Step indicator */}
-              {/* <div className="flex justify-between mb-8">
-                {[1, 2, 3].map((s) => (
-                  <div
-                    key={s}
-                    className={`flex-1 h-2 mx-1 rounded-full ${s <= step ? "bg-carbon-black" : "bg-neutral-700/70"}`}
-                  />
-                ))}
-              </div> */}
+              {/* BreadCrumb */}
 
               <BookingBreadCrumb
                 step={step}

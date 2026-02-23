@@ -7,7 +7,7 @@ import { Encode_Sans } from "next/font/google";
 
 const encode_Sans = Encode_Sans({
   subsets: ["latin"],
-  weight: ["400", "300"],
+  weight: ["400", "300", "700"],
   display: "swap",
   //variable: "--font-bebas-neue",
 });

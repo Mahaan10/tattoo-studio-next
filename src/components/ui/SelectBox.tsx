@@ -29,7 +29,7 @@ function SelectBox<T extends Record<string, any>>({
         {...register(name)}
         id={label}
         defaultValue=""
-        className="block w-full px-3 pb-2.5 pt-4 text-sm bg-transparent border border-onyx/50 hover:border-onyx/75 focus:border-onyx transition-all duration-300 focus:shadow-xs focus:shadow-black-red appearance-none focus:outline-none peer rounded-lg"
+        className="block w-full px-3 pb-2.5 pt-4 text-sm bg-transparent border border-onyx/50 hover:border-onyx/75 focus:border-onyx transition-all duration-300 appearance-none focus:outline-none peer rounded-lg text-onyx select-arrow"
       >
         <option value="" disabled hidden></option>
         {options.map((option) => (

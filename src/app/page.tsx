@@ -27,7 +27,7 @@ function Home() {
             href="/booking"
             className="border border-dried-mustard/75 px-4 py-2 flex items-center justify-between w-55 rounded-full hover:border-dried-mustard transition-colors duration-200 group"
           >
-            <span>Book an Appointement</span>
+            <span>Booking</span>
             <MdArrowRightAlt
               size={22}
               className="group-hover:translate-x-1 transition-transform duration-200"

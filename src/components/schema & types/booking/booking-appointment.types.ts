@@ -13,6 +13,8 @@ export interface BookingRequestProps {
   studioChooses?: boolean;
   source?: string;
   placement: string;
+  preferredDateFrom: string,
+  preferredDateTo?: string,
   file?: string[];
 }
 

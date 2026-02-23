@@ -1,4 +1,5 @@
 import { BookingAppointmentFormData } from "@/components/schema & types/booking/booking-appointement.schema";
+import DatePickerField from "@/components/ui/DatePickerField";
 import InputField from "@/components/ui/InputField";
 import InputFile from "@/components/ui/InputFile";
 import SelectBox from "@/components/ui/SelectBox";
@@ -35,6 +36,7 @@ const studioChooses = [
 function BookingRequest({ onNext, onBack }: BookingRequestProps) {
   const {
     register,
+    control,
     formState: { errors },
     setValue,
   } = useFormContext<BookingAppointmentFormData>();
@@ -74,6 +76,13 @@ function BookingRequest({ onNext, onBack }: BookingRequestProps) {
         options={budgetRange}
         required
       />
+
+      {/* PreferredDateFrom */}
+      <DatePickerField<BookingAppointmentFormData> label="Preferred Date" name="bookingRequest.preferredDateFrom" control={control} errors={errors.bookingRequest?.preferredDateFrom} required disablePast />
+
+      {/* PreferredDateTo */}
+      {/* <DatePickerField<BookingAppointmentFormData> label="Preferred Date To" name="bookingRequest.preferredDateTo" control={control} errors={errors.bookingRequest?.preferredDateTo} /> */}
+
 
       {/* Referrer */}
       <InputField<BookingAppointmentFormData>

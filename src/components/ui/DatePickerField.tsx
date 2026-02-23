@@ -1,13 +1,11 @@
 import { Control, Controller, FieldError, Path } from "react-hook-form";
 import {
-  DayPicker,
-  SelectSingleEventHandler,
-  SelectMultipleEventHandler,
+  DayPicker, Matcher
 } from "react-day-picker";
 import { format } from "date-fns";
 import { useState } from "react";
 import useOutsideClick from "@/components/hook/useOutsideClick";
-import "react-day-picker/dist/style.css";
+//import "react-day-picker/dist/style.css";
 
 interface DatePickerProps<T extends Record<string, any>> {
   label: string;
@@ -16,6 +14,8 @@ interface DatePickerProps<T extends Record<string, any>> {
   errors: FieldError | undefined;
   required?: boolean;
   mode?: "single" | "multiple";
+  disablePast?: boolean,
+  disableFuture?: boolean
 }
 
 function DatePickerField<T extends Record<string, any>>({
@@ -25,9 +25,21 @@ function DatePickerField<T extends Record<string, any>>({
   errors,
   required,
   mode = "single",
+  disablePast,
+  disableFuture
 }: DatePickerProps<T>) {
   const [isOpen, setIsOpen] = useState(false);
+  const [currentMonth, setCurrentMonth] = useState<Date>(new Date());
   const containerRef = useOutsideClick<HTMLDivElement>(() => setIsOpen(false));
+
+  const today = new Date()
+  const disabledMatchers: Matcher[] = [];
+
+  if (disablePast) disabledMatchers.push({ before: today })
+
+
+  if (disableFuture) disabledMatchers.push({ after: today })
+
 
   return (
     <div className="relative" ref={containerRef}>
@@ -35,11 +47,24 @@ function DatePickerField<T extends Record<string, any>>({
         control={control}
         name={name}
         render={({ field: { onChange, value } }) => {
+          const handleInputClick = () => {
+            const dateValue = value as any
+            if (dateValue instanceof Date) {
+              setCurrentMonth(value)
+            }
+            setIsOpen((prev) => !prev)
+          }
+
+          const handleSelect = (val: any) => {
+            onChange(val);
+            if (mode === "single") setIsOpen(false);
+          };
+
           const getDisplayValue = () => {
             if (!value) return "";
             if (mode === "single") {
               const dateValue = value as any;
-              if (dateValue instanceof Date && !isNaN(dateValue.getTime())) {
+              if (dateValue instanceof Date) {
                 return format(dateValue, "PPP");
               }
             }
@@ -49,11 +74,7 @@ function DatePickerField<T extends Record<string, any>>({
             return "";
           };
 
-          // Fix for the Select Handler type error
-          const handleSelect = (val: any) => {
-            onChange(val);
-            if (mode === "single") setIsOpen(false);
-          };
+
 
           return (
             <>
@@ -72,40 +93,36 @@ function DatePickerField<T extends Record<string, any>>({
               </div>
 
               {isOpen && (
-                <div className="absolute bottom-full mb-2 z-50 p-3 bg-snow border border-onyx/20 rounded-xl shadow-xl animate-in fade-in slide-in-from-bottom-2 duration-200">
+                <div className="absolute bottom-full mb-2 z-50 p-4 bg-onyx border border-alabaster/10 rounded-2xl slide-in-from-bottom-2 duration-2000">
                   <DayPicker
-                    // v9 uses 'dropdown' or 'dropdown-years'
                     captionLayout="dropdown"
                     mode={mode as any}
                     selected={value}
                     onSelect={handleSelect}
-                    startMonth={new Date(1970, 0)}
-                    endMonth={new Date(new Date().getFullYear() + 10, 11)}
+                    month={currentMonth}
+                    onMonthChange={setCurrentMonth}
+                    fromYear={disableFuture ? 1940 : undefined}
+                    toYear={disablePast ? today.getFullYear() + 1 : undefined}
+                    disabled={disabledMatchers.length ? disabledMatchers : undefined}
                     classNames={{
                       months: "flex flex-col space-y-4",
                       month: "space-y-4",
-                      month_caption:
-                        "flex justify-center pt-1 relative items-center gap-1",
+                      month_caption: "flex justify-center pt-1 relative items-center gap-1",
                       caption_label: "hidden",
-                      dropdowns: "flex justify-center gap-1 z-20",
-                      dropdown:
-                        "p-1 rounded border border-onyx/20 text-xs bg-transparent focus:outline-none cursor-pointer",
-                      nav: "space-x-1 flex items-center",
-                      button_previous:
-                        "absolute left-1 top-4.5 h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100 transition-opacity",
-                      button_next:
-                        "absolute right-1 top-4.5 h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100 transition-opacity",
+                      dropdowns: "flex justify-center gap-2 z-20",
+                      dropdown: "p-1.5 rounded-sm border border-alabaster/50 text-xs bg-onyx text-snow hover:border-alabaster/75 focus:border-alabaster outline-none transition-all duration-200 cursor-pointer appearance-none custom-select-arrow",
+                      nav: "flex items-center",
+                      button_previous: "absolute left-4 top-9 z-30 h-7 w-7 flex items-center p-1 justify-center hover:opacity-100 transition-all bg-snow/40 rounded-full hover:bg-snow/75 duration-200",
+                      button_next: "absolute right-4 top-9 z-30 h-7 w-7 flex items-center p-1 justify-center hover:opacity-100 transition-all bg-snow/40 rounded-full hover:bg-snow/75 duration-200",
                       month_grid: "w-full border-collapse space-y-1",
                       weekdays: "flex",
-                      weekday:
-                        "text-onyx/50 rounded-md w-9 font-normal text-[0.8rem]",
+                      weekday: "text-snow/75 rounded-md w-9 font-normal text-[0.8rem]",
                       week: "flex w-full mt-2",
-                      day: "h-9 w-9 p-0 flex items-center justify-center text-sm font-normal aria-selected:opacity-100 hover:bg-onyx/10 rounded-md transition-colors cursor-pointer",
-                      selected:
-                        "bg-onyx hover:bg-onyx focus:bg-onyx focus:text-white",
-                      today: "bg-onyx/5 text-onyx font-bold underline",
-                      outside: "text-onyx/20 opacity-50",
-                      disabled: "text-onyx/20 opacity-50",
+                      day: "h-9 w-9 p-0 flex items-center justify-center text-sm font-normal text-snow/75 hover:bg-dried-mustard/20 hover:text-dried-mustard rounded-full transition-colors cursor-pointer",
+                      selected: "bg-dried-mustard! text-onyx! hover:bg-dried-mustard hover:text-onyx focus:bg-dried-mustard focus:text-onyx",
+                      today: "text-dried-mustard! underline underline-offset-4 font-semibold",
+                      outside: "text-snow/40 opacity-50",
+                      disabled: "text-snow/40 opacity-30 cursor-not-allowed",
                       hidden: "invisible",
                     }}
                   />
