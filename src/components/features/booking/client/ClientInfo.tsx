@@ -1,4 +1,5 @@
 import { BookingAppointmentFormData } from "@/components/schema & types/booking/booking-appointement.schema";
+import DatePickerField from "@/components/ui/DatePickerField";
 import InputField from "@/components/ui/InputField";
 import { useFormContext } from "react-hook-form";
 
@@ -9,6 +10,7 @@ interface ClientInfoProps {
 function ClientInfo({ onNext }: ClientInfoProps) {
   const {
     register,
+    control,
     formState: { errors },
   } = useFormContext<BookingAppointmentFormData>();
 
@@ -42,16 +44,6 @@ function ClientInfo({ onNext }: ClientInfoProps) {
         required
       />
 
-      {/* Phone Number */}
-      <InputField<BookingAppointmentFormData>
-        label="Phone number"
-        name="client.phone"
-        errors={errors.client?.phone}
-        register={register}
-        type="tel"
-        required
-      />
-
       {/* Birthday */}
       {/* <InputField<BookingAppointmentFormData>
         label="Birthday"
@@ -61,6 +53,24 @@ function ClientInfo({ onNext }: ClientInfoProps) {
         type="date"
         required
       /> */}
+
+      <DatePickerField<BookingAppointmentFormData>
+        label="Birthday"
+        name="client.birthday"
+        control={control}
+        errors={errors.client?.birthday}
+        required
+      />
+
+      {/* Phone Number */}
+      <InputField<BookingAppointmentFormData>
+        label="Phone number"
+        name="client.phone"
+        errors={errors.client?.phone}
+        register={register}
+        type="tel"
+        required
+      />
 
       {/* Next step btn */}
       <button type="button" onClick={onNext} className="submit-btn">

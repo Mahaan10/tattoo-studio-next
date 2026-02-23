@@ -25,7 +25,7 @@ function Home() {
         <div className="flex items-center justify-center gap-x-10">
           <Link
             href="/booking"
-            className="border border-snow/20 px-4 py-2 flex items-center justify-between w-55 rounded-full hover:border-snow/50 transition-colors duration-200 group"
+            className="border border-dried-mustard/75 px-4 py-2 flex items-center justify-between w-55 rounded-full hover:border-dried-mustard transition-colors duration-200 group"
           >
             <span>Book an Appointement</span>
             <MdArrowRightAlt
@@ -35,7 +35,7 @@ function Home() {
           </Link>
           <Link
             href="/guest-artist"
-            className="border border-snow/20 px-4 py-2 flex items-center justify-between w-55 rounded-full hover:border-snow/50 transition-colors duration-200 group"
+            className="border border-dried-mustard/75 px-4 py-2 flex items-center justify-between w-55 rounded-full hover:border-dried-mustard transition-colors duration-200 group"
           >
             <span>Guest Artist</span>
             <MdArrowRightAlt

@@ -60,7 +60,7 @@ function BookingBreadCrumb({ step, setStep, trigger }: BookingBreadCrumbProps) {
               <button
                 type="button"
                 onClick={() => handleClick(item)}
-                className="flex items-center focus:outline-none"
+                className="flex items-center focus:outline-none text-xs"
               >
                 <div
                   className={`flex items-center justify-center w-8 h-8 rounded-full border transition

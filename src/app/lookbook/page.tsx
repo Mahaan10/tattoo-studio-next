@@ -69,7 +69,7 @@ function LookBook() {
             <button
               key={style.id}
               type="button"
-              className="px-4 py-2 mr-2 mb-2 rounded-[10px] transition-all duration-200 bg-onyx text-snow hover:bg-snow hover:text-onyx"
+              className="px-4 py-2 mr-2 mb-2 rounded-[10px] transition-all duration-200 bg-onyx text-snow hover:bg-snow hover:text-onyx font-light"
             >
               #{style.title}
             </button>
