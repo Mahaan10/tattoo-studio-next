@@ -26,7 +26,7 @@ function TextAreaField<T extends Record<string, any>>({
       />
       <label
         htmlFor={label}
-        className="absolute text-sm text-body duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-left bg-alabaster opacity-75 peer-focus:opacity-100 px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-2 peer-placeholder-shown:top-2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 start-1"
+        className="absolute text-sm text-body duration-300 transform -translate-y-4 scale-75 top-1.5 z-10 origin-left bg-alabaster opacity-75 peer-focus:opacity-100 px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-2 peer-placeholder-shown:top-1.5 peer-focus:top-1.5 peer-focus:scale-75 peer-focus:-translate-y-4 start-1"
       >
         <span>{label}</span>
       </label>

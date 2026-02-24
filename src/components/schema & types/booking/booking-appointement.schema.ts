@@ -29,7 +29,7 @@ export const ClientInfoValidationSchema = z.object({
 
   birthday: z
     .date({ message: "Birthday is reqired" })
-    .transform((date) => date.toISOString())
+    .transform((date) => date.toISOString()),
 });
 
 // Booking Request Validation

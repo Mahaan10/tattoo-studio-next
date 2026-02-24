@@ -27,7 +27,7 @@ function Header() {
   return (
     <>
       <header
-        className={`fixed top-0 left-0 z-50 w-full flex items-center justify-between text-lg font-bebas-neue tracking-[0.2em] px-[5%] transition-all duration-500 ease-in-out ${isScrolled ? "py-3 bg-onyx backdrop-blur-md shadow-md shadow-black" : "py-6 bg-transparent"}
+        className={`fixed top-0 left-0 z-50 w-full flex items-center justify-between text-lg font-roboto_condensed font-semibold uppercase px-[5%] transition-all duration-500 ease-in-out ${isScrolled ? "py-3 bg-onyx backdrop-blur-md shadow-md shadow-black" : "py-6 bg-transparent"}
   `}
       >
         {/* small devices menu */}
@@ -48,7 +48,7 @@ function Header() {
             className="object-cover"
           />
         </div>
-        <nav className="w-[85%] mx-auto lg:flex hidden lg:items-center lg:justify-center">
+        <nav className="w-[75%] mx-auto lg:flex hidden lg:items-center lg:justify-center">
           <ul className="w-full lg:static overflow-hidden  lg:rounded-full gap-x-8  lg:flex lg:items-center lg:justify-between px-1">
             {headerMenu.map((item) => (
               <li key={item.id} className="">

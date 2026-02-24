@@ -52,7 +52,7 @@ function LookBook() {
         {/* ROW 1 - H1 + SWIPER */}
         <div className="grid grid-cols-1 lg:grid-cols-2 items-center gap-16 mt-16">
           <div>
-            <h1 className="text-5xl lg:text-6xl font-bebas-neue flex flex-col gap-y-3">
+            <h1 className="text-5xl lg:text-6xl uppercase font-roboto_condensed flex flex-col gap-y-3">
               <span>Dig deep in</span>
               <span>Some of Our Styles</span>
             </h1>

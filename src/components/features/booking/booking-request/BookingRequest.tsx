@@ -78,11 +78,17 @@ function BookingRequest({ onNext, onBack }: BookingRequestProps) {
       />
 
       {/* PreferredDateFrom */}
-      <DatePickerField<BookingAppointmentFormData> label="Preferred Date" name="bookingRequest.preferredDateFrom" control={control} errors={errors.bookingRequest?.preferredDateFrom} required disablePast />
+      <DatePickerField<BookingAppointmentFormData>
+        label="Preferred Date"
+        name="bookingRequest.preferredDateFrom"
+        control={control}
+        errors={errors.bookingRequest?.preferredDateFrom}
+        required
+        disablePast
+      />
 
       {/* PreferredDateTo */}
       {/* <DatePickerField<BookingAppointmentFormData> label="Preferred Date To" name="bookingRequest.preferredDateTo" control={control} errors={errors.bookingRequest?.preferredDateTo} /> */}
-
 
       {/* Referrer */}
       <InputField<BookingAppointmentFormData>
