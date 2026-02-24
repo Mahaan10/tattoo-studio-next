@@ -2,15 +2,18 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { headerMenu } from "../constants/Navigation";
+import { headerMenu } from "@/components/constants/Navigation";
 import { usePathname } from "next/navigation";
 import { LuMenu } from "react-icons/lu";
 import HeaderMenu from "./HeaderMenu";
 import Image from "next/image";
+import Modal from "@/components/ui/Modal";
+import AuthContainer from "@/components/features/auth/AuthContainer";
 
 function Header() {
   const [isScrolled, setIsScrolled] = useState<boolean>(false);
   const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const pathname = usePathname();
 
   useEffect(() => {
@@ -39,15 +42,21 @@ function Header() {
             <LuMenu size={22} className="text-onyx" />
           </button>
         </div>
-        <div className="relative w-18 h-18 order-1 lg:order-0">
+        {/* Admin Login Modal & Logo */}
+        <button
+          className="relative w-18 h-18 order-1 lg:order-0"
+          onClick={() => setIsModalOpen((prev) => !prev)}
+        >
           <Image
             src="/images/Logo.png"
             alt="Logo"
             fill
             quality={75}
+            priority
             className="object-cover"
           />
-        </div>
+        </button>
+        {/* Navabr */}
         <nav className="w-[75%] mx-auto lg:flex hidden lg:items-center lg:justify-center">
           <ul className="w-full lg:static overflow-hidden  lg:rounded-full gap-x-8  lg:flex lg:items-center lg:justify-between px-1">
             {headerMenu.map((item) => (
@@ -65,6 +74,12 @@ function Header() {
       </header>
 
       <HeaderMenu isOpen={isDrawerOpen} onOpenChange={setIsDrawerOpen} />
+
+      {isModalOpen && (
+        <Modal title="Admin Login" onClose={() => setIsModalOpen(false)}>
+          <AuthContainer />
+        </Modal>
+      )}
     </>
   );
 }
