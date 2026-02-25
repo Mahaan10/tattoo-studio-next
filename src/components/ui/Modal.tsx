@@ -35,11 +35,11 @@ function Modal({ onClose, children, title }: ModalProps) {
       <div
         ref={ref}
         className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2
-          rounded-lg bg-whitesmoke bg-onyx
+          rounded-lg text-onyx bg-alabaster
           p-4 shadow-lg transition-all duration-500 ease-out
           w-[calc(100vw-25%)] md:max-w-lg max-h-[calc(100vh-25%)] overflow-y-auto"
       >
-        <div className="flex items-center justify-between border-b border-snow/20 pb-2 mb-6">
+        <div className="flex items-center justify-between border-b border-onyx/20 pb-2 mb-6">
           {title ? (
             <div className="flex items-center gap-x-2">
               <div className="relative w-10 h-10">
@@ -62,7 +62,7 @@ function Modal({ onClose, children, title }: ModalProps) {
             onClick={onClose}
             className="cursor-pointer bg-inherit hover:bg-carbon-black rounded-lg p-1 transition-colors duration-200 group"
           >
-            <HiOutlineX className="w-5 h-5 group-hover:text-snow text-snow/75" />
+            <HiOutlineX className="w-5 h-5 group-hover:text-snow text-onyx/75" />
           </button>
         </div>
 

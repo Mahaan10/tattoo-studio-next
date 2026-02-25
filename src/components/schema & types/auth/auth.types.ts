@@ -1,4 +1,8 @@
 export interface SignIn {
-  gmail: string;
+  email: string;
   password: string;
+}
+
+export interface AuthResponse {
+  accessToken: string;
 }

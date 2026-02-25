@@ -1,11 +1,25 @@
 import axios from "axios";
+import { getCookie } from "cookies-next";
 
 const BASE_URL = "http://localhost:3100";
 
 const app = axios.create({
   baseURL: BASE_URL,
-  //withCredentials: true   need to be true when admin dashboard coding begin!
+  withCredentials: true,
 });
+
+app.interceptors.request.use(
+  (config) => {
+    const token = getCookie("token");
+    if (token) {
+      config.headers["Authorization"] = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  },
+);
 
 const http = {
   get: app.get,

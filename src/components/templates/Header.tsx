@@ -77,7 +77,7 @@ function Header() {
 
       {isModalOpen && (
         <Modal title="Admin Login" onClose={() => setIsModalOpen(false)}>
-          <AuthContainer />
+          <AuthContainer onClose={() => setIsModalOpen(false)} />
         </Modal>
       )}
     </>
