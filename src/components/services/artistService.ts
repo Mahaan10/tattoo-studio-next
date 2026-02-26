@@ -7,3 +7,7 @@ export default function getArtistsApi(): Promise<ArtistsResponse> {
     .get("/artists")
     .then(({ data }: AxiosResponse<ArtistsResponse>) => data);
 }
+
+export function getArtistBySlugApi(slug: string): Promise<ArtistsResponse> {
+  return http.get(`/artists?q=${slug}`).then(({ data }: AxiosResponse<ArtistsResponse>) => data)
+}

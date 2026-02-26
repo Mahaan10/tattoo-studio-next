@@ -4,7 +4,7 @@ export interface Artist {
   email: string;
   avatarUrl: string;
   bio: string;
-  handle?: string;
+  handle: string;
   phone: string;
   status: string;
   studioId?: string | null;
