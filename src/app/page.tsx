@@ -18,7 +18,7 @@ function Home() {
 
       {/* Content */}
       <div className="z-20 flex flex-col items-center justify-center gap-y-10 min-h-dvh">
-        <h1 className="text-2xl lg:text-6xl drop-shadow-2xl px-[20%] text-nowrap flex items-center justify-center flex-col font-roboto_condensed">
+        <h1 className="text-3xl sm:text-6xl lg:text-8xl drop-shadow-2xl px-[20%] text-nowrap flex items-center justify-center flex-col font-blakely">
           <span>Block 13</span>
           <span>Tattoo Studio</span>
         </h1>
