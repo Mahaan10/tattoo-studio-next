@@ -6,38 +6,6 @@ import { GrLocationPin } from "react-icons/gr";
 import useArtist from "./useArtist";
 import Image from "next/image";
 
-const LookBookImages = [
-  { id: 1, src: "/images/gallery/IMG_9232.jpg" },
-  { id: 2, src: "/images/gallery/IMG_0257.png" },
-  { id: 3, src: "/images/gallery/IMG_0258.jpg" },
-  { id: 4, src: "/images/gallery/IMG_0265.jpg" },
-  { id: 5, src: "/images/gallery/IMG_0266.jpg" },
-  { id: 6, src: "/images/gallery/IMG_3387.jpg" },
-  { id: 7, src: "/images/gallery/IMG_3387.jpg" },
-  { id: 8, src: "/images/gallery/IMG_3387.jpg" },
-  { id: 9, src: "/images/gallery/IMG_3387.jpg" },
-  { id: 10, src: "/images/gallery/IMG_3387.jpg" },
-  { id: 11, src: "/images/gallery/IMG_3387.jpg" },
-];
-
-const styles = [
-  { id: 1, title: "Watercolor" },
-  { id: 2, title: "Portrait" },
-  { id: 3, title: "Oriental" },
-  { id: 4, title: "Oldschool" },
-  { id: 5, title: "Blackwork" },
-  { id: 6, title: "Geometric" },
-  { id: 7, title: "New Traditional" },
-  { id: 8, title: "Anime" },
-  { id: 9, title: "Letterings" },
-  { id: 10, title: "Graphic" },
-  { id: 11, title: "Fineline" },
-  { id: 12, title: "Color Realistic" },
-  { id: 13, title: "Dotwork" },
-  { id: 14, title: "Mandala" },
-  { id: 15, title: "Cover Up" },
-];
-
 function ArtistDetailsView() {
   const { artistBySlug, artistWorks } = useArtist();
   const [activeId, setActiveId] = useState<string | undefined>(undefined);
@@ -118,11 +86,10 @@ function ArtistDetailsView() {
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    <LuInstagram size={18} />
-                    <span className="flex items-center gap-x-0.5">
-                      <LuAtSign size={18} />
-                      {artistBySlug.handle}
-                    </span>
+                    <div className="flex items-center justify-center h-5 w-5 rounded-md bg-linear-to-tr from-[#f58529] via-[#dd2a7b] to-[#8134af] shadow-md transition-transform duration-300 group-hover:scale-105">
+                      <LuInstagram size={14} />
+                    </div>
+                    <span>{artistBySlug.handle}</span>
                   </a>
                 </div>
 
@@ -130,9 +97,8 @@ function ArtistDetailsView() {
                   <span className="text-[10px] text-snow/40 uppercase tracking-widest block mb-1 font-bold">
                     Location
                   </span>
-                  <div className="flex items-center gap-x-1">
-                    {/* <GrLocationPin size={16} stroke="#fff" fill="red" /> */}
-                    <LuMapPin size={16} stroke="red" fill="black" />
+                  <div className="flex items-center gap-2">
+                    <span className="text-base leading-none">📍</span>
                     <span className="text-sm font-medium truncate">
                       Block 13 Studio — Cologne
                     </span>

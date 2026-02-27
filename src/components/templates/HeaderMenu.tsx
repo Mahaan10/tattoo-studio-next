@@ -30,7 +30,10 @@ function HeaderMenu({ isOpen, onOpenChange }: HeaderMenuProps) {
 
   return (
     <Sheet open={isOpen} onOpenChange={onOpenChange}>
-      <SheetContent side="left" className="bg-onyx text-snow overflow-y-auto">
+      <SheetContent
+        side="left"
+        className="bg-onyx text-snow overflow-y-auto text-lg font-roboto_condensed font-semibold uppercase"
+      >
         <SheetHeader className="border-b border-snow/5">
           <SheetTitle className="flex flex-col">
             <div className="relative w-12 h-12">

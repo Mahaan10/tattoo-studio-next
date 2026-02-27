@@ -1,5 +1,6 @@
 import getArtistsApi, {
   getArtistBySlugApi,
+  getArtistsLookbookApi,
 } from "@/components/services/artistService";
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "next/navigation";
@@ -12,13 +13,13 @@ export default function useArtist() {
   const {
     isLoading: artistsIsLoading,
     isError: artistsIsError,
-    data,
+    data: artistsData,
   } = useQuery({
     queryKey: ["artists"],
     queryFn: getArtistsApi,
   });
 
-  const artists = data?.items || [];
+  const artists = artistsData?.items || [];
 
   // get single artist by slug
   const {
@@ -34,6 +35,19 @@ export default function useArtist() {
   const artistBySlug = singleArtistData?.artist || null;
   const artistWorks = singleArtistData?.works?.items || null;
 
+  // Lookbook data
+
+  const {
+    isLoading: lookbookIsLoading,
+    isError: lookbookIsError,
+    data: lookbookData,
+  } = useQuery({
+    queryKey: ["artists-lookbook"],
+    queryFn: getArtistsLookbookApi,
+  });
+
+  const lookbookItems = lookbookData?.items || [];
+
   return {
     // All artists
     artistsIsLoading,
@@ -45,5 +59,10 @@ export default function useArtist() {
     artistWorks,
     getArtistBySlugIsError,
     getArtistBySlugIsLoading,
+
+    // lookbook
+    lookbookIsLoading,
+    lookbookIsError,
+    lookbookItems,
   };
 }

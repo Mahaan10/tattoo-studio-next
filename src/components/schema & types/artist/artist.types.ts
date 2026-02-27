@@ -1,33 +1,34 @@
 export interface ArtistWork {
-  id?: string;
-  title?: string;
+  id: string;
+  title: string;
   coverUrl: string;
   tags: string[];
+  createdAt?: string;
 }
 
-export interface LatestArtistWorks extends ArtistWork {}
-
-export interface Artist {
-  id?: string;
+export interface LookbookArtist {
+  id: string;
+  slug: string;
+  handle: string;
   displayName: string;
-  email?: string;
   avatarUrl: string;
   coverUrl: string;
-  worksCount?: number;
-  bio?: string;
-  handle?: string;
-  slug: string;
-  phone?: string;
-  status?: string;
-  studioId?: string | null;
-  latestWorks: LatestArtistWorks[];
+  worksCount: number;
+  latestWorks: ArtistWork[];
+}
+
+export interface LookbookResponse {
+  page: number;
+  limit: number;
+  total: number;
+  items: LookbookArtist[];
 }
 
 export interface ArtistsResponse {
   page: number;
   limit: number;
   total: number;
-  items: Artist[];
+  items: any[];
 }
 
 export interface ArtistWorksResponse {

@@ -9,8 +9,11 @@ import "swiper/css/effect-coverflow";
 import Image from "next/image";
 
 type ImageType = {
-  id: number;
-  src: string;
+  artistName: string;
+  artistSlug: string;
+  id: string;
+  title: string;
+  coverUrl: string;
 };
 
 type LookBookSwiperProps = {
@@ -47,11 +50,11 @@ export default function LookBookSwiper({ images }: LookBookSwiperProps) {
         modules={[EffectCoverflow, Pagination, Autoplay]}
         className="w-full"
       >
-        {images.slice(0, 6).map((img) => (
+        {images.map((img) => (
           <SwiperSlide key={img.id}>
             <div className="relative w-full h-100 rounded-2xl overflow-hidden">
               <Image
-                src={img.src}
+                src={img.coverUrl}
                 alt="Tattoo style"
                 fill
                 loading="lazy"

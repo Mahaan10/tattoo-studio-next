@@ -4,7 +4,10 @@
 
 @font-face {
   font-family: "Blakely";
-  src: url("/fonts/Blakely/Blakely Light/Blakely Light.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+  src: url("/fonts/Blakely/BlakelyLight.woff2") format("woff2");
 }
 
 @theme inline {

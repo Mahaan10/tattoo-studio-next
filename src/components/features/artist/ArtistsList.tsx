@@ -54,10 +54,7 @@ function ArtistsList() {
                 className="flex items-center gap-2 text-snow/75 hover:text-snow transition-colors w-fit"
               >
                 <LuInstagram size={18} />
-                <span className="flex items-center gap-x-0.5">
-                  <LuAtSign size={18} />
-                  {artist.handle}
-                </span>
+                <span>{artist.handle}</span>
               </div>
               {/* <a
                     href={`tel:${artist.phone}`}
