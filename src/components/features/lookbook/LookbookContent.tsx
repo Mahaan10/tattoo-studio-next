@@ -54,15 +54,20 @@ export default function LookBookContent() {
 
       {/* ROW 2 - STYLE BUTTONS (You can filter allWorks based on these later) */}
       <div className="flex flex-wrap mt-16">
-        {uniqueTags.map((tag, index) => (
-          <button
-            key={index}
-            type="button"
-            className="px-4 py-2 mr-2 mb-2 rounded-[10px] transition-all duration-200 bg-onyx text-snow hover:bg-snow hover:text-onyx font-light capitalize"
-          >
-            #{tag}
-          </button>
-        ))}
+        <div className="p-5 rounded-xl bg-onyx/40 border border-white/5 backdrop-blur-sm w-full">
+          <span className="text-[10px] text-snow/40 uppercase tracking-widest block mb-2 font-bold">
+            Styles
+          </span>
+          {uniqueTags.map((tag, index) => (
+            <button
+              key={index}
+              type="button"
+              className="px-4 py-2 mr-2 rounded-[10px] transition-all duration-200 bg-onyx text-snow hover:bg-snow hover:text-onyx font-light capitalize"
+            >
+              #{tag}
+            </button>
+          ))}
+        </div>
       </div>
 
       {/* ROW 3 - Ordered Grid Gallery using REAL DATA */}
@@ -83,8 +88,6 @@ export default function LookBookContent() {
   );
 }
 
-// Updated Gallery Image Component to handle string IDs from backend
-
 function GalleryImage({
   id,
   src,
@@ -98,7 +101,7 @@ function GalleryImage({
   return (
     <div
       onClick={() => setActiveId((prev) => (prev === id ? null : id))}
-      className="relative w-full overflow-hidden rounded-2xl group aspect-3/4 cursor-pointer"
+      className="relative w-full overflow-hidden rounded-2xl group aspect-3/4 cursor-pointer shadow shadow-snow hover:shadow-md transition-all duration-500"
     >
       {/* The Image */}
       <Image

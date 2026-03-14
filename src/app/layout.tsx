@@ -4,6 +4,7 @@ import Providers from "@/components/providers/Providers";
 import { ToastContainer } from "react-toastify";
 import { Roboto_Condensed } from "next/font/google";
 import { Encode_Sans } from "next/font/google";
+import Footer from "@/components/templates/Footer";
 
 const roboto_condensed = Roboto_Condensed({
   subsets: ["latin"],
@@ -36,6 +37,7 @@ export default function RootLayout({
           <main className="container max-w-screen 2xl:max-w-screen-2xl 2xl:mx-auto overflow-x-hidden 2xl:relative bg-carbon-black text-snow min-h-dvh">
             <Header />
             {children}
+            <Footer />
           </main>
           <ToastContainer
             position="top-left"
