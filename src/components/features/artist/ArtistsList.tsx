@@ -2,7 +2,7 @@
 
 import useArtist from "./useArtist";
 import Image from "next/image";
-import { LuAtSign, LuInstagram } from "react-icons/lu";
+import { LuInstagram } from "react-icons/lu";
 import { GoDotFill } from "react-icons/go";
 import Link from "next/link";
 
