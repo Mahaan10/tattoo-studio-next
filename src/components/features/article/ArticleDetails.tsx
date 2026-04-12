@@ -20,41 +20,33 @@ function ArticleDetails() {
   return (
     <section className="py-16 px-[5%]">
       <div className="container mx-auto py-15">
-        <div className="mb-12">
-          <h1 className="text-3xl md:text-4xl font-bold mb-4 tracking-tight">
-            {article.title}
-          </h1>
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-12 items-stretch">
-          {/* LEFT: Artist Image and Styles */}
-          <div className="lg:col-span-5 xl:col-span-4">
-            <div className="relative w-[285.533px] h-112.5 overflow-hidden rounded-2xl bg-onyx mb-6">
-              <Image
-                src={article.coverUrl}
-                alt={article.title}
-                fill
-                priority
-                className="object-cover grayscale"
-              />
+        <div className="w-full mx-auto flex items-center justify-center flex-col">
+          <div className="border border-snow/5 rounded-xl shadow shadow-snow">
+            <div className="my-6 text-center">
+              <h1 className="text-3xl md:text-4xl font-bold mb-4 tracking-tight">
+                {article.title}
+              </h1>
+            </div>
+            <div className="flex flex-col items-center justify-center px-6 pb-6">
+              {/* LEFT: Artist Image and Styles */}
+              <div className="relative w-200 h-60 overflow-hidden rounded-2xl bg-onyx mb-6">
+                <Image
+                  src={article.coverUrl}
+                  alt={article.title}
+                  fill
+                  priority
+                  className="object-cover grayscale"
+                />
+              </div>
+
+              {/* Styles under the image */}
+              <div className="flex flex-wrap w-200">
+                <p>{article.content}</p>
+              </div>
             </div>
 
-            {/* Styles under the image */}
-            {/* <div className="flex flex-wrap">
-                      {artistWorks?.flatMap((work) =>
-                        work.tags.map((tag, index) => (
-                          <button
-                            key={index}
-                            type="button"
-                            className="px-4 py-2 mr-2 mb-2 rounded-[10px] transition-all duration-200 bg-onyx text-snow hover:bg-snow hover:text-onyx font-light text-sm capitalize"
-                          >
-                            #{tag}
-                          </button>
-                        )),
-                      )}
-                    </div> */}
+            {/* RIGHT: Bio & Info Cards */}
           </div>
-
-          {/* RIGHT: Bio & Info Cards */}
         </div>
       </div>
     </section>
