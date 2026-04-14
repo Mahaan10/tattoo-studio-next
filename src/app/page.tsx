@@ -1,30 +1,24 @@
+import { HomePageContent } from "@/components/constants/Navigation";
 import Review from "@/components/features/review/Review";
+import getReviewsApi from "@/components/services/reviewService";
+import {
+  dehydrate,
+  HydrationBoundary,
+  QueryClient,
+} from "@tanstack/react-query";
 import Image from "next/image";
 import Link from "next/link";
 import { MdArrowRightAlt } from "react-icons/md";
 
-const content = [
-  {
-    id: 1,
-    title: "Artists",
-    linkHref: "/tattoo-artists",
-    imgSrc: "/images/gallery/IMG_3381.JPG",
-  },
-  {
-    id: 2,
-    title: "Lookbook",
-    linkHref: "/lookbook",
-    imgSrc: "/images/gallery/IMG_0257.PNG",
-  },
-  {
-    id: 3,
-    title: "Articles",
-    linkHref: "/articles",
-    imgSrc: "/images/gallery/IMG_0258.jpg",
-  },
-];
+async function Home() {
+  const queryClient = new QueryClient();
 
-function Home() {
+  await queryClient.prefetchQuery({
+    queryKey: ["artists"],
+    queryFn: getReviewsApi,
+    staleTime: 600000 * 60 * 30,
+  });
+
   return (
     <>
       <div className="relative h-screen w-full overflow-hidden">
@@ -78,7 +72,7 @@ function Home() {
       <div className="py-16 px-[5%]">
         <div className="container mx-auto">
           <div className="flex items-center justify-between">
-            {content.map((c) => (
+            {HomePageContent.map((c) => (
               <Link
                 key={c.id}
                 href={c.linkHref}
@@ -103,7 +97,9 @@ function Home() {
             ))}
           </div>
           {/* Comment Section */}
-          <Review />
+          <HydrationBoundary state={dehydrate(queryClient)}>
+            <Review />
+          </HydrationBoundary>
         </div>
       </div>
     </>

@@ -44,3 +44,24 @@ export const socialMedia = [
   //   className: "bg-black",
   // },
 ];
+
+export const HomePageContent = [
+  {
+    id: 1,
+    title: "Artists",
+    linkHref: "/tattoo-artists",
+    imgSrc: "/images/gallery/IMG_3381.JPG",
+  },
+  {
+    id: 2,
+    title: "Lookbook",
+    linkHref: "/lookbook",
+    imgSrc: "/images/gallery/IMG_0257.PNG",
+  },
+  {
+    id: 3,
+    title: "Articles",
+    linkHref: "/articles",
+    imgSrc: "/images/gallery/IMG_0258.jpg",
+  },
+];
