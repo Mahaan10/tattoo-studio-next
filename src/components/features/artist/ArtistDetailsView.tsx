@@ -16,7 +16,7 @@ function ArtistDetailsView() {
   return (
     <section className="py-16 px-[5%]">
       <div className="container mx-auto py-15">
-        {/* HEADER: Name & Socials */}
+        {/* Name  */}
         <div className="mb-12">
           <h1 className="text-3xl md:text-4xl font-bold mb-4 tracking-tight">
             {artistBySlug.displayName}
@@ -86,8 +86,8 @@ function ArtistDetailsView() {
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    <div className="flex items-center justify-center h-5 w-5 rounded-md bg-linear-to-tr from-[#f58529] via-[#dd2a7b] to-[#8134af] shadow-md transition-transform duration-300 group-hover:scale-105">
-                      <LuInstagram size={14} />
+                    <div className="flex items-center justify-center size-6 rounded-md bg-linear-to-tr from-[#f58529] via-[#dd2a7b] to-[#8134af] shadow-md transition-transform duration-300 group-hover:scale-105">
+                      <LuInstagram size={18} />
                     </div>
                     <span>{artistBySlug.handle}</span>
                   </a>
@@ -121,7 +121,7 @@ function ArtistDetailsView() {
                 onClick={() =>
                   setActiveId(activeId === work.id ? undefined : work.id)
                 }
-                className="relative w-full overflow-hidden rounded-2xl group aspect-3/4 cursor-pointer"
+                className="relative w-full overflow-hidden rounded-2xl group aspect-3/4 cursor-pointer shadow shadow-snow/20 hover:shadow-md transition-all duration-200"
               >
                 <Image
                   src={work.coverUrl}

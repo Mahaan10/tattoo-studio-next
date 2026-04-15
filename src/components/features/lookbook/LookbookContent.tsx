@@ -101,7 +101,7 @@ function GalleryImage({
   return (
     <div
       onClick={() => setActiveId((prev) => (prev === id ? null : id))}
-      className="relative w-full overflow-hidden rounded-2xl group aspect-3/4 cursor-pointer shadow shadow-snow hover:shadow-md transition-all duration-500"
+      className="relative w-full overflow-hidden rounded-2xl group aspect-3/4 cursor-pointer shadow shadow-snow/20 hover:shadow-md transition-all duration-200"
     >
       {/* The Image */}
       <Image

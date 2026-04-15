@@ -28,25 +28,25 @@ function ArtistsList() {
 
           {/* Name Badge (Top Left) */}
           <div className="absolute top-4 left-4 z-20">
-            <span className="bg-onyx/80 text-snow/75 px-4 py-1.5 rounded-full text-sm font-medium backdrop-blur-md hover:text-snow transition-colors hover:bg-carbon-black">
+            <span className="bg-onyx/80 text-snow/75 px-4 py-1.5 rounded-2xl text-base font-medium backdrop-blur-md hover:text-snow transition-colors hover:bg-carbon-black">
               {artist.displayName}
             </span>
           </div>
 
           {/* Status Badge (Top Right - Optional) */}
-          <div className="absolute top-4 right-4 z-20 opacity-0 group-hover/card:opacity-100 transition-opacity duration-300">
+          {/* <div className="absolute top-4 right-4 z-20 opacity-0 group-hover/card:opacity-100 transition-opacity duration-300">
             <span className={``}>
               <GoDotFill
                 className={`${artist.status === "ACTIVE" ? "text-green-600 animate-caret-blink" : "text-red-600"}`}
               />
             </span>
-          </div>
+          </div> */}
 
           {/* Hover Details Overlay */}
           <div className="absolute inset-0 flex flex-col justify-end p-6 bg-linear-to-t from-onyx via-onyx/40 to-transparent translate-y-full group-hover/card:translate-y-0 transition-transform duration-500">
-            <p className="text-snow/75 text-sm mb-4 line-clamp-3">
+            {/* <p className="text-snow/75 text-sm mb-4 line-clamp-3">
               {artist.bio || "No bio available for this artist."}
-            </p>
+            </p> */}
 
             <div className="flex flex-col gap-3 border-t border-alabaster/20 pt-4">
               <div

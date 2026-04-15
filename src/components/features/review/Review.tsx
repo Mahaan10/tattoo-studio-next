@@ -4,47 +4,8 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
 import "swiper/css";
 import { useRef } from "react";
-import formattedDate from "@/components/utils/formattedDate";
 import useReview from "./useReview";
 import Image from "next/image";
-
-const commentReviews = [
-  {
-    id: 1,
-    stars: "⭐⭐⭐⭐⭐",
-    name: "Mahan",
-    review: "It was a great exprience to got my first tattoo there!!",
-    createdAt: new Date(),
-  },
-  {
-    id: 2,
-    stars: "⭐⭐",
-    name: "Mahan",
-    review: "It was a great exprience",
-    createdAt: new Date(),
-  },
-  {
-    id: 3,
-    stars: "⭐⭐⭐⭐",
-    name: "Mahan",
-    review: "It was a great exprience",
-    createdAt: new Date(),
-  },
-  {
-    id: 4,
-    stars: "⭐⭐⭐",
-    name: "Mahan",
-    review: "It was a great exprience",
-    createdAt: new Date(),
-  },
-  {
-    id: 5,
-    stars: "⭐",
-    name: "Mahan",
-    review: "It was a great exprience",
-    createdAt: new Date(),
-  },
-];
 
 function Review() {
   const { reviews } = useReview();
@@ -56,7 +17,7 @@ function Review() {
       <div className="flex items-center py-10 px-4">
         <div className="w-[20%] flex flex-col items-center justify-between h-50">
           <p className="text-center text-base">Wanna share your feedback?</p>
-          <button className="border border-snow/20 shadow shadow-snow/45 px-3 py-2 hover:shadow-sm rounded-lg hover:border-snow/50 transition-all duration-200">
+          <button className="border border-snow/20 shadow shadow-snow/45 px-3 py-2 hover:shadow-sm rounded-lg hover:border-snow/50 transition-all duration-200 w-full md:w-[80%]">
             Click here
           </button>
         </div>

@@ -1,14 +1,21 @@
 import AdminSignInApi from "@/components/services/authService";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { toast } from "react-toastify";
 import { setCookie } from "cookies-next";
 
 export default function useAuth() {
+  const queryClient = useQueryClient();
+
   const { isPending, mutateAsync: signIn } = useMutation({
     mutationFn: AdminSignInApi,
     onSuccess: (data) => {
       setCookie("access_token", data?.accessToken);
+
+      queryClient.invalidateQueries({
+        queryKey: ["user"],
+      });
+
       toast.success("Welcome back Admin!");
     },
 

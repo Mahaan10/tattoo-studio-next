@@ -21,6 +21,8 @@ type LookBookSwiperProps = {
 };
 
 export default function LookBookSwiper({ images }: LookBookSwiperProps) {
+  const enableSliderFeatures = images.length >= 6;
+
   return (
     <div className="relative w-full">
       <Swiper
@@ -28,11 +30,15 @@ export default function LookBookSwiper({ images }: LookBookSwiperProps) {
         grabCursor={true}
         centeredSlides={true}
         slidesPerView={3}
-        loop={true}
-        autoplay={{
-          delay: 3000,
-          disableOnInteraction: false,
-        }}
+        loop={enableSliderFeatures}
+        autoplay={
+          enableSliderFeatures
+            ? {
+                delay: 3000,
+                disableOnInteraction: false,
+              }
+            : false
+        }
         coverflowEffect={{
           rotate: 25,
           stretch: 0,
@@ -40,13 +46,17 @@ export default function LookBookSwiper({ images }: LookBookSwiperProps) {
           modifier: 1,
           slideShadows: true,
         }}
-        pagination={{
-          clickable: true,
-          el: ".custom-pagination",
-          renderBullet: (index, className) => {
-            return `<span class="${className} custom-bullet"></span>`;
-          },
-        }}
+        pagination={
+          enableSliderFeatures
+            ? {
+                clickable: true,
+                el: ".custom-pagination",
+                renderBullet: (index, className) => {
+                  return `<span class="${className} custom-bullet"></span>`;
+                },
+              }
+            : false
+        }
         modules={[EffectCoverflow, Pagination, Autoplay]}
         className="w-full"
       >
@@ -67,7 +77,9 @@ export default function LookBookSwiper({ images }: LookBookSwiperProps) {
         ))}
       </Swiper>
       {/* Custom Pagination Container */}
-      <div className="custom-pagination flex justify-center mt-6 gap-3" />
+      {enableSliderFeatures && (
+        <div className="custom-pagination flex justify-center mt-6 gap-3" />
+      )}
     </div>
   );
 }

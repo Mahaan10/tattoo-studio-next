@@ -9,12 +9,18 @@ import HeaderMenu from "./HeaderMenu";
 import Image from "next/image";
 import Modal from "@/components/ui/Modal";
 import AuthContainer from "@/components/features/auth/AuthContainer";
+import { getCookie } from "cookies-next";
+import { PiArrowDown } from "react-icons/pi";
+import useCurrentUser from "../features/auth/useCurrentUser";
 
 function Header() {
+  const { user, currentUserIsLoading } = useCurrentUser();
   const [isScrolled, setIsScrolled] = useState<boolean>(false);
   const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const pathname = usePathname();
+
+  console.log(user);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -26,6 +32,7 @@ function Header() {
   }, []);
 
   if (!pathname) return null;
+  if (currentUserIsLoading) return null;
 
   return (
     <>
@@ -43,19 +50,31 @@ function Header() {
           </button>
         </div>
         {/* Admin Login Modal & Logo */}
-        <button
-          className="relative w-18 h-18 order-1 lg:order-0"
-          onClick={() => setIsModalOpen((prev) => !prev)}
-        >
-          <Image
-            src="/images/Logo.png"
-            alt="Logo"
-            fill
-            quality={75}
-            priority
-            className="object-cover"
-          />
-        </button>
+
+        {!user ? (
+          <button
+            className="relative w-18 h-18 order-1 lg:order-0"
+            onClick={() => setIsModalOpen((prev) => !prev)}
+          >
+            <Image
+              src="/images/Logo.png"
+              alt="Logo"
+              fill
+              quality={75}
+              priority
+              className="object-cover"
+            />
+          </button>
+        ) : (
+          <button
+            className="w-25 px-2 py-3 text-xs flex items-centr justify-between border border-snow/25 shadow shadow-snow/45 rounded-lg"
+            onClick={() => console.log("admin")}
+          >
+            <span>Admin</span>
+            <PiArrowDown className="size-4" />
+          </button>
+        )}
+
         {/* Navabr */}
         <nav className="w-[75%] mx-auto lg:flex hidden lg:items-center lg:justify-center">
           <ul className="w-full lg:static overflow-hidden  lg:rounded-full gap-x-8  lg:flex lg:items-center lg:justify-between px-1">

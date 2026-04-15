@@ -10,7 +10,7 @@ const app = axios.create({
 
 app.interceptors.request.use(
   (config) => {
-    const token = getCookie("token");
+    const token = getCookie("access_token");
     if (token) {
       config.headers["Authorization"] = `Bearer ${token}`;
     }

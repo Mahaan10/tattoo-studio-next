@@ -6,3 +6,12 @@ export interface SignIn {
 export interface AuthResponse {
   accessToken: string;
 }
+
+export interface CurrentUserResponse {
+  id: string;
+  email: string;
+  displayName: string | null;
+  isActive: boolean;
+  lastLoginAt: Date;
+  createdAt: Date;
+}

@@ -1,15 +1,14 @@
 import { AxiosResponse } from "axios";
 import http from "./httpService";
 import {
-  ArtistsResponse,
   LookbookResponse,
   SingleArtistResponse,
 } from "../schema & types/artist/artist.types";
 
-export default function getArtistsApi(): Promise<ArtistsResponse> {
+export default function getArtistsApi(): Promise<LookbookResponse> {
   return http
-    .get("/artists")
-    .then(({ data }: AxiosResponse<ArtistsResponse>) => data);
+    .get("/public/artists/lookbook")
+    .then(({ data }: AxiosResponse<LookbookResponse>) => data);
 }
 
 export function getArtistBySlugApi(

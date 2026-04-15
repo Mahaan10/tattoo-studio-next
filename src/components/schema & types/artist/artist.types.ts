@@ -24,13 +24,6 @@ export interface LookbookResponse {
   items: LookbookArtist[];
 }
 
-export interface ArtistsResponse {
-  page: number;
-  limit: number;
-  total: number;
-  items: any[];
-}
-
 export interface ArtistWorksResponse {
   page: number;
   limit: number;
