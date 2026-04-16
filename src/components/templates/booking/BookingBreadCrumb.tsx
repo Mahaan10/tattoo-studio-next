@@ -20,11 +20,11 @@ interface BookingBreadCrumbProps {
 const steps: StepConfig[] = [
   { id: 1, label: "Client Info", fields: ["client"] },
   { id: 2, label: "Tattoo Details", fields: ["bookingRequest"] },
-  {
-    id: 3,
-    label: "Medical & Consent",
-    fields: ["medicalDeclaration", "consent"],
-  },
+  // {
+  //   id: 3,
+  //   label: "Medical & Consent",
+  //   fields: ["medicalDeclaration", "consent"],
+  // },
 ];
 
 function BookingBreadCrumb({ step, setStep, trigger }: BookingBreadCrumbProps) {
@@ -50,7 +50,7 @@ function BookingBreadCrumb({ step, setStep, trigger }: BookingBreadCrumbProps) {
 
   return (
     <nav aria-label="Booking steps" className="mb-8">
-      <ul className="flex items-center justify-center gap-6 text-sm">
+      <ul className="flex items-center justify-evenly gap-6 text-sm">
         {steps.map((item, index) => {
           const isActive = step === item.id;
           const isCompleted = step > item.id;
@@ -63,7 +63,7 @@ function BookingBreadCrumb({ step, setStep, trigger }: BookingBreadCrumbProps) {
                 className="flex items-center focus:outline-none text-xs"
               >
                 <div
-                  className={`flex items-center justify-center w-8 h-8 rounded-full border transition
+                  className={`flex items-center justify-center px-3 py-2 rounded-lg border transition
                     ${
                       isActive
                         ? "bg-carbon-black text-snow border-carbon-black"
@@ -72,10 +72,10 @@ function BookingBreadCrumb({ step, setStep, trigger }: BookingBreadCrumbProps) {
                           : "bg-transparent border-neutral-500 text-neutral-400"
                     }`}
                 >
-                  {item.id}
+                  {item.label}
                 </div>
 
-                <span
+                {/* <span
                   className={`ml-2 hidden sm:inline transition
                     ${
                       isActive || isCompleted
@@ -84,10 +84,10 @@ function BookingBreadCrumb({ step, setStep, trigger }: BookingBreadCrumbProps) {
                     }`}
                 >
                   {item.label}
-                </span>
+                </span> */}
               </button>
 
-              {index < steps.length - 1 && (
+              {/* {index < steps.length - 1 && (
                 <div className="mx-4 flex items-center">
                   {isCompleted ? (
                     <HiOutlineCheck
@@ -101,7 +101,7 @@ function BookingBreadCrumb({ step, setStep, trigger }: BookingBreadCrumbProps) {
                     />
                   )}
                 </div>
-              )}
+              )} */}
             </li>
           );
         })}

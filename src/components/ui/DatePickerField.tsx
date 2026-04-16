@@ -14,6 +14,7 @@ interface DatePickerProps<T extends Record<string, any>> {
   mode?: "single" | "multiple";
   disablePast?: boolean;
   disableFuture?: boolean;
+  excludeDays?: number[];
 }
 
 function DatePickerField<T extends Record<string, any>>({
@@ -25,6 +26,7 @@ function DatePickerField<T extends Record<string, any>>({
   mode = "single",
   disablePast,
   disableFuture,
+  excludeDays,
 }: DatePickerProps<T>) {
   const [isOpen, setIsOpen] = useState(false);
   const [currentMonth, setCurrentMonth] = useState<Date>(new Date());
@@ -36,6 +38,12 @@ function DatePickerField<T extends Record<string, any>>({
   if (disablePast) disabledMatchers.push({ before: today });
 
   if (disableFuture) disabledMatchers.push({ after: today });
+
+  if (excludeDays && excludeDays.length > 0) {
+    disabledMatchers.push({
+      dayOfWeek: excludeDays,
+    });
+  }
 
   return (
     <div className="relative" ref={containerRef}>

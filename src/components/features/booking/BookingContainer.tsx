@@ -22,7 +22,7 @@ function BookingContainer() {
     mode: "onTouched",
   });
 
-  const { trigger, handleSubmit } = methods;
+  const { trigger, handleSubmit, reset } = methods;
 
   const nextStep = async (fields: any[]) => {
     const isValid = await trigger(fields);
@@ -35,16 +35,25 @@ function BookingContainer() {
     console.log("data =>", data);
     const formData = new FormData();
 
-    const { file, ...bookingRequestData } = data?.bookingRequest;
-
-    const payload = {
-      client: data?.client,
-      bookingRequest: bookingRequestData,
-      medicalDeclaration: data?.medicalDeclaration,
-      consent: data?.consent,
+    const formatDate = (date: string | Date) => {
+      const d = new Date(date);
+      return d.toISOString().split("T")[0];
     };
 
-    formData.append("payload", JSON.stringify(payload));
+    const { file } = data?.bookingRequest;
+
+    // Client
+    formData.append("firstName", data.client.firstName);
+    formData.append("lastName", data.client.lastName);
+    formData.append("email", data.client.email);
+    formData.append("phone", data.client.phone);
+
+    // Booking
+    formData.append("consultDate", formatDate(data.bookingRequest.consultDate));
+    formData.append("description", data.bookingRequest.description);
+    formData.append("budgetRange", data.bookingRequest.budgetRange);
+    formData.append("bookingType", data.bookingRequest.bookingType);
+    formData.append("placement", data.bookingRequest.placement || "");
 
     if (file && file.length > 0) {
       file.forEach((f) => {
@@ -52,8 +61,12 @@ function BookingContainer() {
       });
     }
     console.log("files =>", file);
-    console.log("Submitting payload:", payload);
-    await bookingAppointment(formData);
+
+    try {
+      await bookingAppointment(formData);
+      reset();
+      setStep(1);
+    } catch (error) {}
   };
 
   return (
@@ -66,11 +79,11 @@ function BookingContainer() {
 
               {/* BreadCrumb */}
 
-              <BookingBreadCrumb
+              {/* <BookingBreadCrumb
                 step={step}
                 setStep={setStep}
                 trigger={trigger}
-              />
+              /> */}
 
               <FormProvider {...methods}>
                 <form
@@ -78,6 +91,22 @@ function BookingContainer() {
                   onSubmit={handleSubmit(onSubmit)}
                 >
                   {step === 1 ? (
+                    <ClientInfo onNext={() => nextStep(["client"])} />
+                  ) : (
+                    <>
+                      <BookingRequest onBack={prevStep} />
+                      <button
+                        type="submit"
+                        disabled={bookingAppointmentIsPending}
+                        className="submit-btn"
+                      >
+                        {bookingAppointmentIsPending
+                          ? "Submitting ..."
+                          : "Submit Booking"}
+                      </button>
+                    </>
+                  )}
+                  {/* {step === 1 ? (
                     <ClientInfo onNext={() => nextStep(["client"])} />
                   ) : step === 2 ? (
                     <BookingRequest
@@ -97,7 +126,7 @@ function BookingContainer() {
                           : "Submit Booking"}
                       </button>
                     </>
-                  )}
+                  )} */}
                 </form>
               </FormProvider>
             </div>

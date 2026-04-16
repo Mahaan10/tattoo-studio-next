@@ -54,14 +54,14 @@ function ClientInfo({ onNext }: ClientInfoProps) {
         required
       /> */}
 
-      <DatePickerField<BookingAppointmentFormData>
+      {/* <DatePickerField<BookingAppointmentFormData>
         label="Birthday"
         name="client.birthday"
         control={control}
         errors={errors.client?.birthday}
         required
         disableFuture
-      />
+      /> */}
 
       {/* Phone Number */}
       <InputField<BookingAppointmentFormData>

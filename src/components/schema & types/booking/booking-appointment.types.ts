@@ -3,41 +3,47 @@ export interface ClientInfoProps {
   lastName: string;
   email: string;
   phone: string;
-  birthday?: string;
 }
 
 export interface BookingRequestProps {
-  description?: string;
-  budgetRange: string;
+  // description?: string;
+  // budgetRange: string;
+  // bookingType: string;
+  // studioChooses?: boolean;
+  // source?: string;
+  // placement: string;
+  // preferredDateFrom: string;
+  // preferredDateTo?: string;
+  // file?: string[];
   bookingType: string;
-  studioChooses?: boolean;
-  source?: string;
-  placement: string;
-  preferredDateFrom: string;
-  preferredDateTo?: string;
-  file?: string[];
+  consultDate: string;
+  description: string;
+  budgetRange: string;
+  placement?: string;
+  //sizeDescription?: string;
+  file: string[];
 }
 
-export interface MedicalDeclarationProps {
-  hasAllergies: boolean;
-  hasSkinCondition: boolean;
-  isPregnantOrNursing: boolean;
-  hasHeartCondition: boolean;
-  hasDiabetes: boolean;
-  takesBloodThinners: boolean;
-  takesMedication: boolean;
-  otherNotes?: string;
-}
+// export interface MedicalDeclarationProps {
+//   hasAllergies: boolean;
+//   hasSkinCondition: boolean;
+//   isPregnantOrNursing: boolean;
+//   hasHeartCondition: boolean;
+//   hasDiabetes: boolean;
+//   takesBloodThinners: boolean;
+//   takesMedication: boolean;
+//   otherNotes?: string;
+// }
 
-export interface ConsentProps {
-  isAdultConfirmed: boolean;
-  termsAccepted: boolean;
-  privacyAccepted: boolean;
-}
+// export interface ConsentProps {
+//   isAdultConfirmed: boolean;
+//   termsAccepted: boolean;
+//   privacyAccepted: boolean;
+// }
 
 export interface BookingAppointmentProps {
   client: ClientInfoProps;
   bookingRequest: BookingRequestProps;
-  medicalDeclaration: MedicalDeclarationProps;
-  consent: ConsentProps;
+  // medicalDeclaration: MedicalDeclarationProps;
+  // consent: ConsentProps;
 }

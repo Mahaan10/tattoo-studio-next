@@ -27,9 +27,9 @@ export const ClientInfoValidationSchema = z.object({
   //   message: "Please enter a valid german mobile number",
   // }),
 
-  birthday: z
-    .date({ message: "Birthday is reqired" })
-    .transform((date) => date.toISOString()),
+  // birthday: z
+  //   .date({ message: "Birthday is reqired" })
+  //   .transform((date) => date.toISOString()),
 });
 
 // Booking Request Validation
@@ -51,7 +51,7 @@ export const BookingRequestValidationSchema = z.object({
   //   .string()
   //   .min(1, "Please select how you found us"),
 
-  referrer: z.string().optional(),
+  //referrer: z.string().optional(),
 
   bookingType: z
     .string({ message: "Please select a booking type" })
@@ -62,9 +62,21 @@ export const BookingRequestValidationSchema = z.object({
     .min(1, "Placement is required")
     .max(120, "you can describe at most 120 characters"),
 
-  preferredDateFrom: z
-    .date({ message: "Preferred date from is reqired" })
-    .transform((date) => date.toISOString()),
+  consultDate: z
+    .date({ message: "Cunsult date is required" })
+    .refine((date) => date.getDate() !== 0, {
+      message: "Studio is closed on Sundays. Please choose another day",
+    }),
+  //.transform((date) => date.toISOString()),
+
+  // sizeDescription: z
+  //   .string()
+  //   .min(1, "Size description is required")
+  //   .max(200, "you can describe at most 200 characters"),
+
+  // preferredDateFrom: z
+  //   .date({ message: "Preferred date from is reqired" })
+  //   .transform((date) => date.toISOString()),
 
   // preferredDateTo: z
   //   .date({ message: "Preferred date to is reqired" })
@@ -86,55 +98,55 @@ export const BookingRequestValidationSchema = z.object({
 
 // Medical Declaration validation
 
-export const MedicalDeclarationValidationSchema = z.object({
-  hasAllergies: z.boolean({
-    message: "Please answer this question",
-  }),
-  hasSkinCondition: z.boolean({
-    message: "Please answer this question",
-  }),
-  isPregnantOrNursing: z.boolean({
-    message: "Please answer this question",
-  }),
-  hasHeartCondition: z.boolean({
-    message: "Please answer this question",
-  }),
-  hasDiabetes: z.boolean({
-    message: "Please answer this question",
-  }),
-  takesBloodThinners: z.boolean({
-    message: "Please answer this question",
-  }),
-  takesMedication: z.boolean({
-    message: "Please answer this question",
-  }),
-  otherNotes: z
-    .string()
-    .max(1000, "you can describe your medical at most 1000 characters")
-    .optional(),
-});
+// export const MedicalDeclarationValidationSchema = z.object({
+//   hasAllergies: z.boolean({
+//     message: "Please answer this question",
+//   }),
+//   hasSkinCondition: z.boolean({
+//     message: "Please answer this question",
+//   }),
+//   isPregnantOrNursing: z.boolean({
+//     message: "Please answer this question",
+//   }),
+//   hasHeartCondition: z.boolean({
+//     message: "Please answer this question",
+//   }),
+//   hasDiabetes: z.boolean({
+//     message: "Please answer this question",
+//   }),
+//   takesBloodThinners: z.boolean({
+//     message: "Please answer this question",
+//   }),
+//   takesMedication: z.boolean({
+//     message: "Please answer this question",
+//   }),
+//   otherNotes: z
+//     .string()
+//     .max(1000, "you can describe your medical at most 1000 characters")
+//     .optional(),
+// });
 
 // consent validation
 
-export const ConsentValidationSchema = z.object({
-  isAdultConfirmed: z.literal(true, {
-    message: "You must confirm you are 18+",
-  }),
+// export const ConsentValidationSchema = z.object({
+//   isAdultConfirmed: z.literal(true, {
+//     message: "You must confirm you are 18+",
+//   }),
 
-  termsAccepted: z.literal(true, {
-    message: "You must accept the terms",
-  }),
+//   termsAccepted: z.literal(true, {
+//     message: "You must accept the terms",
+//   }),
 
-  privacyAccepted: z.literal(true, {
-    message: "You must accept the privacy policy",
-  }),
-});
+//   privacyAccepted: z.literal(true, {
+//     message: "You must accept the privacy policy",
+//   }),
+// });
 
 export const BookingAppointmentSchema = z.object({
   client: ClientInfoValidationSchema,
   bookingRequest: BookingRequestValidationSchema,
-  medicalDeclaration: MedicalDeclarationValidationSchema,
-  consent: ConsentValidationSchema,
+  // medicalDeclaration: MedicalDeclarationValidationSchema,
+  // consent: ConsentValidationSchema,
 });
 
 export type BookingAppointmentFormData = z.infer<

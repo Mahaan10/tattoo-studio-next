@@ -15,7 +15,7 @@ export default function useBooking() {
         queryKey: ["booking"],
       });
       toast.success(
-        "Booking request submitted! We'll contact you within 48 hours.",
+        "Booking request submitted! We'll contact you within 72 hours.",
       );
     },
     onError: () => {

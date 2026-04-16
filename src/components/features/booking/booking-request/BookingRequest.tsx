@@ -8,7 +8,6 @@ import { FieldError, useFormContext } from "react-hook-form";
 import { HiArrowLongLeft } from "react-icons/hi2";
 
 interface BookingRequestProps {
-  onNext: () => void;
   onBack: () => void;
 }
 
@@ -33,7 +32,7 @@ const studioChooses = [
   { id: 2, label: "SES Studio", value: "SES_STUDIO" },
 ];
 
-function BookingRequest({ onNext, onBack }: BookingRequestProps) {
+function BookingRequest({ onBack }: BookingRequestProps) {
   const {
     register,
     control,
@@ -77,26 +76,36 @@ function BookingRequest({ onNext, onBack }: BookingRequestProps) {
         required
       />
 
-      {/* PreferredDateFrom */}
+      {/* Consult Date */}
       <DatePickerField<BookingAppointmentFormData>
+        label="Consult Date"
+        name="bookingRequest.consultDate"
+        control={control}
+        errors={errors.bookingRequest?.consultDate}
+        required
+        disablePast
+        excludeDays={[0]} // Sunday!
+      />
+      {/* PreferredDateFrom */}
+      {/* <DatePickerField<BookingAppointmentFormData>
         label="Preferred Date"
         name="bookingRequest.preferredDateFrom"
         control={control}
         errors={errors.bookingRequest?.preferredDateFrom}
         required
         disablePast
-      />
+      /> */}
 
       {/* PreferredDateTo */}
       {/* <DatePickerField<BookingAppointmentFormData> label="Preferred Date To" name="bookingRequest.preferredDateTo" control={control} errors={errors.bookingRequest?.preferredDateTo} /> */}
 
       {/* Referrer */}
-      <InputField<BookingAppointmentFormData>
+      {/* <InputField<BookingAppointmentFormData>
         label="Referrer"
         name="bookingRequest.referrer"
         register={register}
         errors={errors.bookingRequest?.referrer}
-      />
+      /> */}
 
       {/* Tattoo Image File */}
       <InputFile<BookingAppointmentFormData>
@@ -125,9 +134,9 @@ function BookingRequest({ onNext, onBack }: BookingRequestProps) {
       />
 
       {/* Next step btn */}
-      <button type="button" onClick={onNext} className="submit-btn w-full">
+      {/* <button type="button" onClick={onNext} className="submit-btn w-full">
         Next
-      </button>
+      </button> */}
     </>
   );
 }
