@@ -3,7 +3,7 @@ import { FieldError, Path, UseFormRegister } from "react-hook-form";
 interface SelectBoxOptions {
   id: number;
   label: string;
-  value: string;
+  value: string | number;
 }
 
 interface SelectBoxProps<T extends Record<string, any>> {
@@ -13,6 +13,7 @@ interface SelectBoxProps<T extends Record<string, any>> {
   errors?: FieldError;
   options: SelectBoxOptions[];
   required?: boolean;
+  disabled?: boolean;
 }
 
 function SelectBox<T extends Record<string, any>>({
@@ -22,6 +23,7 @@ function SelectBox<T extends Record<string, any>>({
   register,
   errors,
   required,
+  disabled = false,
 }: SelectBoxProps<T>) {
   return (
     <div className="relative">
@@ -30,6 +32,7 @@ function SelectBox<T extends Record<string, any>>({
         id={label}
         defaultValue=""
         className="block w-full px-3 pb-2.5 pt-4 text-sm bg-transparent border border-onyx/50 hover:border-onyx/75 focus:border-onyx transition-all duration-300 appearance-none focus:outline-none peer rounded-lg text-onyx select-arrow"
+        disabled={disabled}
       >
         <option value="" disabled hidden></option>
         {options.map((option) => (

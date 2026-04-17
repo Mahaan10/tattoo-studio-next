@@ -16,3 +16,7 @@ export function formattedTime(isoString: Date) {
     hour12: false,
   });
 }
+
+export function formatDate(date: Date) {
+  return date.toISOString().split("T")[0];
+}
