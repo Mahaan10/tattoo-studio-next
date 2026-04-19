@@ -1,5 +1,5 @@
 import { Control, Controller, FieldError, Path } from "react-hook-form";
-import { DayPicker, Matcher } from "react-day-picker";
+import { DayPicker, Matcher, DateRange } from "react-day-picker";
 import { format } from "date-fns";
 import { useState } from "react";
 import useOutsideClick from "@/components/hook/useOutsideClick";
@@ -11,7 +11,7 @@ interface DatePickerProps<T extends Record<string, any>> {
   control: Control<T>;
   errors: FieldError | undefined;
   required?: boolean;
-  mode?: "single" | "multiple";
+  mode?: "single" | "range";
   disablePast?: boolean;
   disableFuture?: boolean;
   excludeDays?: number[];
@@ -33,6 +33,7 @@ function DatePickerField<T extends Record<string, any>>({
   minDate,
 }: DatePickerProps<T>) {
   const [isOpen, setIsOpen] = useState(false);
+  const [hoveredDate, setHoveredDate] = useState<Date | undefined>();
   const [currentMonth, setCurrentMonth] = useState<Date>(new Date());
   const containerRef = useOutsideClick<HTMLDivElement>(() => setIsOpen(false));
 
@@ -71,7 +72,21 @@ function DatePickerField<T extends Record<string, any>>({
 
           const handleSelect = (val: any) => {
             onChange(val);
-            if (mode === "single") setIsOpen(false);
+
+            if (mode === "single") {
+              setIsOpen(false);
+              return;
+            }
+
+            if (mode === "range") {
+              if (
+                val?.from &&
+                val?.to &&
+                val.from.getTime() !== val.to.getTime()
+              ) {
+                setIsOpen(false);
+              }
+            }
           };
 
           const getDisplayValue = () => {
@@ -82,8 +97,16 @@ function DatePickerField<T extends Record<string, any>>({
                 return format(dateValue, "PPP");
               }
             }
-            if (mode === "multiple" && Array.isArray(value)) {
-              return value.length > 0 ? `${value.length} dates selected` : "";
+            if (mode === "range") {
+              const range = value as DateRange;
+
+              if (range?.from && range?.to) {
+                return `${format(range.from, "dd MMM")} - ${format(range.to, "dd MMM")}`;
+              }
+
+              if (range?.from) {
+                return `${format(range.from, "dd MMM")} - ...`;
+              }
             }
             return "";
           };
@@ -105,19 +128,32 @@ function DatePickerField<T extends Record<string, any>>({
               </div>
 
               {isOpen && (
-                <div className="absolute bottom-full mb-2 z-50 p-4 bg-onyx border border-alabaster/10 rounded-2xl slide-in-from-bottom-2 duration-2000">
+                <div className="mb-2 z-50 p-4 bg-onyx border border-alabaster/10 rounded-2xl duration-2000 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 ">
                   <DayPicker
                     captionLayout="dropdown"
                     mode={mode as any}
                     selected={value}
                     onSelect={handleSelect}
                     month={currentMonth}
+                    onDayMouseEnter={setHoveredDate}
                     onMonthChange={setCurrentMonth}
                     fromYear={disableFuture ? 1940 : undefined}
                     toYear={disablePast ? today.getFullYear() + 1 : undefined}
                     disabled={
                       disabledMatchers.length ? disabledMatchers : undefined
                     }
+                    modifiers={{
+                      range_preview:
+                        mode === "range" &&
+                        value?.from &&
+                        !value?.to &&
+                        hoveredDate
+                          ? { from: value.from, to: hoveredDate }
+                          : undefined,
+                    }}
+                    modifiersClassNames={{
+                      range_preview: "bg-dried-mustard/20",
+                    }}
                     classNames={{
                       months: "flex flex-col space-y-4",
                       month: "space-y-4",

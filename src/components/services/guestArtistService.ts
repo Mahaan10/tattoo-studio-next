@@ -1,5 +1,6 @@
 import {
   GuestArtistBooking,
+  GuestArtistBookingResponse,
   GuestArtistTableAvailability,
   GuestsArtistDateProps,
 } from "../schema & types/guest-artist/guest-artist.types";
@@ -22,8 +23,8 @@ export default function getGuestArtistTableAvailabilityApi({
 
 export function guestArtistBookingTableApi(
   newBookingTable: GuestArtistBooking,
-): Promise<GuestArtistBooking> {
+): Promise<GuestArtistBookingResponse> {
   return http
     .post("/guest-bookings", newBookingTable)
-    .then(({ data }: AxiosResponse<GuestArtistBooking>) => data);
+    .then(({ data }: AxiosResponse<GuestArtistBookingResponse>) => data);
 }

@@ -30,6 +30,8 @@ export default function useGuestArtistBooking({
   });
 
   const tableAvailability = data?.days || [];
+  const tablePricePerDay = data?.pricePerDay || Number(80);
+  const monthlyDiscountPercent = data?.monthlyDiscountPercent || Number(10);
 
   // Guest Artist Booking
   const { isPending: guestArtistBookingIsPending, mutate: guestArtistBooking } =
@@ -41,9 +43,11 @@ export default function useGuestArtistBooking({
         queryClient.invalidateQueries({
           queryKey: ["table-availability", "guest-artist-booking"],
         });
-        toast.success(
-          "Booking created, check shopify checkout url for payment",
-        );
+        if (data.stripePaymentUrl) {
+          window.location.href = data.stripePaymentUrl;
+        } else {
+          toast.success("Booking submitted — awaiting payment.");
+        }
       },
 
       onError: (error) => {
@@ -53,6 +57,8 @@ export default function useGuestArtistBooking({
 
   return {
     tableAvailability,
+    tablePricePerDay,
+    monthlyDiscountPercent,
     tableAvailabilityIsLoading,
     tableAvailabilityIsError,
     guestArtistBooking,

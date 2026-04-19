@@ -12,6 +12,12 @@ import useBooking from "./useBooking";
 import MedicalDeclaration from "./medical-declaration/MedicalDeclaration";
 import { zodResolver } from "@hookform/resolvers/zod";
 import BookingBreadCrumb from "@/components/templates/booking/BookingBreadCrumb";
+import FormStepper from "@/components/ui/FormStepper";
+
+const BOOKING_STEPS = [
+  { id: 1, label: "Client Info" /* fields: ["client"] */ },
+  { id: 2, label: "Tattoo Details" /* fields: ["bookingRequest"] */ },
+];
 
 function BookingContainer() {
   const [step, setStep] = useState<number>(1);
@@ -70,43 +76,40 @@ function BookingContainer() {
   };
 
   return (
-    <div className="py-10 md:py-15 relative container mx-auto">
-      <div className="h-full">
-        <div className="container">
-          <div className="flex justify-center">
-            <div className="w-full max-w-xl bg-alabaster text-onyx rounded-2xl p-5 sm:p-6 md:p-6 shadow shadow-snow">
-              <h1 className="text-3xl mb-5 font-bold">Tattoo Request</h1>
+    <div className="py-10 px-4 flex justify-center">
+      <div className="w-full max-w-sm bg-alabaster text-onyx rounded-2xl p-5 shadow-md">
+        <h1 className="text-2xl font-bold mb-6">Tattoo Request</h1>
 
-              {/* BreadCrumb */}
+        {/* Stepper */}
+        <FormStepper<BookingAppointmentFormData>
+          step={step}
+          setStep={setStep}
+          trigger={trigger}
+          steps={BOOKING_STEPS}
+        />
 
-              {/* <BookingBreadCrumb
-                step={step}
-                setStep={setStep}
-                trigger={trigger}
-              /> */}
-
-              <FormProvider {...methods}>
-                <form
-                  className="grid grid-cols-1 items-center justify-center gap-5 md:gap-6"
-                  onSubmit={handleSubmit(onSubmit)}
+        <FormProvider {...methods}>
+          <form
+            className="grid grid-cols-1 items-center justify-center gap-5 md:gap-6"
+            onSubmit={handleSubmit(onSubmit)}
+          >
+            {step === 1 ? (
+              <ClientInfo onNext={() => nextStep(["client"])} />
+            ) : (
+              <>
+                <BookingRequest onBack={prevStep} />
+                <button
+                  type="submit"
+                  disabled={bookingAppointmentIsPending}
+                  className="submit-btn"
                 >
-                  {step === 1 ? (
-                    <ClientInfo onNext={() => nextStep(["client"])} />
-                  ) : (
-                    <>
-                      <BookingRequest onBack={prevStep} />
-                      <button
-                        type="submit"
-                        disabled={bookingAppointmentIsPending}
-                        className="submit-btn"
-                      >
-                        {bookingAppointmentIsPending
-                          ? "Submitting ..."
-                          : "Submit Booking"}
-                      </button>
-                    </>
-                  )}
-                  {/* {step === 1 ? (
+                  {bookingAppointmentIsPending
+                    ? "Submitting ..."
+                    : "Submit Booking"}
+                </button>
+              </>
+            )}
+            {/* {step === 1 ? (
                     <ClientInfo onNext={() => nextStep(["client"])} />
                   ) : step === 2 ? (
                     <BookingRequest
@@ -127,11 +130,8 @@ function BookingContainer() {
                       </button>
                     </>
                   )} */}
-                </form>
-              </FormProvider>
-            </div>
-          </div>
-        </div>
+          </form>
+        </FormProvider>
       </div>
     </div>
   );

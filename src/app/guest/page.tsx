@@ -1,6 +1,6 @@
 import GuestArtistContainer from "@/components/features/guest-artist/GuestArtistContainer";
 
-function GuestArtist() {
+function Guest() {
   return (
     <section className="px-[5%] py-16">
       <GuestArtistContainer />
@@ -8,4 +8,4 @@ function GuestArtist() {
   );
 }
 
-export default GuestArtist;
+export default Guest;

@@ -15,6 +15,8 @@ export interface GuestArtistDaysAvailability {
 export interface GuestArtistTableAvailability {
   startDate: string;
   endDate: string;
+  pricePerDay: number;
+  monthlyDiscountPercent: number;
   days: GuestArtistDaysAvailability[];
 }
 
@@ -28,4 +30,9 @@ export interface GuestArtistBooking {
   endDate: string;
   numberOfTables: number;
   acknowledgment: boolean;
+}
+
+export interface GuestArtistBookingResponse {
+  booking: GuestArtistBooking;
+  stripePaymentUrl: string;
 }

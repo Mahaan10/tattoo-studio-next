@@ -15,6 +15,13 @@ export const GuestArtistBookingSchema = z
       .string({ message: "Email is required" })
       .email("Please enter a valid email address"),
 
+    dateRange: z
+      .object({
+        from: z.date().optional(),
+        to: z.date().optional(),
+      })
+      .optional(),
+
     startDate: z.date({ message: "Start date is required" }),
 
     endDate: z.date({ message: "End date is required" }),
