@@ -15,3 +15,7 @@ export interface CurrentUserResponse {
   lastLoginAt: Date;
   createdAt: Date;
 }
+
+export interface LogoutResponse {
+  message: string;
+}

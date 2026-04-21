@@ -112,6 +112,8 @@ function BookingRequest({ onBack }: BookingRequestProps) {
         label="Reference Images (Max 10)"
         name="bookingRequest.file"
         setValue={setValue}
+        multiple
+        required
         errors={errors.bookingRequest?.file as unknown as FieldError}
       />
 

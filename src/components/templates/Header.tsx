@@ -67,7 +67,7 @@ function Header() {
           </button>
         ) : (
           <button
-            className="w-25 px-2 py-3 text-xs flex items-centr justify-between border border-snow/25 shadow shadow-snow/45 rounded-lg"
+            className="w-25 px-2 py-3 text-xs flex items-centr justify-between border border-snow/25 rounded-lg"
             onClick={() => console.log("admin")}
           >
             <span>Admin</span>

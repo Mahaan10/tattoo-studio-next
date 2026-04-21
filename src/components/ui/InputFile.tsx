@@ -11,6 +11,7 @@ interface InputFileProps<T extends Record<string, any>> {
   accept?: string;
   showPreview?: boolean;
   required?: boolean;
+  multiple?: boolean;
 }
 
 function InputFile<T extends Record<string, any>>({
@@ -21,31 +22,50 @@ function InputFile<T extends Record<string, any>>({
   accept = "image/*",
   errors,
   required,
+  multiple,
 }: InputFileProps<T>) {
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const [previews, setPreviews] = useState<string[]>([]);
 
   useEffect(() => {
-    setValue(name, selectedFiles as PathValue<T, Path<T>>, {
-      shouldValidate: true,
-      shouldDirty: true,
-    });
-  }, [selectedFiles, name, setValue]);
+    if (multiple) {
+      setValue(name, selectedFiles as any, {
+        shouldValidate: true,
+        shouldDirty: true,
+      });
+    } else {
+      setValue(name, selectedFiles[0] as any, {
+        shouldValidate: true,
+        shouldDirty: true,
+      });
+    }
+  }, [selectedFiles]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const fileList = e.target.files;
+    if (!fileList) return;
 
-    if (fileList) {
-      const newFiles = Array.from(fileList);
+    const newFiles = Array.from(fileList);
 
-      setSelectedFiles((prev) => [...prev, ...newFiles]);
+    if (!multiple) {
+      const file = newFiles[0];
+
+      setSelectedFiles([file]);
 
       if (showPreview) {
-        const newUrls = newFiles.map((file) => URL.createObjectURL(file));
-        setPreviews((prev) => [...prev, ...newUrls]);
+        setPreviews([URL.createObjectURL(file)]);
       }
+
+      return;
     }
-    //e.target.value = ""
+
+    // multiple mode
+    setSelectedFiles((prev) => [...prev, ...newFiles]);
+
+    if (showPreview) {
+      const newUrls = newFiles.map((file) => URL.createObjectURL(file));
+      setPreviews((prev) => [...prev, ...newUrls]);
+    }
   };
 
   const removeImage = (index: number) => {
@@ -68,7 +88,7 @@ function InputFile<T extends Record<string, any>>({
       <div className="relative">
         <input
           type="file"
-          multiple
+          multiple={multiple}
           accept={accept}
           onChange={handleChange}
           className="block w-full px-3 pb-2.5 pt-4 text-sm bg-transparent border border-onyx/50 hover:border-onyx/75 focus:border-onyx transition-all duration-300 focus:shadow-xs focus:shadow-black-red appearance-none focus:outline-none peer rounded-lg"

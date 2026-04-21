@@ -1,15 +1,18 @@
 import getArtistsApi, {
+  createNewArtistApi,
+  getAllArtistsApi,
   getArtistBySlugApi,
   getArtistsLookbookApi,
 } from "@/components/services/artistService";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { useParams } from "next/navigation";
+import { toast } from "react-toastify";
 
 export default function useArtist() {
   const params = useParams();
-  const slug = params?.slug as string;
+  const slug = typeof params?.slug === "string" ? params.slug : "";
 
-  // get all artists
+  // get all public artists
   const {
     isLoading: artistsIsLoading,
     isError: artistsIsError,
@@ -21,7 +24,7 @@ export default function useArtist() {
 
   const artists = artistsData?.items || [];
 
-  // get single artist by slug
+  // get single public artist by slug
   const {
     isLoading: getArtistBySlugIsLoading,
     isError: getArtistBySlugIsError,
@@ -48,13 +51,39 @@ export default function useArtist() {
 
   const lookbookItems = lookbookData?.items || [];
 
+  // get all artists
+  const {
+    data,
+    isLoading: allArtistsIsLoading,
+    isError: allArtistsIsError,
+  } = useQuery({
+    queryKey: ["all-artists", "artists"],
+    queryFn: getAllArtistsApi,
+  });
+
+  const allArtists = data?.items || [];
+
+  //create new artist
+  const { isPending: createNewArtistIsPending, mutateAsync: createNewArtist } =
+    useMutation({
+      mutationFn: createNewArtistApi,
+
+      onSuccess: (data) => {
+        console.log("createNewArtistOnSuccessData =>", data);
+        toast.success(`Create ${data.displayName} successfully`);
+      },
+      onError: () => {
+        toast.error("Artist not created, try again later");
+      },
+    });
+
   return {
-    // All artists
+    // public artists
     artistsIsLoading,
     artistsIsError,
     artists,
 
-    // Single artist
+    // Single public artist
     artistBySlug,
     artistWorks,
     getArtistBySlugIsError,
@@ -64,5 +93,14 @@ export default function useArtist() {
     lookbookIsLoading,
     lookbookIsError,
     lookbookItems,
+
+    // get all artists
+    allArtists,
+    allArtistsIsLoading,
+    allArtistsIsError,
+
+    // create new artist
+    createNewArtist,
+    createNewArtistIsPending,
   };
 }

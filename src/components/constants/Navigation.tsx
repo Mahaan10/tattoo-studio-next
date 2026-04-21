@@ -1,6 +1,15 @@
-import { FaInstagram, FaWhatsapp } from "react-icons/fa";
+import {
+  FaInstagram,
+  FaWhatsapp,
+  FaPencilAlt,
+  FaAsterisk,
+  FaUsers,
+  FaBookmark,
+} from "react-icons/fa";
 import { PiTelegramLogo } from "react-icons/pi";
 import { BsTwitterX } from "react-icons/bs";
+import { GrMoney } from "react-icons/gr";
+import { TfiBarChartAlt } from "react-icons/tfi";
 
 export const headerMenu = [
   { id: 1, title: "Home", href: "/" },
@@ -69,5 +78,44 @@ export const HomePageContent = [
     title: "Contact",
     linkHref: "/contact",
     imgSrc: "/images/gallery/IMG_0257.PNG",
+  },
+];
+
+export const AdminSidebarItems = [
+  {
+    id: 1,
+    title: "Dashboard",
+    icon: <TfiBarChartAlt className="size-5" />,
+    href: "/admin/dashboard",
+  },
+  {
+    id: 2,
+    title: "Tatoo Artists",
+    icon: <FaPencilAlt className="size-5" />,
+    href: "/admin/tattoo-artists",
+  },
+  {
+    id: 3,
+    title: "Lookbook",
+    icon: <FaAsterisk className="size-5" />,
+    href: "/admin/lookbook",
+  },
+  {
+    id: 4,
+    title: "Booking",
+    icon: <FaBookmark className="size-5" />,
+    href: "/admin/booking",
+  },
+  {
+    id: 5,
+    title: "Guest Artist",
+    icon: <FaUsers className="size-5" />,
+    href: "/admin/guest-artist",
+  },
+  {
+    id: 6,
+    title: "Payments",
+    icon: <GrMoney className="size-5" />,
+    href: "/admin/payments",
   },
 ];

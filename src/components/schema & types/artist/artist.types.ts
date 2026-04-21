@@ -44,3 +44,38 @@ export interface SingleArtistResponse {
   };
   works: ArtistWorksResponse;
 }
+
+// Admin
+
+export interface ArtistInfo {
+  id: string;
+  studioId?: null | string;
+  displayName: string;
+  handle: string;
+  slug: string;
+  email: string;
+  phone: string;
+  status: string;
+  bio: string;
+  avatarUrl: string;
+  coverUrl: string;
+}
+
+export interface ArtistResponse {
+  page: number;
+  limit: number;
+  total: number;
+  items: ArtistInfo[];
+}
+
+export interface ArtistFormDataProps {
+  displayName: string;
+  handle: string;
+  email: string;
+  phone: string;
+  status: string;
+  bio: string;
+  worksMeta: { title: string; tags: string[] }[];
+  cover: File;
+  works: File[];
+}
