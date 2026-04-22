@@ -1,22 +1,12 @@
 "use client";
 
+import { NavItem } from "@/components/constants/Navigation";
 import useAuth from "@/components/features/auth/useAuth";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { HiOutlinePower } from "react-icons/hi2";
 
-interface AdminNavItems {
-  id: number;
-  title: string;
-  icon: React.ReactNode;
-  href: string;
-}
-
-interface AdminSidebar {
-  items: AdminNavItems[];
-}
-
-function Sidebar({ items }: AdminSidebar) {
+function Sidebar({ items }: { items: NavItem[] }) {
   const { logout, logoutIsPending } = useAuth();
   const pathname = usePathname();
 

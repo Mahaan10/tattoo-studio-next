@@ -5,6 +5,7 @@ import { ToastContainer } from "react-toastify";
 import { Roboto_Condensed } from "next/font/google";
 import { Encode_Sans } from "next/font/google";
 import Footer from "@/components/templates/Footer";
+import Navigation from "@/components/templates/Navigation";
 
 const roboto_condensed = Roboto_Condensed({
   subsets: ["latin"],
@@ -39,6 +40,9 @@ export default function RootLayout({
             {children}
             <Footer />
           </main>
+
+          <Navigation />
+
           <ToastContainer
             position="top-left"
             autoClose={5000}

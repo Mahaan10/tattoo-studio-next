@@ -9,37 +9,19 @@ import { CiEdit } from "react-icons/ci";
 
 interface TattooArtistsRowProps {
   index: number;
-  onDelete: () => void;
   onEdit: () => void;
   artist: ArtistInfo;
 }
 
-function TattooArtistsRow({
-  artist,
-  index,
-  onEdit,
-  onDelete,
-}: TattooArtistsRowProps) {
-  //   const { toggleCategoryActive, toggleCategoryIsPending } = useArtist();
+function TattooArtistsRow({ artist, index, onEdit }: TattooArtistsRowProps) {
+  const { editArtistStatus, editArtistStatusIsPending } = useArtist();
 
-  /*   const handleActiveToggle = () => {
-    toggleCategoryActive(
-      {
-        artistId: artist?.id,
-        active: !artist?.status,
-      },
-      {
-        onSuccess: (artist) => {
-          console.log(artist);
-          toast.success(
-            `دسته بندی ${artist?.name} با موفقیت ${
-              artist?.active === true ? "فعال شد." : "غیر فعال شد."
-            }`
-          );
-        },
-      }
-    );
-  }; */
+  const handleActiveToggle = () => {
+    editArtistStatus({
+      artistId: artist?.id,
+      status: artist.status === "ACTIVE" ? "INACTIVE" : "ACTIVE",
+    });
+  };
 
   return (
     <Table.Row>
@@ -60,7 +42,7 @@ function TattooArtistsRow({
           height={200}
           loading="lazy"
           quality={100}
-          className="w-10 h-10 object-center mx-auto object-cover rounded-md"
+          className="w-10 h-10 object-center mx-auto object-cover rounded-md border border-snow/50"
         />
       </td>
       <td>
@@ -74,21 +56,20 @@ function TattooArtistsRow({
         </a>
       </td>
       <td>
-        Active - Deactive
-        {/* <button
+        <button
           type="button"
-          disabled={toggleCategoryIsPending}
+          disabled={editArtistStatusIsPending}
           onClick={handleActiveToggle}
           className={`relative w-11 h-6 rounded-full transition-colors ${
-            artist.status ? "bg-green-600" : "bg-gray-300"
-          } ${toggleCategoryIsPending ? "opacity-50 cursor-not-allowed" : ""}`}
+            artist.status === "ACTIVE" ? "bg-green-600" : "bg-gray-300"
+          } ${editArtistStatusIsPending ? "opacity-50 cursor-not-allowed" : ""}`}
         >
           <span
             className={`absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full transition-transform ${
-              artist.status ? "translate-x-5" : ""
+              artist.status === "INACTIVE" ? "translate-x-5" : ""
             }`}
           />
-        </button> */}
+        </button>
       </td>
       <td>
         <a href={`instagram/${artist.handle}`} className="btn text-xs mx-auto">
@@ -102,13 +83,6 @@ function TattooArtistsRow({
         >
           <span>Edit</span>
           <CiEdit className="size-5" />
-        </button>
-        <button
-          className="flex items-center justify-between p-2 w-24 cursor-pointer transition-colors duration-400 ease-in-out btn text-xs"
-          onClick={onDelete}
-        >
-          <span>Delete</span>
-          <PiTrash className="size-5" />
         </button>
       </td>
     </Table.Row>

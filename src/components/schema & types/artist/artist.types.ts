@@ -59,6 +59,8 @@ export interface ArtistInfo {
   bio: string;
   avatarUrl: string;
   coverUrl: string;
+  works?: string[];
+  worksMeta?: { title: string; tags: string[] }[];
 }
 
 export interface ArtistResponse {

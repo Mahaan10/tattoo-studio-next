@@ -7,6 +7,11 @@ import {
   SingleArtistResponse,
 } from "../schema & types/artist/artist.types";
 
+interface EditArtistArgs {
+  artistId: string;
+  newArtist: FormData | object;
+}
+
 // get public artists
 export default function getArtistsApi(): Promise<LookbookResponse> {
   return http
@@ -46,6 +51,25 @@ export function createNewArtistApi(
       headers: {
         "Content-Type": "multipart/form-data",
       },
+    })
+    .then(({ data }: AxiosResponse<ArtistFormDataProps>) => data);
+}
+
+// update artist
+export function editArtistApi({
+  artistId,
+  newArtist,
+}: EditArtistArgs): Promise<ArtistFormDataProps> {
+  const isFormData = newArtist instanceof FormData;
+
+  return http
+    .patch(`/artists/${artistId}`, newArtist, {
+      headers:
+        isFormData && (newArtist.has("cover") || newArtist.has("works"))
+          ? {
+              "Content-Type": "multipart/form-data",
+            }
+          : undefined,
     })
     .then(({ data }: AxiosResponse<ArtistFormDataProps>) => data);
 }

@@ -1,5 +1,6 @@
 import getArtistsApi, {
   createNewArtistApi,
+  editArtistApi,
   getAllArtistsApi,
   getArtistBySlugApi,
   getArtistsLookbookApi,
@@ -77,6 +78,45 @@ export default function useArtist() {
       },
     });
 
+  // edit artist
+  const { isPending: editArtistIsPending, mutateAsync: editArtist } =
+    useMutation({
+      mutationFn: editArtistApi,
+
+      onSuccess: (data) => {
+        console.log("editArtistOnSuccessData =>", data);
+        toast.success(`Edit ${data.displayName} successfully`);
+      },
+
+      onError: () => {
+        toast.error("Edit artist failed, try again later");
+      },
+    });
+
+  // edit artist status
+  const { isPending: editArtistStatusIsPending, mutate: editArtistStatus } =
+    useMutation({
+      mutationFn: ({
+        artistId,
+        status,
+      }: {
+        artistId: string;
+        status: string;
+      }) => editArtistApi({ artistId, newArtist: { status } }),
+
+      onSuccess: (data) => {
+        console.log("editArtistStatusOnSuccessData =>", data);
+
+        toast.success(
+          `${data.displayName}'s status has been ${data.status === "ACTIVE" ? "actived" : "inactived"} successfully`,
+        );
+      },
+
+      onError: () => {
+        toast.error("Change artist status failed, try again later");
+      },
+    });
+
   return {
     // public artists
     artistsIsLoading,
@@ -102,5 +142,13 @@ export default function useArtist() {
     // create new artist
     createNewArtist,
     createNewArtistIsPending,
+
+    // edit artist
+    editArtist,
+    editArtistIsPending,
+
+    // edit artist status
+    editArtistStatus,
+    editArtistStatusIsPending,
   };
 }

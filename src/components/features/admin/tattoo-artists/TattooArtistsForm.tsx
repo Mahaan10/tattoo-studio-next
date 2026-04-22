@@ -16,13 +16,20 @@ import InputField from "@/components/ui/InputField";
 import InputFile from "@/components/ui/InputFile";
 import TextAreaField from "@/components/ui/TextAreaField";
 import { useEffect } from "react";
+import { ArtistInfo } from "@/components/schema & types/artist/artist.types";
 
 interface TattooArtistFormProps {
   onClose: () => void;
+  artistToEdit?: ArtistInfo | null;
 }
 
-function TattooArtistsForm({ onClose }: TattooArtistFormProps) {
-  const { createNewArtist, createNewArtistIsPending } = useArtist();
+function TattooArtistsForm({ onClose, artistToEdit }: TattooArtistFormProps) {
+  const {
+    createNewArtist,
+    createNewArtistIsPending,
+    editArtist,
+    editArtistIsPending,
+  } = useArtist();
 
   const {
     handleSubmit,
@@ -35,10 +42,6 @@ function TattooArtistsForm({ onClose }: TattooArtistFormProps) {
   } = useForm<TattooArtistFormData>({
     resolver: zodResolver(TattooArtistValidationSchema as any),
     mode: "onTouched",
-    defaultValues: {
-      works: [],
-      worksMeta: [],
-    },
   });
 
   const { fields, append, remove } = useFieldArray({
@@ -47,6 +50,18 @@ function TattooArtistsForm({ onClose }: TattooArtistFormProps) {
   });
 
   const works = watch("works");
+
+  useEffect(() => {
+    if (artistToEdit?.id) {
+      reset({
+        displayName: artistToEdit.displayName,
+        email: artistToEdit.email,
+        phone: artistToEdit.phone,
+        handle: artistToEdit.handle,
+        bio: artistToEdit.bio,
+      });
+    }
+  }, [reset, artistToEdit]);
 
   useEffect(() => {
     if (works && works.length > 0) {
@@ -80,8 +95,12 @@ function TattooArtistsForm({ onClose }: TattooArtistFormProps) {
     });
 
     formData.append("worksMeta", JSON.stringify(data.worksMeta));
+    if (artistToEdit?.id) {
+      await editArtist({ artistId: artistToEdit.id, newArtist: formData });
+    } else {
+      await createNewArtist(formData);
+    }
 
-    await createNewArtist(formData);
     reset();
     onClose();
   };
@@ -227,10 +246,14 @@ function TattooArtistsForm({ onClose }: TattooArtistFormProps) {
 
       <button
         type="submit"
-        disabled={createNewArtistIsPending}
+        disabled={createNewArtistIsPending || editArtistIsPending}
         className="submit-btn"
       >
-        {createNewArtistIsPending ? "Submitting ..." : "Submit Booking"}
+        {createNewArtistIsPending || editArtistIsPending
+          ? "Submitting ..."
+          : artistToEdit
+            ? "Update Artist"
+            : "Create Artist"}
       </button>
     </form>
   );

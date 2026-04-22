@@ -5,13 +5,25 @@ import {
   FaAsterisk,
   FaUsers,
   FaBookmark,
+  FaHome,
+  FaUserAlt,
+  FaBookOpen,
+  FaCalendarCheck,
+  FaNewspaper,
 } from "react-icons/fa";
 import { PiTelegramLogo } from "react-icons/pi";
 import { BsTwitterX } from "react-icons/bs";
 import { GrMoney } from "react-icons/gr";
 import { TfiBarChartAlt } from "react-icons/tfi";
 
-export const headerMenu = [
+export interface NavItem {
+  id: number;
+  title: string;
+  icon?: React.ReactNode;
+  href: string;
+}
+
+export const headerMenu: NavItem[] = [
   { id: 1, title: "Home", href: "/" },
   { id: 2, title: "Tattoo artists", href: "/tattoo-artists" },
   { id: 3, title: "Lookbook", href: "/lookbook" },
@@ -20,6 +32,14 @@ export const headerMenu = [
   { id: 6, title: "Articles", href: "/articles" },
   { id: 7, title: "About us", href: "/about" },
   { id: 8, title: "Contact", href: "/contact" },
+];
+
+export const navMenu: NavItem[] = [
+  { id: 1, title: "Home", href: "/", icon: <FaHome /> },
+  { id: 2, title: "Artists", href: "/tattoo-artists", icon: <FaUserAlt /> },
+  { id: 3, title: "Lookbook", href: "/lookbook", icon: <FaBookOpen /> },
+  { id: 4, title: "Booking", href: "/booking", icon: <FaCalendarCheck /> },
+  { id: 5, title: "Articles", href: "/articles", icon: <FaNewspaper /> },
 ];
 
 export const socialMedia = [
@@ -81,7 +101,7 @@ export const HomePageContent = [
   },
 ];
 
-export const AdminSidebarItems = [
+export const AdminSidebarItems: NavItem[] = [
   {
     id: 1,
     title: "Dashboard",
@@ -90,7 +110,7 @@ export const AdminSidebarItems = [
   },
   {
     id: 2,
-    title: "Tatoo Artists",
+    title: "Tattoo Artists",
     icon: <FaPencilAlt className="size-5" />,
     href: "/admin/tattoo-artists",
   },

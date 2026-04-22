@@ -2,25 +2,43 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { headerMenu } from "@/components/constants/Navigation";
+import {
+  AdminSidebarItems,
+  headerMenu,
+} from "@/components/constants/Navigation";
 import { usePathname } from "next/navigation";
 import { LuMenu } from "react-icons/lu";
 import HeaderMenu from "./HeaderMenu";
 import Image from "next/image";
 import Modal from "@/components/ui/Modal";
 import AuthContainer from "@/components/features/auth/AuthContainer";
-import { getCookie } from "cookies-next";
-import { PiArrowDown } from "react-icons/pi";
+import { PiUser } from "react-icons/pi";
 import useCurrentUser from "../features/auth/useCurrentUser";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "../ui/dropdown-menu";
+import { BsCaretDown } from "react-icons/bs";
+import { HiOutlinePower } from "react-icons/hi2";
+import useAuth from "../features/auth/useAuth";
 
 function Header() {
+  const { logout, logoutIsPending } = useAuth();
   const { user, currentUserIsLoading } = useCurrentUser();
   const [isScrolled, setIsScrolled] = useState<boolean>(false);
   const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const pathname = usePathname();
 
-  console.log(user);
+  const isActive = (path: string) => pathname === path;
+
+  const logoutHandler = () => {
+    logout();
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -32,7 +50,7 @@ function Header() {
   }, []);
 
   if (!pathname) return null;
-  if (currentUserIsLoading) return null;
+  ///*  */if (currentUserIsLoading) return null;
 
   return (
     <>
@@ -66,13 +84,54 @@ function Header() {
             />
           </button>
         ) : (
-          <button
-            className="w-25 px-2 py-3 text-xs flex items-centr justify-between border border-snow/25 rounded-lg"
-            onClick={() => console.log("admin")}
-          >
-            <span>Admin</span>
-            <PiArrowDown className="size-4" />
-          </button>
+          <DropdownMenu dir="ltr">
+            <DropdownMenuTrigger className="focus:outline-none">
+              <div className="p-1 border border-snow/20 rounded-md hover:bg-transparent/50 hover:border-snow/50 transition-colors duration-200 w-24 flex items-center justify-between bg-transparent">
+                <PiUser className="size-7" />
+
+                {/* <Image
+                      src="/image/user.jpg"
+                      alt="user"
+                      width={30}
+                      height={30}
+                      className="rounded-full"
+                    /> */}
+                <BsCaretDown className="w-5 h-5" />
+              </div>
+            </DropdownMenuTrigger>
+
+            <DropdownMenuContent className="w-56 bg-onyx text-alabaster border-snow/50">
+              {AdminSidebarItems.map((item) => (
+                <DropdownMenuItem
+                  key={item.id}
+                  asChild
+                  className="cursor-pointer px-2 py-3 mt-0.5"
+                >
+                  <Link
+                    href={item.href}
+                    className={`flex items-center justify-between w-full gap-x-2 cursor-pointer px-2 py-3 rounded-sm transition-all duration-300 ${
+                      isActive(item.href)
+                        ? "bg-snow/5 font-bold text-dried-mustard hover:bg-snow/10"
+                        : "hover:bg-snow/10"
+                    }`}
+                  >
+                    <span>{item.title}</span>
+                    <span className="opacity-75">{item.icon}</span>
+                  </Link>
+                </DropdownMenuItem>
+              ))}
+
+              <DropdownMenuSeparator className="bg-snow/20" />
+
+              <DropdownMenuItem
+                onClick={logoutHandler}
+                className="flex items-center justify-between gap-x-2 hover:bg-red-700 cursor-pointer p-2 transition-colors duration-200 focus:text-white-smoke/80"
+              >
+                <span>Logout</span>
+                <HiOutlinePower className="w-6! h-6! opacity-75" />
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         )}
 
         {/* Navabr */}

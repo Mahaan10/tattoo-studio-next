@@ -6,12 +6,12 @@ import { ArtistInfo } from "@/components/schema & types/artist/artist.types";
 import Table from "@/components/ui/Table";
 import Modal from "@/components/ui/Modal";
 import TattooArtistsRow from "./TattooArtistsRow";
+import TattooArtistsForm from "./TattooArtistsForm";
 
 function TattooArtistsTable() {
   const { allArtists, allArtistsIsError, allArtistsIsLoading } = useArtist();
 
   const [artistToEdit, setArtistToEdit] = useState<ArtistInfo | null>(null);
-  const [artistToDelete, setArtistToDelete] = useState<ArtistInfo | null>(null);
 
   console.log("artistToEdit =>", artistToEdit);
   console.log("allArtists =>", allArtists);
@@ -43,7 +43,6 @@ function TattooArtistsTable() {
                   //index={(currentPage - 1) * 6 + index}
                   index={index}
                   onEdit={() => setArtistToEdit(artist)}
-                  onDelete={() => setArtistToDelete(artist)}
                 />
               ))}
             </Table.Body>
@@ -63,11 +62,10 @@ function TattooArtistsTable() {
           title={`Edit ${artistToEdit.displayName}`}
           onClose={() => setArtistToEdit(null)}
         >
-          <h1>Edit</h1>
-          {/* <AdminCategoriesForm
+          <TattooArtistsForm
             artistToEdit={artistToEdit}
             onClose={() => setArtistToEdit(null)}
-          /> */}
+          />
         </Modal>
       )}
     </>
