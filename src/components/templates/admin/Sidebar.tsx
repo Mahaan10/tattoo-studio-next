@@ -37,7 +37,7 @@ function Sidebar({ items }: { items: NavItem[] }) {
             >
               <div className="flex w-full items-center justify-between gap-x-4">
                 <span>{item.title}</span>
-                <span>{item.icon}</span>
+                <span className="opacity-75">{item.icon}</span>
               </div>
             </Link>
           </li>
@@ -50,7 +50,7 @@ function Sidebar({ items }: { items: NavItem[] }) {
             className="cursor-pointer px-2 py-3 rounded-lg transition-all duration-300 w-full flex items-center justify-between hover:bg-red-600 gap-x-2"
           >
             <span>{logoutIsPending ? "..." : "Logout"}</span>
-            <HiOutlinePower className="size-5" />
+            <HiOutlinePower className="size-5 opacity-75" />
           </button>
         </li>
       </ul>

@@ -132,8 +132,9 @@ export const AdminSidebarItems: NavItem[] = [
     icon: <FaUsers className="size-5" />,
     href: "/admin/guest-artist",
   },
+  { id: 6, title: "Articles", icon: <FaNewspaper />, href: "/admin/articles" },
   {
-    id: 6,
+    id: 7,
     title: "Payments",
     icon: <GrMoney className="size-5" />,
     href: "/admin/payments",

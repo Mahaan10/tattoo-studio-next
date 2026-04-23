@@ -16,3 +16,14 @@ export interface ArticlesResponse {
   total: number;
   items: ArticleProps[];
 }
+
+// Admin
+
+export interface ArticleFormDataProps {
+  title: string;
+  excerpt: string;
+  content: string;
+  status: string;
+  cover: File;
+  tags: string[];
+}
