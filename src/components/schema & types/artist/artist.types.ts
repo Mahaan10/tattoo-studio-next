@@ -57,10 +57,16 @@ export interface ArtistInfo {
   phone: string;
   status: string;
   bio: string;
-  avatarUrl: string;
+  avatarUrl: string | null;
   coverUrl: string;
-  works?: string[];
-  worksMeta?: { title: string; tags: string[] }[];
+  works: {
+    id: string;
+    title: string;
+    coverUrl: string;
+    tags: string[];
+    status: string;
+    artistId: string;
+  }[];
 }
 
 export interface ArtistResponse {
@@ -78,6 +84,6 @@ export interface ArtistFormDataProps {
   status: string;
   bio: string;
   worksMeta: { title: string; tags: string[] }[];
-  cover: File;
-  works: File[];
+  cover?: File;
+  works?: File[];
 }

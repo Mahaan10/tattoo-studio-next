@@ -1,29 +1,21 @@
-import getArtistsApi, {
+import {
   createNewArtistApi,
   editArtistApi,
   getAllArtistsApi,
+  getArtistByIdApi,
   getArtistBySlugApi,
   getArtistsLookbookApi,
 } from "@/components/services/artistService";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useParams } from "next/navigation";
 import { toast } from "react-toastify";
 
 export default function useArtist() {
+  const queryClient = useQueryClient();
   const params = useParams();
   const slug = typeof params?.slug === "string" ? params.slug : "";
-
-  // get all public artists
-  const {
-    isLoading: artistsIsLoading,
-    isError: artistsIsError,
-    data: artistsData,
-  } = useQuery({
-    queryKey: ["artists"],
-    queryFn: getArtistsApi,
-  });
-
-  const artists = artistsData?.items || [];
+  const artistId = typeof params?.artistId === "string" ? params.artistId : "";
+  console.log(params);
 
   // get single public artist by slug
   const {
@@ -37,20 +29,20 @@ export default function useArtist() {
   });
 
   const artistBySlug = singleArtistData?.artist || null;
-  const artistWorks = singleArtistData?.works?.items || null;
+  const artistWorks = singleArtistData?.works?.items || [];
 
   // Lookbook data
 
   const {
-    isLoading: lookbookIsLoading,
-    isError: lookbookIsError,
+    isLoading: artistsLookbookIsLoading,
+    isError: artistsLookbookIsError,
     data: lookbookData,
   } = useQuery({
     queryKey: ["artists-lookbook"],
     queryFn: getArtistsLookbookApi,
   });
 
-  const lookbookItems = lookbookData?.items || [];
+  const artistsLookbookItems = lookbookData?.items || [];
 
   // get all artists
   const {
@@ -58,7 +50,7 @@ export default function useArtist() {
     isLoading: allArtistsIsLoading,
     isError: allArtistsIsError,
   } = useQuery({
-    queryKey: ["all-artists", "artists"],
+    queryKey: ["artists"],
     queryFn: getAllArtistsApi,
   });
 
@@ -71,6 +63,8 @@ export default function useArtist() {
 
       onSuccess: (data) => {
         console.log("createNewArtistOnSuccessData =>", data);
+        queryClient.invalidateQueries({ queryKey: ["artists"] });
+        queryClient.invalidateQueries({ queryKey: ["artists-lookbook"] });
         toast.success(`Create ${data.displayName} successfully`);
       },
       onError: () => {
@@ -117,12 +111,21 @@ export default function useArtist() {
       },
     });
 
-  return {
-    // public artists
-    artistsIsLoading,
-    artistsIsError,
-    artists,
+  // artist by id
+  const {
+    data: singleArtistById,
+    isLoading: singleArtistIsLoading,
+    isError: singleArtistIsError,
+  } = useQuery({
+    queryKey: ["single-artist", artistId],
+    queryFn: () => getArtistByIdApi(artistId),
+    enabled: !!artistId,
+  });
 
+  const artistData = singleArtistById || null;
+  const artistLookbookWorks = singleArtistById?.works || [];
+
+  return {
     // Single public artist
     artistBySlug,
     artistWorks,
@@ -130,9 +133,9 @@ export default function useArtist() {
     getArtistBySlugIsLoading,
 
     // lookbook
-    lookbookIsLoading,
-    lookbookIsError,
-    lookbookItems,
+    artistsLookbookIsLoading,
+    artistsLookbookIsError,
+    artistsLookbookItems,
 
     // get all artists
     allArtists,
@@ -150,5 +153,11 @@ export default function useArtist() {
     // edit artist status
     editArtistStatus,
     editArtistStatusIsPending,
+
+    // single artist
+    artistData,
+    singleArtistIsLoading,
+    singleArtistIsError,
+    artistLookbookWorks,
   };
 }

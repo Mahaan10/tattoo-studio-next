@@ -29,6 +29,7 @@ function TattooArtistsTable() {
               <th className="py-2">#</th>
               <th>Name</th>
               <th>Avatar</th>
+              <th>Lookbook</th>
               <th>Phone</th>
               <th>Email</th>
               <th>Status</th>

@@ -46,6 +46,14 @@ function TattooArtistsRow({ artist, index, onEdit }: TattooArtistsRowProps) {
         />
       </td>
       <td>
+        <Link
+          href={`/admin/tattoo-artists/${artist.id}`}
+          className="btn text-xs mx-auto"
+        >
+          {artist.displayName}'s Works
+        </Link>
+      </td>
+      <td>
         <a href={`tel:${artist.phone}`} className="btn text-xs mx-auto">
           {artist.phone}
         </a>

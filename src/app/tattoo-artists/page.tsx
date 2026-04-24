@@ -1,5 +1,5 @@
 import ArtistsList from "@/components/features/artist/ArtistsList";
-import getArtistsApi from "@/components/services/artistService";
+import { getArtistsLookbookApi } from "@/components/services/artistService";
 import {
   dehydrate,
   HydrationBoundary,
@@ -10,8 +10,8 @@ async function TattooArtists() {
   const queryClient = new QueryClient();
 
   await queryClient.prefetchQuery({
-    queryKey: ["artists"],
-    queryFn: getArtistsApi,
+    queryKey: ["artists-lookbook"],
+    queryFn: getArtistsLookbookApi,
   });
 
   return (

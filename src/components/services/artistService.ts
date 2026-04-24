@@ -2,6 +2,7 @@ import { AxiosResponse } from "axios";
 import http from "./httpService";
 import {
   ArtistFormDataProps,
+  ArtistInfo,
   ArtistResponse,
   LookbookResponse,
   SingleArtistResponse,
@@ -12,8 +13,8 @@ interface EditArtistArgs {
   newArtist: FormData | object;
 }
 
-// get public artists
-export default function getArtistsApi(): Promise<LookbookResponse> {
+// get public artist lookbook
+export function getArtistsLookbookApi(): Promise<LookbookResponse> {
   return http
     .get("/public/artists/lookbook")
     .then(({ data }: AxiosResponse<LookbookResponse>) => data);
@@ -26,13 +27,6 @@ export function getArtistBySlugApi(
   return http
     .get(`/public/artists/${slug}`)
     .then(({ data }: AxiosResponse<SingleArtistResponse>) => data);
-}
-
-// get public artist lookbook
-export function getArtistsLookbookApi(): Promise<LookbookResponse> {
-  return http
-    .get("/public/artists/lookbook")
-    .then(({ data }: AxiosResponse<LookbookResponse>) => data);
 }
 
 // get all artists
@@ -60,7 +54,8 @@ export function editArtistApi({
   artistId,
   newArtist,
 }: EditArtistArgs): Promise<ArtistFormDataProps> {
-  const isFormData = newArtist instanceof FormData;
+  const isFormData =
+    typeof FormData !== "undefined" && newArtist instanceof FormData;
 
   return http
     .patch(`/artists/${artistId}`, newArtist, {
@@ -72,4 +67,11 @@ export function editArtistApi({
           : undefined,
     })
     .then(({ data }: AxiosResponse<ArtistFormDataProps>) => data);
+}
+
+// get single artist
+export function getArtistByIdApi(artistId: string): Promise<ArtistInfo> {
+  return http
+    .get(`/artists/${artistId}`)
+    .then(({ data }: AxiosResponse<ArtistInfo>) => data);
 }
