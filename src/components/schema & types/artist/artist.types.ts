@@ -3,6 +3,7 @@ export interface ArtistWork {
   title: string;
   coverUrl: string;
   tags: string[];
+  status?: string;
   createdAt?: string;
 }
 
@@ -59,14 +60,7 @@ export interface ArtistInfo {
   bio: string;
   avatarUrl: string | null;
   coverUrl: string;
-  works: {
-    id: string;
-    title: string;
-    coverUrl: string;
-    tags: string[];
-    status: string;
-    artistId: string;
-  }[];
+  works: ArtistWork[];
 }
 
 export interface ArtistResponse {
