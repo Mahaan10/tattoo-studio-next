@@ -7,11 +7,11 @@ import { GoDotFill } from "react-icons/go";
 import Link from "next/link";
 
 function ArtistsList() {
-  const { artists } = useArtist();
-  console.log("artists =>", artists);
+  const { artistsLookbookItems } = useArtist();
+  console.log("artistsLookbookItems =>", artistsLookbookItems);
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-      {artists?.map((artist) => (
+      {artistsLookbookItems?.map((artist) => (
         <Link
           href={`/tattoo-artists/${artist.slug}`}
           key={artist.id}

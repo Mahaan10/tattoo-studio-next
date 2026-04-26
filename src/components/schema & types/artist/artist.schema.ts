@@ -42,14 +42,14 @@ export const TattooArtistValidationSchema = z
       .max(10, "Max 10 works meta"),
 
     cover: z
-  .instanceof(File)
-  .optional()
-  .refine((file) => !file || file.size <= 10 * 1024 * 1024, {
-    message: "Image must be less than 10MB",
-  })
-  .refine((file) => !file || file.type.startsWith("image/"), {
-    message: "Only image files are allowed",
-  }),
+      .instanceof(File)
+      .optional()
+      .refine((file) => !file || file.size <= 10 * 1024 * 1024, {
+        message: "Image must be less than 10MB",
+      })
+      .refine((file) => !file || file.type.startsWith("image/"), {
+        message: "Only image files are allowed",
+      }),
 
     works: z
       .array(
@@ -62,19 +62,20 @@ export const TattooArtistValidationSchema = z
             message: "Only image files are allowed",
           }),
       )
-      .max(10, "Maximum 10 images allowed").optional()
+      .max(10, "Maximum 10 images allowed")
+      .optional(),
   })
   .refine(
-  (data) => {
-    // no new uploads → skip validation
-    if (!data.works || data.works.length === 0) return true;
+    (data) => {
+      // no new uploads → skip validation
+      if (!data.works || data.works.length === 0) return true;
 
-    return data.worksMeta?.length === data.works.length;
-  },
-  {
-    message: "works meta must match works length",
-    path: ["worksMeta"],
-  }
-)
+      return data.worksMeta?.length === data.works.length;
+    },
+    {
+      message: "works meta must match works length",
+      path: ["worksMeta"],
+    },
+  );
 
 export type TattooArtistFormData = z.infer<typeof TattooArtistValidationSchema>;

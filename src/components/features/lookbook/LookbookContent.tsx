@@ -16,9 +16,9 @@ interface GalleryImageProps {
 
 export default function LookBookContent() {
   const [activeId, setActiveId] = useState<string | null>(null);
-  const { lookbookItems, lookbookIsLoading } = useArtist();
+  const { artistsLookbookItems, artistsLookbookIsLoading } = useArtist();
 
-  const allWorks = lookbookItems.flatMap((artist) =>
+  const allWorks = artistsLookbookItems.flatMap((artist) =>
     artist.latestWorks.map((work) => ({
       ...work,
       artistName: artist.displayName,
@@ -31,11 +31,11 @@ export default function LookBookContent() {
     return Array.from(new Set(tags));
   }, [allWorks]);
 
-  console.log("lookbookItems =>", lookbookItems);
+  console.log("artistsLookbookItems =>", artistsLookbookItems);
   console.log("allWorks =>", allWorks);
   console.log("uniqueTags =>", uniqueTags);
 
-  if (lookbookIsLoading && allWorks.length === 0) return null; //<div>Loading Lookbook...</div>;
+  if (artistsLookbookIsLoading && allWorks.length === 0) return null; //<div>Loading Lookbook...</div>;
 
   return (
     <>

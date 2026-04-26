@@ -35,15 +35,15 @@ function TattooArtistsRow({ artist, index, onEdit }: TattooArtistsRowProps) {
         </Link>
       </td>
       <td>
-        <Image
-          src={artist?.coverUrl}
-          alt={artist?.displayName}
-          width={200}
-          height={200}
-          loading="lazy"
-          quality={100}
-          className="w-10 h-10 object-center mx-auto object-cover rounded-md border border-snow/50 grayscale"
-        />
+        <div className="relative w-10 h-10">
+          <Image
+            src={artist?.coverUrl}
+            alt={artist?.displayName}
+            fill
+            priority
+            className="object-center mx-auto object-cover rounded-md border border-snow/50 grayscale"
+          />
+        </div>
       </td>
       <td>
         <Link

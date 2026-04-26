@@ -42,7 +42,7 @@ function TattooArtistsForm({ onClose, artistToEdit }: TattooArtistFormProps) {
   } = useForm<TattooArtistFormData>({
     resolver: zodResolver(TattooArtistValidationSchema as any),
     mode: "onChange",
-    reValidateMode: "onChange"
+    reValidateMode: "onChange",
   });
 
   const { fields, append, remove } = useFieldArray({
@@ -62,20 +62,23 @@ function TattooArtistsForm({ onClose, artistToEdit }: TattooArtistFormProps) {
         bio: artistToEdit.bio,
         worksMeta: artistToEdit.works.map((w) => ({
           title: w.title,
-          tags: w.tags
-        }))
+          tags: w.tags,
+        })),
       });
     }
   }, [reset, artistToEdit]);
 
   useEffect(() => {
-  if (works && works.length > 0 && !artistToEdit) {
-    setValue("worksMeta", works.map(() => ({
-      title: "",
-      tags: [],
-    })));
-  }
-}, [works, artistToEdit]);
+    if (works && works.length > 0 && !artistToEdit) {
+      setValue(
+        "worksMeta",
+        works.map(() => ({
+          title: "",
+          tags: [],
+        })),
+      );
+    }
+  }, [works, artistToEdit]);
 
   const onSubmit: SubmitHandler<TattooArtistFormData> = async (data) => {
     console.log("data =>", data);
@@ -95,10 +98,10 @@ function TattooArtistsForm({ onClose, artistToEdit }: TattooArtistFormProps) {
     }
 
     if (data.works?.length) {
-  data.works.forEach((file) => {
-    formData.append("works", file);
-  });
-}
+      data.works.forEach((file) => {
+        formData.append("works", file);
+      });
+    }
 
     formData.append("worksMeta", JSON.stringify(data.worksMeta));
     if (artistToEdit?.id) {
