@@ -42,7 +42,7 @@ function TattooArtistsRow({ artist, index, onEdit }: TattooArtistsRowProps) {
           height={200}
           loading="lazy"
           quality={100}
-          className="w-10 h-10 object-center mx-auto object-cover rounded-md border border-snow/50"
+          className="w-10 h-10 object-center mx-auto object-cover rounded-md border border-snow/50 grayscale"
         />
       </td>
       <td>

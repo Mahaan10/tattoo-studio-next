@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import { FieldError, Path, PathValue, UseFormSetValue } from "react-hook-form";
+import { FieldError, Path, UseFormSetValue, PathValue } from "react-hook-form";
 import { IoIosCloseCircleOutline } from "react-icons/io";
 
 interface InputFileProps<T extends Record<string, any>> {
@@ -12,6 +12,7 @@ interface InputFileProps<T extends Record<string, any>> {
   showPreview?: boolean;
   required?: boolean;
   multiple?: boolean;
+  initialUrls?: string[];
 }
 
 function InputFile<T extends Record<string, any>>({
@@ -23,21 +24,41 @@ function InputFile<T extends Record<string, any>>({
   errors,
   required,
   multiple,
+  initialUrls,
 }: InputFileProps<T>) {
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const [previews, setPreviews] = useState<string[]>([]);
+  const [existingUrls, setExistingUrls] = useState<string[]>([]);
+
+  useEffect(() => {
+    if (initialUrls?.length) {
+      setExistingUrls(initialUrls);
+      setPreviews(initialUrls);
+    }
+  }, [initialUrls]);
 
   useEffect(() => {
     if (multiple) {
-      setValue(name, selectedFiles as any, {
-        shouldValidate: true,
-        shouldDirty: true,
-      });
+      setValue(
+        name,
+        (selectedFiles.length ? selectedFiles : undefined) as PathValue<
+          T,
+          typeof name
+        >,
+        {
+          shouldValidate: true,
+          shouldDirty: true,
+        },
+      );
     } else {
-      setValue(name, selectedFiles[0] as any, {
-        shouldValidate: true,
-        shouldDirty: true,
-      });
+      setValue(
+        name,
+        (selectedFiles[0] ?? undefined) as PathValue<T, typeof name>,
+        {
+          shouldValidate: true,
+          shouldDirty: true,
+        },
+      );
     }
   }, [selectedFiles]);
 
@@ -68,12 +89,42 @@ function InputFile<T extends Record<string, any>>({
     }
   };
 
+  // const removeImage = (index: number) => {
+  //   if (previews[index]) {
+  //     URL.revokeObjectURL(previews[index]);
+  //   }
+
+  //   setSelectedFiles((prev) => prev.filter((_, i) => i !== index));
+  //   setPreviews((prev) => prev.filter((_, i) => i !== index));
+  // };
+
   const removeImage = (index: number) => {
-    if (previews[index]) {
-      URL.revokeObjectURL(previews[index]);
+    // if removing existing image
+    if (index < existingUrls.length) {
+      const updated = existingUrls.filter((_, i) => i !== index);
+      setExistingUrls(updated);
+      setPreviews((prev) => prev.filter((_, i) => i !== index));
+
+      // IMPORTANT: notify form
+      setValue(
+        name,
+        (selectedFiles.length ? selectedFiles : undefined) as PathValue<
+          T,
+          typeof name
+        >,
+        {
+          shouldValidate: true,
+          shouldDirty: true,
+        },
+      );
+
+      return;
     }
 
-    setSelectedFiles((prev) => prev.filter((_, i) => i !== index));
+    // removing newly added file
+    const fileIndex = index - existingUrls.length;
+
+    setSelectedFiles((prev) => prev.filter((_, i) => i !== fileIndex));
     setPreviews((prev) => prev.filter((_, i) => i !== index));
   };
 
@@ -96,7 +147,7 @@ function InputFile<T extends Record<string, any>>({
 
         <label
           htmlFor={label}
-          className="absolute text-sm text-body duration-300 transform -translate-y-4 scale-75 top-1.5 z-10 origin-left bg-alabaster opacity-75 peer-focus:opacity-100 px-2 peer-focus:px-2 peer-focus:text-onyx peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-1.5 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1 space-x-1"
+          className="absolute text-sm text-body duration-300 transform -translate-y-4 scale-75 top-1.5 z-10 origin-left bg-alabaster opacity-75 peer-focus:opacity-100 px-2 peer-focus:px-2 peer-focus:text-onyx peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-1.5 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto inset-s-1 space-x-1"
         >
           <span>{label}</span>
           {required && <span className="text-red-700 text-sm">*</span>}

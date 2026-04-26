@@ -41,7 +41,8 @@ function TattooArtistsForm({ onClose, artistToEdit }: TattooArtistFormProps) {
     control,
   } = useForm<TattooArtistFormData>({
     resolver: zodResolver(TattooArtistValidationSchema as any),
-    mode: "onTouched",
+    mode: "onChange",
+    reValidateMode: "onChange"
   });
 
   const { fields, append, remove } = useFieldArray({
@@ -59,21 +60,22 @@ function TattooArtistsForm({ onClose, artistToEdit }: TattooArtistFormProps) {
         phone: artistToEdit.phone,
         handle: artistToEdit.handle,
         bio: artistToEdit.bio,
+        worksMeta: artistToEdit.works.map((w) => ({
+          title: w.title,
+          tags: w.tags
+        }))
       });
     }
   }, [reset, artistToEdit]);
 
   useEffect(() => {
-    if (works && works.length > 0) {
-      setValue(
-        "worksMeta",
-        works.map(() => ({
-          title: "",
-          tags: [],
-        })),
-      );
-    }
-  }, [works, setValue]);
+  if (works && works.length > 0 && !artistToEdit) {
+    setValue("worksMeta", works.map(() => ({
+      title: "",
+      tags: [],
+    })));
+  }
+}, [works, artistToEdit]);
 
   const onSubmit: SubmitHandler<TattooArtistFormData> = async (data) => {
     console.log("data =>", data);
@@ -88,11 +90,15 @@ function TattooArtistsForm({ onClose, artistToEdit }: TattooArtistFormProps) {
     formData.append("phone", data.phone);
     formData.append("bio", data.bio);
 
-    formData.append("cover", data.cover);
+    if (data.cover) {
+      formData.append("cover", data.cover);
+    }
 
-    data.works.forEach((file) => {
-      formData.append("works", file);
-    });
+    if (data.works?.length) {
+  data.works.forEach((file) => {
+    formData.append("works", file);
+  });
+}
 
     formData.append("worksMeta", JSON.stringify(data.worksMeta));
     if (artistToEdit?.id) {
@@ -158,6 +164,7 @@ function TattooArtistsForm({ onClose, artistToEdit }: TattooArtistFormProps) {
         errors={errors.cover as unknown as FieldError}
         required
         multiple={false}
+        initialUrls={artistToEdit?.coverUrl ? [artistToEdit.coverUrl] : []}
       />
 
       {/* Bio */}
@@ -177,6 +184,7 @@ function TattooArtistsForm({ onClose, artistToEdit }: TattooArtistFormProps) {
         errors={errors.works as unknown as FieldError}
         required
         multiple
+        initialUrls={artistToEdit?.works.map((w) => w.coverUrl) || []}
       />
 
       {/* Works meta */}
@@ -246,7 +254,7 @@ function TattooArtistsForm({ onClose, artistToEdit }: TattooArtistFormProps) {
 
       <button
         type="submit"
-        disabled={createNewArtistIsPending || editArtistIsPending}
+        disabled={createNewArtistIsPending || editArtistIsPending || !isValid}
         className="submit-btn"
       >
         {createNewArtistIsPending || editArtistIsPending
