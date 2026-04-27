@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import { FieldError, Path, UseFormSetValue, PathValue } from "react-hook-form";
+import { FieldError, Path, PathValue, UseFormSetValue } from "react-hook-form";
 import { IoIosCloseCircleOutline } from "react-icons/io";
 
 interface InputFileProps<T extends Record<string, any>> {
@@ -12,7 +12,6 @@ interface InputFileProps<T extends Record<string, any>> {
   showPreview?: boolean;
   required?: boolean;
   multiple?: boolean;
-  initialUrls?: string[];
 }
 
 function InputFile<T extends Record<string, any>>({
@@ -24,41 +23,21 @@ function InputFile<T extends Record<string, any>>({
   errors,
   required,
   multiple,
-  initialUrls,
 }: InputFileProps<T>) {
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const [previews, setPreviews] = useState<string[]>([]);
-  const [existingUrls, setExistingUrls] = useState<string[]>([]);
-
-  useEffect(() => {
-    if (initialUrls?.length) {
-      setExistingUrls(initialUrls);
-      setPreviews(initialUrls);
-    }
-  }, [initialUrls]);
 
   useEffect(() => {
     if (multiple) {
-      setValue(
-        name,
-        (selectedFiles.length ? selectedFiles : undefined) as PathValue<
-          T,
-          typeof name
-        >,
-        {
-          shouldValidate: true,
-          shouldDirty: true,
-        },
-      );
+      setValue(name, selectedFiles as any, {
+        shouldValidate: true,
+        shouldDirty: true,
+      });
     } else {
-      setValue(
-        name,
-        (selectedFiles[0] ?? undefined) as PathValue<T, typeof name>,
-        {
-          shouldValidate: true,
-          shouldDirty: true,
-        },
-      );
+      setValue(name, selectedFiles[0] as any, {
+        shouldValidate: true,
+        shouldDirty: true,
+      });
     }
   }, [selectedFiles]);
 
@@ -89,42 +68,12 @@ function InputFile<T extends Record<string, any>>({
     }
   };
 
-  // const removeImage = (index: number) => {
-  //   if (previews[index]) {
-  //     URL.revokeObjectURL(previews[index]);
-  //   }
-
-  //   setSelectedFiles((prev) => prev.filter((_, i) => i !== index));
-  //   setPreviews((prev) => prev.filter((_, i) => i !== index));
-  // };
-
   const removeImage = (index: number) => {
-    // if removing existing image
-    if (index < existingUrls.length) {
-      const updated = existingUrls.filter((_, i) => i !== index);
-      setExistingUrls(updated);
-      setPreviews((prev) => prev.filter((_, i) => i !== index));
-
-      // IMPORTANT: notify form
-      setValue(
-        name,
-        (selectedFiles.length ? selectedFiles : undefined) as PathValue<
-          T,
-          typeof name
-        >,
-        {
-          shouldValidate: true,
-          shouldDirty: true,
-        },
-      );
-
-      return;
+    if (previews[index]) {
+      URL.revokeObjectURL(previews[index]);
     }
 
-    // removing newly added file
-    const fileIndex = index - existingUrls.length;
-
-    setSelectedFiles((prev) => prev.filter((_, i) => i !== fileIndex));
+    setSelectedFiles((prev) => prev.filter((_, i) => i !== index));
     setPreviews((prev) => prev.filter((_, i) => i !== index));
   };
 

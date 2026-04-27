@@ -167,7 +167,7 @@ function TattooArtistsForm({ onClose, artistToEdit }: TattooArtistFormProps) {
         errors={errors.cover as unknown as FieldError}
         required
         multiple={false}
-        initialUrls={artistToEdit?.coverUrl ? [artistToEdit.coverUrl] : []}
+        //initialUrls={artistToEdit?.coverUrl ? [artistToEdit.coverUrl] : []}
       />
 
       {/* Bio */}
@@ -187,7 +187,7 @@ function TattooArtistsForm({ onClose, artistToEdit }: TattooArtistFormProps) {
         errors={errors.works as unknown as FieldError}
         required
         multiple
-        initialUrls={artistToEdit?.works.map((w) => w.coverUrl) || []}
+        //initialUrls={artistToEdit?.works.map((w) => w.coverUrl) || []}
       />
 
       {/* Works meta */}

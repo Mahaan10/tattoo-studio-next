@@ -116,25 +116,19 @@ export const AdminSidebarItems: NavItem[] = [
   },
   {
     id: 3,
-    title: "Lookbook",
-    icon: <FaAsterisk className="size-5" />,
-    href: "/admin/lookbook",
-  },
-  {
-    id: 4,
     title: "Booking",
     icon: <FaBookmark className="size-5" />,
     href: "/admin/booking",
   },
   {
-    id: 5,
+    id: 4,
     title: "Guest Artist",
     icon: <FaUsers className="size-5" />,
     href: "/admin/guest-artist",
   },
-  { id: 6, title: "Articles", icon: <FaNewspaper />, href: "/admin/articles" },
+  { id: 5, title: "Articles", icon: <FaNewspaper />, href: "/admin/articles" },
   {
-    id: 7,
+    id: 6,
     title: "Payments",
     icon: <GrMoney className="size-5" />,
     href: "/admin/payments",
