@@ -67,13 +67,15 @@ export const TattooArtistValidationSchema = z
   })
   .refine(
     (data) => {
-      // no new uploads → skip validation
       if (!data.works || data.works.length === 0) return true;
 
-      return data.worksMeta?.length === data.works.length;
+      const newWorksCount = data.works.length;
+      const metaCount = data.worksMeta.length;
+
+      return metaCount >= newWorksCount;
     },
     {
-      message: "works meta must match works length",
+      message: "Missing metadata for uploaded works",
       path: ["worksMeta"],
     },
   );

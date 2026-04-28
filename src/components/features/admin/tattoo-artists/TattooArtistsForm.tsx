@@ -39,6 +39,7 @@ function TattooArtistsForm({ onClose, artistToEdit }: TattooArtistFormProps) {
     watch,
     setValue,
     control,
+    getValues,
   } = useForm<TattooArtistFormData>({
     resolver: zodResolver(TattooArtistValidationSchema as any),
     mode: "onChange",
@@ -69,16 +70,32 @@ function TattooArtistsForm({ onClose, artistToEdit }: TattooArtistFormProps) {
   }, [reset, artistToEdit]);
 
   useEffect(() => {
-    if (works && works.length > 0 && !artistToEdit) {
-      setValue(
-        "worksMeta",
-        works.map(() => ({
-          title: "",
-          tags: [],
-        })),
-      );
-    }
-  }, [works, artistToEdit]);
+    if (!works) return;
+
+    const existingMeta =
+      artistToEdit?.works.map((w) => ({
+        title: w.title,
+        tags: w.tags,
+      })) || [];
+
+    const currentMeta = getValues("worksMeta") || existingMeta;
+
+    const totalExpected = existingMeta.length + works.length;
+
+    if (currentMeta.length >= totalExpected) return;
+
+    const missingCount = totalExpected - currentMeta.length;
+
+    const newMeta = Array.from({ length: missingCount }, () => ({
+      title: "",
+      tags: [],
+    }));
+
+    setValue("worksMeta", [...currentMeta, ...newMeta], {
+      shouldValidate: true,
+      shouldDirty: true,
+    });
+  }, [works]);
 
   const onSubmit: SubmitHandler<TattooArtistFormData> = async (data) => {
     console.log("data =>", data);
@@ -167,7 +184,7 @@ function TattooArtistsForm({ onClose, artistToEdit }: TattooArtistFormProps) {
         errors={errors.cover as unknown as FieldError}
         required
         multiple={false}
-        //initialUrls={artistToEdit?.coverUrl ? [artistToEdit.coverUrl] : []}
+        initialUrls={artistToEdit?.coverUrl ? [artistToEdit.coverUrl] : []}
       />
 
       {/* Bio */}
@@ -187,7 +204,7 @@ function TattooArtistsForm({ onClose, artistToEdit }: TattooArtistFormProps) {
         errors={errors.works as unknown as FieldError}
         required
         multiple
-        //initialUrls={artistToEdit?.works.map((w) => w.coverUrl) || []}
+        initialUrls={artistToEdit?.works.map((w) => w.coverUrl) || []}
       />
 
       {/* Works meta */}

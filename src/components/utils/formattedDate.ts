@@ -20,3 +20,7 @@ export function formattedTime(isoString: Date) {
 export function formatDate(date: Date) {
   return date.toISOString().split("T")[0];
 }
+
+export function formatMonth(date: Date) {
+  return date.toISOString().slice(0, 7);
+}

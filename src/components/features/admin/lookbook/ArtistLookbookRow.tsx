@@ -27,7 +27,10 @@ function ArtistLookbookRow({ work, index, onEdit }: ArtistLookbookRowProps) {
       </td>
       <td>
         {work.tags.map((workTag, index) => (
-          <span key={index} className="px-2 py-1 bg-snow/10 rounded">
+          <span
+            key={index}
+            className="capitalize font-light px-4 py-2 rounded-[10px] transition-all duration-200 bg-onyx text-snow"
+          >
             #{workTag}
           </span>
         ))}

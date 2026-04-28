@@ -6,6 +6,8 @@ import SelectBox from "@/components/ui/SelectBox";
 import TextAreaField from "@/components/ui/TextAreaField";
 import { FieldError, useFormContext } from "react-hook-form";
 import { HiArrowLongLeft } from "react-icons/hi2";
+import useConsultSlot from "../../consultSlot/useConsultSlot";
+import { useState } from "react";
 
 interface BookingRequestProps {
   onBack: () => void;
@@ -33,12 +35,27 @@ const studioChooses = [
 ];
 
 function BookingRequest({ onBack }: BookingRequestProps) {
+  const [currentMonth, setCurrentMonth] = useState<Date>(new Date());
+  const {
+    publicConsultAvailability,
+    publicConsultAvailabilityIsLoading,
+    publicConsultAvailabilityIsError,
+  } = useConsultSlot(currentMonth);
+
   const {
     register,
     control,
     formState: { errors },
     setValue,
   } = useFormContext<BookingAppointmentFormData>();
+
+  const closedDates: Date[] =
+    publicConsultAvailability?.days
+      ?.filter((day) => day.status === "closed")
+      .map((day) => {
+        const [year, month, date] = day.date.split("-").map(Number);
+        return new Date(year, month - 1, date);
+      }) || [];
 
   return (
     <>
@@ -85,6 +102,9 @@ function BookingRequest({ onBack }: BookingRequestProps) {
         required
         disablePast
         excludeDays={[0]} // Sunday!
+        disabledDates={closedDates}
+        currentMonth={currentMonth}
+        onMonthChange={setCurrentMonth}
       />
       {/* PreferredDateFrom */}
       {/* <DatePickerField<BookingAppointmentFormData>

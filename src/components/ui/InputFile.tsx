@@ -12,6 +12,7 @@ interface InputFileProps<T extends Record<string, any>> {
   showPreview?: boolean;
   required?: boolean;
   multiple?: boolean;
+  initialUrls?: string[];
 }
 
 function InputFile<T extends Record<string, any>>({
@@ -23,9 +24,17 @@ function InputFile<T extends Record<string, any>>({
   errors,
   required,
   multiple,
+  initialUrls,
 }: InputFileProps<T>) {
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
-  const [previews, setPreviews] = useState<string[]>([]);
+  const [existingPreviews, setExistingPreviews] = useState<string[]>([]);
+  const [newPreviews, setNewPreviews] = useState<string[]>([]);
+
+  useEffect(() => {
+    if (initialUrls && initialUrls.length > 0) {
+      setExistingPreviews(initialUrls);
+    }
+  }, [initialUrls]);
 
   useEffect(() => {
     if (multiple) {
@@ -53,7 +62,8 @@ function InputFile<T extends Record<string, any>>({
       setSelectedFiles([file]);
 
       if (showPreview) {
-        setPreviews([URL.createObjectURL(file)]);
+        const url = URL.createObjectURL(file);
+        setNewPreviews([url]);
       }
 
       return;
@@ -64,24 +74,34 @@ function InputFile<T extends Record<string, any>>({
 
     if (showPreview) {
       const newUrls = newFiles.map((file) => URL.createObjectURL(file));
-      setPreviews((prev) => [...prev, ...newUrls]);
+      setNewPreviews((prev) => [...prev, ...newUrls]);
     }
   };
 
-  const removeImage = (index: number) => {
-    if (previews[index]) {
-      URL.revokeObjectURL(previews[index]);
-    }
+  const previews = multiple
+    ? [...existingPreviews, ...newPreviews]
+    : newPreviews.length > 0
+      ? newPreviews
+      : existingPreviews;
 
-    setSelectedFiles((prev) => prev.filter((_, i) => i !== index));
-    setPreviews((prev) => prev.filter((_, i) => i !== index));
+  const removeImage = (index: number) => {
+    const existingLength = existingPreviews.length;
+
+    if (index < existingLength) return;
+
+    const newIndex = index - existingLength;
+
+    URL.revokeObjectURL(newPreviews[newIndex]);
+
+    setSelectedFiles((prev) => prev.filter((_, i) => i !== newIndex));
+    setNewPreviews((prev) => prev.filter((_, i) => i !== newIndex));
   };
 
   useEffect(() => {
     return () => {
-      previews.forEach((url) => URL.revokeObjectURL(url));
+      newPreviews.forEach((url) => URL.revokeObjectURL(url));
     };
-  }, [previews]);
+  }, [newPreviews]);
 
   return (
     <div className="flex flex-col gap-2">
@@ -104,28 +124,34 @@ function InputFile<T extends Record<string, any>>({
       </div>
       {showPreview && previews.length > 0 && (
         <div className="flex flex-wrap gap-x-3 my-1">
-          {previews.map((url, index) => (
-            <div
-              key={index}
-              className="relative w-14 h-14 border border-onyx/50 rounded-md overflow-hidden my-1 group"
-            >
-              <Image
-                src={url}
-                alt={`Preview ${index}`}
-                fill
-                className="object-cover"
-              />
-              {/* Delete btn */}
-              <button
-                type="button"
-                onClick={() => removeImage(index)}
-                className="absolute -top-1 -right-1 text-red-700 bg-transparent rounded-full"
-                title="Remove image"
+          {previews.map((url, index) => {
+            const isExisting = initialUrls && index < initialUrls.length;
+
+            return (
+              <div
+                key={index}
+                className="relative w-14 h-14 border border-onyx/50 rounded-md overflow-hidden my-1 group"
               >
-                <IoIosCloseCircleOutline className="w-5 h-5" />
-              </button>
-            </div>
-          ))}
+                <Image
+                  src={url}
+                  alt={`Preview ${index}`}
+                  fill
+                  className="object-cover"
+                />
+                {/* Delete btn */}
+                {!isExisting && (
+                  <button
+                    type="button"
+                    onClick={() => removeImage(index)}
+                    className="absolute -top-1 -right-1 text-red-700 bg-transparent rounded-full"
+                    title="Remove image"
+                  >
+                    <IoIosCloseCircleOutline className="w-5 h-5" />
+                  </button>
+                )}
+              </div>
+            );
+          })}
         </div>
       )}
       {errors && <p className="text-red-700 text-xs mt-1">{errors.message}</p>}

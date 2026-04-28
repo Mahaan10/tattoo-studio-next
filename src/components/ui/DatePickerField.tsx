@@ -17,6 +17,8 @@ interface DatePickerProps<T extends Record<string, any>> {
   excludeDays?: number[];
   disabledDates?: Date[];
   minDate?: Date;
+  currentMonth?: Date;
+  onMonthChange?: (date: Date) => void;
 }
 
 function DatePickerField<T extends Record<string, any>>({
@@ -31,12 +33,18 @@ function DatePickerField<T extends Record<string, any>>({
   excludeDays,
   disabledDates,
   minDate,
+  currentMonth,
+  onMonthChange,
 }: DatePickerProps<T>) {
   const [isOpen, setIsOpen] = useState(false);
   const [hoveredDate, setHoveredDate] = useState<Date | undefined>();
-  const [currentMonth, setCurrentMonth] = useState<Date>(new Date());
+  const [internalMonthState, setInternalMonthState] = useState<Date>(
+    new Date(),
+  );
+
   const containerRef = useOutsideClick<HTMLDivElement>(() => setIsOpen(false));
 
+  const monthToUse = currentMonth ?? internalMonthState;
   const today = new Date();
   const disabledMatchers: Matcher[] = [];
 
@@ -65,7 +73,11 @@ function DatePickerField<T extends Record<string, any>>({
           const handleInputClick = () => {
             const dateValue = value as any;
             if (dateValue instanceof Date) {
-              setCurrentMonth(value);
+              if (onMonthChange) {
+                onMonthChange(value);
+              } else {
+                setInternalMonthState(value);
+              }
             }
             setIsOpen((prev) => !prev);
           };
@@ -121,7 +133,7 @@ function DatePickerField<T extends Record<string, any>>({
                   placeholder=" "
                   className="block w-full px-3 pb-2.5 pt-4 text-sm bg-transparent border border-onyx/50 hover:border-onyx/75 focus:border-onyx transition-all duration-300 cursor-pointer peer rounded-lg outline-none"
                 />
-                <label className="absolute text-sm text-body duration-300 transform -translate-y-4 scale-75 top-1.5 z-10 opacity-75 origin-left bg-alabaster px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-1.5 peer-focus:scale-75 peer-focus:-translate-y-4 start-1 pointer-events-none transition-all">
+                <label className="absolute text-sm text-body duration-300 transform -translate-y-4 scale-75 top-1.5 z-10 opacity-75 origin-left bg-alabaster px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-1.5 peer-focus:scale-75 peer-focus:-translate-y-4 inset-s-1 pointer-events-none transition-all">
                   <span>{label}</span>
                   {required && <span className="text-red-700 ml-1">*</span>}
                 </label>
@@ -134,9 +146,15 @@ function DatePickerField<T extends Record<string, any>>({
                     mode={mode as any}
                     selected={value}
                     onSelect={handleSelect}
-                    month={currentMonth}
+                    month={monthToUse}
                     onDayMouseEnter={setHoveredDate}
-                    onMonthChange={setCurrentMonth}
+                    onMonthChange={(date) => {
+                      if (onMonthChange) {
+                        onMonthChange(date);
+                      } else {
+                        setInternalMonthState(date);
+                      }
+                    }}
                     fromYear={disableFuture ? 1940 : undefined}
                     toYear={disablePast ? today.getFullYear() + 1 : undefined}
                     disabled={
@@ -193,5 +211,4 @@ function DatePickerField<T extends Record<string, any>>({
     </div>
   );
 }
-
 export default DatePickerField;
