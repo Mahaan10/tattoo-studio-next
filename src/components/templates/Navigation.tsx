@@ -3,7 +3,7 @@
 import { usePathname } from "next/navigation";
 
 import { navMenu, AdminSidebarItems } from "@/components/constants/Navigation";
-import BottomNav from "./admin/BottomNav";
+import BottomNav from "./BottomNav";
 
 function Navigation() {
   const pathname = usePathname();

@@ -1,4 +1,5 @@
 export interface ClientInfoProps {
+  id?: string;
   firstName: string;
   lastName: string;
   email: string;
@@ -6,21 +7,11 @@ export interface ClientInfoProps {
 }
 
 export interface BookingRequestProps {
-  // description?: string;
-  // budgetRange: string;
-  // bookingType: string;
-  // studioChooses?: boolean;
-  // source?: string;
-  // placement: string;
-  // preferredDateFrom: string;
-  // preferredDateTo?: string;
-  // file?: string[];
   bookingType: string;
   consultDate: string;
   description: string;
   budgetRange: string;
   placement?: string;
-  //sizeDescription?: string;
   file: string[];
 }
 
@@ -46,4 +37,33 @@ export interface BookingAppointmentProps {
   bookingRequest: BookingRequestProps;
   // medicalDeclaration: MedicalDeclarationProps;
   // consent: ConsentProps;
+}
+
+export interface BookingInfo {
+  id: string;
+  status: string;
+  clientId: string;
+  placement: string;
+  description: string;
+  budgetRange: string;
+  referrer: string;
+  bookingType: string;
+  consultDate: Date;
+  consultSlotId: string;
+  client: ClientInfoProps;
+}
+
+export interface BookingResponse {
+  total: number;
+  page: number;
+  limit: number;
+  items: BookingInfo[];
+}
+
+export interface SingleBookingResponse extends BookingInfo {
+  medicalDeclaration: null;
+  consent: null;
+  uploads: string[];
+  assignments: [];
+  reviewedByAdmin: null;
 }

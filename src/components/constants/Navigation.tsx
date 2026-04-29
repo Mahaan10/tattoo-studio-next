@@ -134,3 +134,27 @@ export const AdminSidebarItems: NavItem[] = [
     href: "/admin/payments",
   },
 ];
+
+export const AdminBudgetRange = [
+  { id: 1, label: "under 200 €", value: "UNDER_200" },
+  { id: 2, label: "200-400 €", value: "B200_400" },
+  { id: 3, label: "400-700 €", value: "B400_700" },
+  { id: 4, label: "700-1000 €", value: "B700_1000" },
+  { id: 5, label: "1000-1500 €", value: "B1000_1500" },
+  { id: 6, label: "1500-2000 €", value: "B1500_2000" },
+  { id: 7, label: "over 2000 €", value: "OVER_2000" },
+] as const;
+
+export const PublicBudgetRange = [
+  { id: 1, label: "under 200 €", value: "UNDER_200" },
+  { id: 2, label: "200-400 €", value: "_200_400" },
+  { id: 3, label: "400-700 €", value: "_400_700" },
+  { id: 4, label: "700-1000 €", value: "_700_1000" },
+  { id: 5, label: "1000-1500 €", value: "_1000_1500" },
+  { id: 6, label: "1500-2000 €", value: "_1500_2000" },
+  { id: 7, label: "over 2000 €", value: "OVER_2000" },
+];
+
+export const budgetMap: Record<string, string> = Object.fromEntries(
+  AdminBudgetRange.map((item) => [item.value, item.label]),
+);

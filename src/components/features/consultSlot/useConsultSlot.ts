@@ -2,11 +2,11 @@ import getConsultAvailabilityApi, {
   createNewConsultSlotApi,
   getConsultSlotsApi,
 } from "@/components/services/consultSlotService";
-import { formatMonth } from "@/components/utils/formattedDate";
+import { formatMonth } from "@/components/utils/formatter";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 
-export default function useConsultSlot(month: Date) {
+export default function useConsultSlot(month?: Date) {
   const queryClient = useQueryClient();
 
   // public availability
@@ -16,7 +16,7 @@ export default function useConsultSlot(month: Date) {
     isError: publicConsultAvailabilityIsError,
   } = useQuery({
     queryKey: ["public-consult", month],
-    queryFn: () => getConsultAvailabilityApi(formatMonth(month)),
+    queryFn: () => getConsultAvailabilityApi(month ? formatMonth(month) : ""),
     enabled: !!month,
   });
 

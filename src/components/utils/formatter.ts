@@ -1,4 +1,6 @@
-export default function formattedDate(isoString: Date) {
+import { budgetMap } from "../constants/Navigation";
+
+export default function formattedDate(isoString?: Date | string) {
   if (!isoString) return "";
   return new Date(isoString).toLocaleDateString("en-US", {
     year: "numeric",
@@ -23,4 +25,9 @@ export function formatDate(date: Date) {
 
 export function formatMonth(date: Date) {
   return date.toISOString().slice(0, 7);
+}
+
+export function formatBudgetRange(value?: string | null): string {
+  if (!value) return "-";
+  return budgetMap[value] || value;
 }

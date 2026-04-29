@@ -10,9 +10,8 @@ function Sidebar({ items }: { items: NavItem[] }) {
   const { logout, logoutIsPending } = useAuth();
   const pathname = usePathname();
 
-  const isActive = (path: string) => pathname === path;
-
-  console.log("pathName =>", pathname);
+  const isActive = (path: string) =>
+    pathname === path || pathname.startsWith(path + "/");
 
   const logoutHandler = () => {
     logout();

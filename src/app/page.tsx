@@ -1,24 +1,10 @@
 import { HomePageContent } from "@/components/constants/Navigation";
 import Review from "@/components/features/review/Review";
-import getReviewsApi from "@/components/services/reviewService";
-import {
-  dehydrate,
-  HydrationBoundary,
-  QueryClient,
-} from "@tanstack/react-query";
 import Image from "next/image";
 import Link from "next/link";
 import { MdArrowRightAlt } from "react-icons/md";
 
 async function Home() {
-  const queryClient = new QueryClient();
-
-  await queryClient.prefetchQuery({
-    queryKey: ["artists"],
-    queryFn: getReviewsApi,
-    staleTime: 600000 * 60 * 30,
-  });
-
   return (
     <>
       <div className="relative h-screen w-full overflow-hidden">
@@ -99,9 +85,7 @@ async function Home() {
             ))}
           </div>
           {/* Comment Section */}
-          <HydrationBoundary state={dehydrate(queryClient)}>
-            <Review />
-          </HydrationBoundary>
+          <Review />
         </div>
       </div>
     </>

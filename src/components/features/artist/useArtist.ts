@@ -15,7 +15,7 @@ export default function useArtist() {
   const params = useParams();
   const slug = typeof params?.slug === "string" ? params.slug : "";
   const artistId = typeof params?.id === "string" ? params.id : "";
-  console.log(params);
+  console.log("params =>", params);
 
   // get single public artist by slug
   const {

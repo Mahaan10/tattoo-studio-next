@@ -1,9 +1,7 @@
+import BookingContainer from "@/components/features/admin/booking/BookingContainer";
+
 function AdminBooking() {
-  return (
-    <div>
-      <h1>AdminBooking</h1>
-    </div>
-  );
+  return <BookingContainer />;
 }
 
 export default AdminBooking;

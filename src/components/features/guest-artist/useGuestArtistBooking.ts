@@ -1,7 +1,7 @@
 import getGuestArtistTableAvailabilityApi, {
   guestArtistBookingTableApi,
 } from "@/components/services/guestArtistService";
-import { formatDate } from "@/components/utils/formattedDate";
+import { formatDate } from "@/components/utils/formatter";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 

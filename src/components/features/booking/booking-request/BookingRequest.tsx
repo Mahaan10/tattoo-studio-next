@@ -8,30 +8,16 @@ import { FieldError, useFormContext } from "react-hook-form";
 import { HiArrowLongLeft } from "react-icons/hi2";
 import useConsultSlot from "../../consultSlot/useConsultSlot";
 import { useState } from "react";
+import { PublicBudgetRange } from "@/components/constants/Navigation";
 
 interface BookingRequestProps {
   onBack: () => void;
 }
 
-const budgetRange = [
-  { id: 1, label: "under 200 €", value: "UNDER_200" },
-  { id: 2, label: "200-400 €", value: "_200_400" },
-  { id: 3, label: "400-700 €", value: "_400_700" },
-  { id: 4, label: "700-1000 €", value: "_700_1000" },
-  { id: 5, label: "1000-1500 €", value: "_1000_1500" },
-  { id: 6, label: "1500-2000 €", value: "_1500_2000" },
-  { id: 7, label: "over 2000 €", value: "OVER_2000" },
-];
-
 const bookingType = [
   { id: 1, label: "Appointment", value: "APPOINTMENT" },
   { id: 2, label: "Consultation", value: "CONSULTATION" },
   { id: 3, label: "Cover up", value: "COVER_UP" },
-];
-
-const studioChooses = [
-  { id: 1, label: "Block 13", value: "BLOCK_13" },
-  { id: 2, label: "SES Studio", value: "SES_STUDIO" },
 ];
 
 function BookingRequest({ onBack }: BookingRequestProps) {
@@ -89,7 +75,7 @@ function BookingRequest({ onBack }: BookingRequestProps) {
         name="bookingRequest.budgetRange"
         register={register}
         errors={errors.bookingRequest?.budgetRange}
-        options={budgetRange}
+        options={PublicBudgetRange}
         required
       />
 
