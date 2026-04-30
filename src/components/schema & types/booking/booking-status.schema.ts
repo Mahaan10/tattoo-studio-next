@@ -12,9 +12,9 @@ export const UpdateStatusValidationSchema = z
 
     cancelReason: z.enum(BOOKING_STATUS_CANCEL_REASON).optional(),
 
-    scheduledDate: z.string().optional(),
-    artistId: z.string().optional(),
-    stationId: z.string().optional(),
+    scheduledDate: z.date({ message: "Schedule date is required" }).optional(),
+    artistId: z.string({message: "Artist must be selected"}).optional(),
+    // stationId: z.string().optional(),
     durationNote: z.string().optional(),
     notes: z.string().optional(),
   })
@@ -28,12 +28,20 @@ export const UpdateStatusValidationSchema = z
     }
 
     if (data.status === "TATTOO_SCHEDULED") {
-      if (!data.scheduledDate || !data.artistId || !data.stationId) {
+      if (!data.scheduledDate) {
         ctx.addIssue({
           path: ["scheduledDate"],
           code: z.ZodIssueCode.custom,
-          message: "All scheduling fields are required",
+          message: "Schedule date is required",
         });
+      }
+
+      if(!data.artistId) {
+        ctx.addIssue({
+          path: ["artistId"],
+          code: z.ZodIssueCode.custom,
+          message: "Artist must be selected"
+        })
       }
     }
   });

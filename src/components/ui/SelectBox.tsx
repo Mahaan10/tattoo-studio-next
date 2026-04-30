@@ -1,9 +1,10 @@
 import { FieldError, Path, UseFormRegister } from "react-hook-form";
 
 interface SelectBoxOptions {
-  id: number;
-  label: string;
-  value: string | number;
+  id: number | string;
+  label?: string;
+  value?: string | number;
+  displayName?: string
 }
 
 interface SelectBoxProps<T extends Record<string, any>> {
@@ -38,8 +39,8 @@ function SelectBox<T extends Record<string, any>>({
       >
         <option value="" disabled hidden></option>
         {options.map((option) => (
-          <option key={option.id} value={option.value}>
-            {option.label}
+          <option key={option.id} value={option.value ? option.value : option.id}>
+            {option.label ? option.label : option.displayName}
           </option>
         ))}
       </select>

@@ -41,7 +41,7 @@ export interface BookingAppointmentProps {
 
 export interface BookingInfo {
   id: string;
-  status: string;
+  status: BookingStatus;
   clientId: string;
   placement: string;
   description: string;
@@ -101,8 +101,8 @@ export interface BookingStatusProps {
 }
 
 export interface TattooScheduledProps {
-  scheduledDate: string;
-  artistId: string;
+  scheduledDate: Date;
+  artistId?: string;
   stationId?: string;
   durationNote: string;
   notes?: string;

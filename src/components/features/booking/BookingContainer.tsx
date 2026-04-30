@@ -13,6 +13,7 @@ import MedicalDeclaration from "./medical-declaration/MedicalDeclaration";
 import { zodResolver } from "@hookform/resolvers/zod";
 import BookingBreadCrumb from "@/components/templates/booking/BookingBreadCrumb";
 import FormStepper from "@/components/ui/FormStepper";
+import { formatDate } from "@/components/utils/formatter";
 
 const BOOKING_STEPS = [
   { id: 1, label: "Client Info" /* fields: ["client"] */ },
@@ -41,10 +42,10 @@ function BookingContainer() {
     console.log("data =>", data);
     const formData = new FormData();
 
-    const formatDate = (date: string | Date) => {
-      const d = new Date(date);
-      return d.toISOString().split("T")[0];
-    };
+    // const formatDate = (date: string | Date) => {
+    //   const d = new Date(date);
+    //   return d.toISOString().split("T")[0];
+    // };
 
     const { file } = data?.bookingRequest;
 

@@ -17,6 +17,8 @@ import { BookingInfo } from "@/components/schema & types/booking/booking-appoint
 import { formatBookingStatus } from "@/components/utils/formatter";
 import DatePickerField from "@/components/ui/DatePickerField";
 import useArtist from "../../artist/useArtist";
+import InputField from "@/components/ui/InputField";
+import { keyof } from "zod";
 
 export const STATUS_TRANSITIONS: Record<
   /* BookingStatus */ any,
@@ -39,12 +41,14 @@ function UpdateBookingStatusForm({
   booking,
   onClose,
 }: UpdateBookingStatusFormProps) {
+
   const {
     updateBookingStatus,
     updateBookingStatusIsPending,
     scheduleTattoo,
     scheduleTattooIsPending,
   } = useBooking();
+
   const { allArtists, allArtistsIsLoading, allArtistsIsError } = useArtist();
 
   const {
@@ -53,46 +57,63 @@ function UpdateBookingStatusForm({
     watch,
     control,
     formState: { errors, isValid },
+    reset
   } = useForm<UpdateStatusFormValues>({
     mode: "onChange",
     resolver: zodResolver(UpdateStatusValidationSchema),
+    defaultValues: {
+      status: undefined
+    }
   });
 
   const availableStatuses =
     STATUS_TRANSITIONS[booking.status as any] ||
     []; /* BOOKINGSTATS INSTEAD ANY */
 
-  const filteredStatusOptions = BookingStatus.filter((option) =>
-    availableStatuses.includes(option.value as any),
-  );
+  // const filteredStatusOptions = BookingStatus.filter((option) =>
+  //   availableStatuses.includes(option.value as any),
+  // );
+
+  const filteredStatusOptions = [
+    { id: 0, value: booking.status, label: `(Current) ${formatBookingStatus(booking.status)}` },
+    ...BookingStatus.filter((option) => availableStatuses.includes(option.value as any))
+  ]
+
+  const status = watch("status")
 
   const onSubmit: SubmitHandler<UpdateStatusFormValues> = (data) => {
     if (data.status === "TATTOO_SCHEDULED") {
-      // ⚠️ you need extra fields for this
-      let newTattooSchedule = {
+
+      const newTattooSchedule = {
         scheduledDate: data.scheduledDate!,
         artistId: data.artistId!,
-        stationId: data.stationId!,
+        // stationId: data.stationId!,
         durationNote: data.durationNote!,
         notes: data.notes || "",
       };
-      scheduleTattoo({ bookingId: booking.id, newTattooSchedule });
+      scheduleTattoo({ bookingId: booking.id, newTattooSchedule }, {
+        onSuccess: () => {
+          reset()
+          onClose()
+        }
+      });
 
       return;
+      
     } else {
-      let newBookingStatus = {
+      const newBookingStatus = {
         status: data.status,
         adminNotes: data.adminNotes,
         cancelReason: data.cancelReason,
       };
 
       updateBookingStatus(
-        { bookingId: booking.id, newBookingStatus },
-        {
-          onSuccess: () => onClose(),
-        },
+        { bookingId: booking.id, newBookingStatus }
       );
     }
+
+    reset()
+    onClose()
   };
 
   return (
@@ -108,20 +129,22 @@ function UpdateBookingStatusForm({
         errors={errors.status}
         options={filteredStatusOptions}
         required
-        defaultValue={booking.status}
+      //defaultValue={booking.status}
       />
 
       {/* Admin notes */}
-      <TextAreaField<UpdateStatusFormValues>
-        label="Admin Notes"
-        name="adminNotes"
-        errors={errors.adminNotes}
-        register={register}
-      />
+      {status !== "TATTOO_SCHEDULED" && (
+        <TextAreaField<UpdateStatusFormValues>
+          label="Admin Notes"
+          name="adminNotes"
+          errors={errors.adminNotes}
+          register={register}
+        />
+      )}
 
       {/* Cancell Reason */}
 
-      {watch("status") === "CANCELLED" && (
+      {status === "CANCELLED" && (
         <SelectBox<UpdateStatusFormValues>
           name="cancelReason"
           label="Cancel Reason"
@@ -131,13 +154,22 @@ function UpdateBookingStatusForm({
         />
       )}
 
-      {watch("status") === "TATTOO_SCHEDULED" && (
+      {status === "TATTOO_SCHEDULED" && (
         <>
-          <input name="scheduledDate" type="datetime-local" />
-          <input name="artistId" />
-          <input name="stationId" />
-          <input name="durationNote" />
-          <textarea name="notes" />
+          {/* Schedule Date */}
+          <DatePickerField<UpdateStatusFormValues> name="scheduledDate" label="Schedule Date" control={control} errors={errors.scheduledDate} disablePast required />
+
+          {/* Artist Id */}
+          <SelectBox<UpdateStatusFormValues> name="artistId" label="Artist" register={register} options={allArtists} errors={errors.artistId} />
+
+          {/* <input name="stationId" />
+          <input name="durationNote" /> */}
+
+          {/* Duration Note */}
+          <InputField<UpdateStatusFormValues> name="durationNote" label="Duration hour note" register={register} errors={errors.durationNote} />
+
+          {/* Notes */}
+          <TextAreaField<UpdateStatusFormValues> name="notes" label="Notes" register={register} errors={errors.notes} />
         </>
       )}
 

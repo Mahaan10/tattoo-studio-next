@@ -1,4 +1,5 @@
-import { BookingInfo } from "@/components/schema & types/booking/booking-appointment.types";
+import { BookingInfo, BookingStatus } from "@/components/schema & types/booking/booking-appointment.types";
+import StatusBadge from "@/components/templates/admin/booking/StatusBadge";
 import Table from "@/components/ui/Table";
 import formattedDate, {
   formatBookingStatus,
@@ -33,7 +34,9 @@ function BookingRow({ booking, index, onEdit }: BookingRowProps) {
           {booking.client.phone}
         </a>
       </td>
-      <td>{formatBookingStatus(booking.status)}</td>
+      <td>
+        <StatusBadge status={booking.status as BookingStatus} />
+      </td>
       <td>{formatBudgetRange(booking.budgetRange)}</td>
       <td>{formattedDate(booking.consultDate)}</td>
       <td>
@@ -42,10 +45,10 @@ function BookingRow({ booking, index, onEdit }: BookingRowProps) {
         </Link>
       </td>
       <td>
-        <button className="btn flex gap-x-2" onClick={onEdit}>
+        {(booking?.status == "CANCELLED" || booking?.status === "COMPLETED") ? <span className="gap-x-2">No Operation - Booking {booking?.status === "CANCELLED" ? "Cancelled" : "Completed"}</span> : <button className="btn flex gap-x-2" onClick={onEdit}>
           <span>Update Status</span>
           <CiEdit className="size-5" />
-        </button>
+        </button>}
       </td>
     </Table.Row>
   );

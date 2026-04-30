@@ -12,6 +12,8 @@ import Zoom from "yet-another-react-lightbox/plugins/zoom";
 import { CiEdit } from "react-icons/ci";
 import Modal from "@/components/ui/Modal";
 import UpdateBookingStatusForm from "./UpdateBookingStatusForm";
+import StatusBadge from "@/components/templates/admin/booking/StatusBadge";
+import { BookingStatus } from "@/components/schema & types/booking/booking-appointment.types";
 
 function BookingDetails() {
   const { singleBooking, singleBookingIsLoading } = useBooking();
@@ -33,7 +35,7 @@ function BookingDetails() {
             </h1>
             <p className="text-sm text-snow/50">Booking overview</p>
           </div>
-          <div className="flex items-center">
+          {(singleBooking?.status == "CANCELLED" || singleBooking?.status == "COMPLETED") ? "" : <div className="flex items-center">
             <button
               className="btn flex gap-x-2 text-sm"
               onClick={() => setIsOpen(true)}
@@ -41,7 +43,7 @@ function BookingDetails() {
               <span>Update Status</span>
               <CiEdit className="size-5" />
             </button>
-          </div>
+          </div>}
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -61,7 +63,9 @@ function BookingDetails() {
             <Card title="Booking Info">
               <Info
                 label="Status"
-                value={formatBookingStatus(singleBooking?.status)}
+                value={singleBooking?.status && (
+                  <StatusBadge status={singleBooking.status as BookingStatus} />
+                )}
               />
               <Info
                 label="Budget"
