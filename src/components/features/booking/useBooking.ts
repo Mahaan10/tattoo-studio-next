@@ -1,6 +1,8 @@
 import bookingAppointmentApi, {
+  createTattooScheduleApi,
   getAllBookingsApi,
   getBookingByIdApi,
+  updateBookingStatusApi,
   walkInBookingAppointmentApi,
 } from "@/components/services/bookingService";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -73,6 +75,34 @@ export default function useBooking() {
     enabled: !!bookingId,
   });
 
+  // update booking status
+  const {
+    isPending: updateBookingStatusIsPending,
+    mutate: updateBookingStatus,
+  } = useMutation({
+    mutationFn: updateBookingStatusApi,
+    onSuccess: (data) => {
+      console.log("onSuccessData =>", data);
+      queryClient.invalidateQueries({ queryKey: ["booking"] });
+      queryClient.invalidateQueries({ queryKey: ["single-booking"] });
+      toast.success("Status updated successfully");
+    },
+    onError: () => {
+      toast.error("Failed to update status. Please try again");
+    },
+  });
+
+  // create tattoo schedule
+  const { isPending: scheduleTattooIsPending, mutate: scheduleTattoo } =
+    useMutation({
+      mutationFn: createTattooScheduleApi,
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: ["booking"] });
+        queryClient.invalidateQueries({ queryKey: ["single-booking"] });
+        toast.success("Tattoo scheduled successfully");
+      },
+    });
+
   return {
     // public booking
     bookingAppointmentIsPending,
@@ -91,5 +121,13 @@ export default function useBooking() {
     singleBooking,
     singleBookingIsLoading,
     singleBookingIsError,
+
+    // update booking status
+    updateBookingStatus,
+    updateBookingStatusIsPending,
+
+    //  schedule tattoo
+    scheduleTattoo,
+    scheduleTattooIsPending,
   };
 }

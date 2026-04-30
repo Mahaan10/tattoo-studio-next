@@ -1,4 +1,8 @@
-import { budgetMap } from "../constants/Navigation";
+import {
+  bookingStatusCancelReasonMap,
+  bookingStatusMap,
+  budgetMap,
+} from "../constants/Navigation";
 
 export default function formattedDate(isoString?: Date | string) {
   if (!isoString) return "";
@@ -30,4 +34,14 @@ export function formatMonth(date: Date) {
 export function formatBudgetRange(value?: string | null): string {
   if (!value) return "-";
   return budgetMap[value] || value;
+}
+
+export function formatBookingStatus(value?: string | null): string {
+  if (!value) return "-";
+  return bookingStatusMap[value] || value;
+}
+
+export function formatBookingStatusCancelReason(value?: string | null): string {
+  if (!value) return "-";
+  return bookingStatusCancelReasonMap[value] || value;
 }

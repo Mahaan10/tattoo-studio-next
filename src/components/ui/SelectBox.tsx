@@ -14,6 +14,7 @@ interface SelectBoxProps<T extends Record<string, any>> {
   options: SelectBoxOptions[];
   required?: boolean;
   disabled?: boolean;
+  defaultValue?: string;
 }
 
 function SelectBox<T extends Record<string, any>>({
@@ -24,13 +25,14 @@ function SelectBox<T extends Record<string, any>>({
   errors,
   required,
   disabled = false,
+  defaultValue,
 }: SelectBoxProps<T>) {
   return (
     <div className="relative">
       <select
         {...register(name)}
         id={label}
-        defaultValue=""
+        defaultValue={defaultValue ? defaultValue : ""}
         className="block w-full px-3 pb-2.5 pt-4 text-sm bg-transparent border border-onyx/50 hover:border-onyx/75 focus:border-onyx transition-all duration-300 appearance-none focus:outline-none peer rounded-lg text-onyx select-arrow"
         disabled={disabled}
       >

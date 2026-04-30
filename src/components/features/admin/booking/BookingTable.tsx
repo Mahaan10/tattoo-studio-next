@@ -3,13 +3,18 @@
 import Table from "@/components/ui/Table";
 import useBooking from "../../booking/useBooking";
 import BookingRow from "./BookingRow";
+import { useState } from "react";
+import { BookingInfo } from "@/components/schema & types/booking/booking-appointment.types";
+import Modal from "@/components/ui/Modal";
+import UpdateBookingStatusForm from "./UpdateBookingStatusForm";
 
 function BookingTable() {
   const { bookings, bookingIsLoading, bookingIsError } = useBooking();
 
-  //   const [artistToEdit, setArtistToEdit] = useState<ArtistInfo | null>(null);
+  const [bookingToUpdateStatus, setBookingToUpdateStatus] =
+    useState<BookingInfo | null>(null);
 
-  //   console.log("artistToEdit =>", artistToEdit);
+  console.log("bookingToUpdateStatus =>", bookingToUpdateStatus);
   console.log("bookings =>", bookings);
 
   if (bookingIsLoading) return null;
@@ -39,7 +44,7 @@ function BookingTable() {
                   booking={booking}
                   //index={(currentPage - 1) * 6 + index}
                   index={index}
-                  onEdit={() => console.log("Edit")}
+                  onEdit={() => setBookingToUpdateStatus(booking)}
                 />
               ))}
             </Table.Body>
@@ -54,17 +59,17 @@ function BookingTable() {
         </>
       )}
       {/* Edit Course */}
-      {/* {artistToEdit && (
+      {bookingToUpdateStatus && (
         <Modal
-          title={`Edit ${artistToEdit.displayName}`}
-          onClose={() => setArtistToEdit(null)}
+          onClose={() => setBookingToUpdateStatus(null)}
+          title="Update Booking Status"
         >
-          <TattooArtistsForm
-            artistToEdit={artistToEdit}
-            onClose={() => setArtistToEdit(null)}
+          <UpdateBookingStatusForm
+            booking={bookingToUpdateStatus}
+            onClose={() => setBookingToUpdateStatus(null)}
           />
         </Modal>
-      )} */}
+      )}
     </>
   );
 }

@@ -3,7 +3,9 @@ import http from "./httpService";
 import {
   BookingAppointmentProps,
   BookingResponse,
+  BookingStatusProps,
   SingleBookingResponse,
+  TattooScheduledProps,
 } from "@/components/schema & types/booking/booking-appointment.types";
 
 // public booking
@@ -11,11 +13,14 @@ export default function bookingAppointmentApi(
   newBookingIntake: FormData,
 ): Promise<BookingAppointmentProps> {
   return http
-    .post("/public/booking-intake", newBookingIntake/* , {
+    .post(
+      "/public/booking-intake",
+      newBookingIntake /* , {
       headers: {
         "Content-Type": "multipart/form-data",
       },
-    } */)
+    } */,
+    )
     .then(({ data }: AxiosResponse<BookingAppointmentProps>) => data);
 }
 
@@ -46,4 +51,30 @@ export function getBookingByIdApi(
   return http
     .get(`/admin/bookings/${bookingId}`)
     .then(({ data }: AxiosResponse<SingleBookingResponse>) => data);
+}
+
+// update booking status
+export function updateBookingStatusApi({
+  bookingId,
+  newBookingStatus,
+}: {
+  bookingId: string;
+  newBookingStatus: BookingStatusProps;
+}): Promise<BookingStatusProps> {
+  return http
+    .patch(`/admin/bookings/${bookingId}/status`, newBookingStatus)
+    .then(({ data }: AxiosResponse<BookingStatusProps>) => data);
+}
+
+// tattoo scheduled
+export function createTattooScheduleApi({
+  bookingId,
+  newTattooSchedule,
+}: {
+  bookingId: string;
+  newTattooSchedule: TattooScheduledProps;
+}): Promise<TattooScheduledProps> {
+  return http
+    .post(`/admin/bookings/${bookingId}/schedule-tattoo`, newTattooSchedule)
+    .then(({ data }: AxiosResponse<TattooScheduledProps>) => data);
 }

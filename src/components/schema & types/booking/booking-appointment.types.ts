@@ -64,10 +64,46 @@ export interface SingleBookingResponse extends BookingInfo {
   medicalDeclaration: null;
   consent: null;
   uploads: {
-    bookingRequestId: string,
-    id: string,
-    secureUrl: string
+    bookingRequestId: string;
+    id: string;
+    secureUrl: string;
   }[];
   assignments: [];
   reviewedByAdmin: null;
+}
+
+export const BOOKING_STATUS = [
+  "PENDING_CONSULT",
+  "CONSULT_APPROVED",
+  "CONSULT_NO_SHOW",
+  "TATTOO_SCHEDULED",
+  "COMPLETED",
+  "CANCELLED",
+] as const;
+
+export const BOOKING_STATUS_CANCEL_REASON = [
+  "CLIENT_CANCELLED",
+  "NO_SHOW",
+  "STUDIO_CANCELLED",
+  "OTHER",
+] as const;
+
+export type BookingStatusCancelReason =
+  (typeof BOOKING_STATUS_CANCEL_REASON)[number];
+
+export type BookingStatus = (typeof BOOKING_STATUS)[number];
+
+export interface BookingStatusProps {
+  status: BookingStatus;
+  adminNotes?: string;
+  internalStatusNote?: string;
+  cancelReason?: BookingStatusCancelReason;
+}
+
+export interface TattooScheduledProps {
+  scheduledDate: string;
+  artistId: string;
+  stationId?: string;
+  durationNote: string;
+  notes?: string;
 }

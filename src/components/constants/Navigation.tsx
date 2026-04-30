@@ -155,6 +155,31 @@ export const PublicBudgetRange = [
   { id: 7, label: "over 2000 €", value: "OVER_2000" },
 ];
 
+export const BookingStatus = [
+  { id: 1, value: "PENDING_CONSULT", label: "Pending" },
+  { id: 2, value: "CONSULT_APPROVED", label: "Approved" },
+  { id: 3, value: "CONSULT_NO_SHOW", label: "Not Showing" },
+  { id: 4, value: "TATTOO_SCHEDULED", label: "Scheduled" },
+  { id: 5, value: "COMPLETED", label: "Completed" },
+  { id: 6, value: "CANCELLED", label: "Cancelled" },
+];
+
+export const BookingStatusCancelReason = [
+  { id: 1, value: "CLIENT_CANCELLED", label: "Client Cancelled" },
+  { id: 2, value: "NO_SHOW", label: "Not Showing" },
+  { id: 3, value: "STUDIO_CANCELLED", label: "Studio Cancelled" },
+  { id: 4, value: "OTHER", label: "Other" },
+];
+
 export const budgetMap: Record<string, string> = Object.fromEntries(
   AdminBudgetRange.map((item) => [item.value, item.label]),
 );
+
+export const bookingStatusMap: Record<string, string> = Object.fromEntries(
+  BookingStatus.map((status) => [status.value, status.label]),
+);
+
+export const bookingStatusCancelReasonMap: Record<string, string> =
+  Object.fromEntries(
+    BookingStatusCancelReason.map((reason) => [reason.value, reason.label]),
+  );
