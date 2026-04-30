@@ -63,7 +63,11 @@ export interface BookingResponse {
 export interface SingleBookingResponse extends BookingInfo {
   medicalDeclaration: null;
   consent: null;
-  uploads: string[];
+  uploads: {
+    bookingRequestId: string,
+    id: string,
+    secureUrl: string
+  }[];
   assignments: [];
   reviewedByAdmin: null;
 }

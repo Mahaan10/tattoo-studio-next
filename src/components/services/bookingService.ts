@@ -11,11 +11,11 @@ export default function bookingAppointmentApi(
   newBookingIntake: FormData,
 ): Promise<BookingAppointmentProps> {
   return http
-    .post("/public/booking-intake", newBookingIntake, {
+    .post("/public/booking-intake", newBookingIntake/* , {
       headers: {
         "Content-Type": "multipart/form-data",
       },
-    })
+    } */)
     .then(({ data }: AxiosResponse<BookingAppointmentProps>) => data);
 }
 

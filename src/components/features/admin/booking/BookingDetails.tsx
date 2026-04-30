@@ -2,14 +2,19 @@
 
 import formattedDate, { formatBudgetRange } from "@/components/utils/formatter";
 import useBooking from "../../booking/useBooking";
+import Image from "next/image";
+import { useState } from "react";
+import Lightbox from "yet-another-react-lightbox"
+import Zoom from "yet-another-react-lightbox/plugins/zoom"
 
 function BookingDetails() {
   const { singleBooking, singleBookingIsLoading } = useBooking();
+  const [index, setIndex] = useState<number>(-1)
 
   if (singleBookingIsLoading) return null;
 
   const { client, uploads } = singleBooking || {};
-
+  console.log("singleBooking =>", singleBooking)
   return (
     <div className="p-4 md:p-6">
       {/* HEADER */}
@@ -58,20 +63,29 @@ function BookingDetails() {
           <h2 className="text-lg font-medium mb-4">Reference Images</h2>
 
           {uploads && uploads.length > 0 ? (
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-              {uploads.map((url: string, i: number) => (
-                <div
-                  key={i}
-                  className="aspect-square overflow-hidden rounded-xl border"
-                >
-                  <img
-                    src={url}
-                    alt="reference"
-                    className="w-full h-full object-cover hover:scale-105 transition"
-                  />
-                </div>
-              ))}
-            </div>
+            <>
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                {uploads.map((img, i) => (
+                  <button
+                    key={img.id}
+                    onClick={() => setIndex(i)}
+                    className="relative w-full aspect-3/4 overflow-hidden rounded-lg border border-snow/50 shadow shadow-alabaster/20"
+                  >
+                    <Image
+                      src={img.secureUrl}
+                      alt="reference"
+                      fill
+                      className="object-cover hover:scale-105 transition-transform duration-500"
+                    />
+                  </button>
+                ))}
+              </div>
+
+              {/* Lightbox */}
+              <Lightbox open={index >= 0} close={() => setIndex(-1)} slides={uploads.map((img) => ({
+                src: img.secureUrl
+              }))} plugins={[Zoom]} className="cursor-zoom-in"/>
+            </>
           ) : (
             <p className="text-sm text-snow/50">No images uploaded</p>
           )}
