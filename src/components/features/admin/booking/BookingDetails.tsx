@@ -35,15 +35,21 @@ function BookingDetails() {
             </h1>
             <p className="text-sm text-snow/50">Booking overview</p>
           </div>
-          {(singleBooking?.status == "CANCELLED" || singleBooking?.status == "COMPLETED") ? "" : <div className="flex items-center">
-            <button
-              className="btn flex gap-x-2 text-sm"
-              onClick={() => setIsOpen(true)}
-            >
-              <span>Update Status</span>
-              <CiEdit className="size-5" />
-            </button>
-          </div>}
+          {singleBooking?.status == "CANCELLED" ||
+          singleBooking?.status == "COMPLETED" ||
+          singleBooking?.status === "CONSULT_NO_SHOW" ? (
+            ""
+          ) : (
+            <div className="flex items-center">
+              <button
+                className="btn flex gap-x-2 text-sm"
+                onClick={() => setIsOpen(true)}
+              >
+                <span>Update Status</span>
+                <CiEdit className="size-5" />
+              </button>
+            </div>
+          )}
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -63,9 +69,13 @@ function BookingDetails() {
             <Card title="Booking Info">
               <Info
                 label="Status"
-                value={singleBooking?.status && (
-                  <StatusBadge status={singleBooking.status as BookingStatus} />
-                )}
+                value={
+                  singleBooking?.status && (
+                    <StatusBadge
+                      status={singleBooking.status as BookingStatus}
+                    />
+                  )
+                }
               />
               <Info
                 label="Budget"

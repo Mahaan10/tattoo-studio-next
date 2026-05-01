@@ -1,4 +1,7 @@
-import { BookingInfo, BookingStatus } from "@/components/schema & types/booking/booking-appointment.types";
+import {
+  BookingInfo,
+  BookingStatus,
+} from "@/components/schema & types/booking/booking-appointment.types";
 import StatusBadge from "@/components/templates/admin/booking/StatusBadge";
 import Table from "@/components/ui/Table";
 import formattedDate, {
@@ -45,10 +48,23 @@ function BookingRow({ booking, index, onEdit }: BookingRowProps) {
         </Link>
       </td>
       <td>
-        {(booking?.status == "CANCELLED" || booking?.status === "COMPLETED") ? <span className="gap-x-2">No Operation - Booking {booking?.status === "CANCELLED" ? "Cancelled" : "Completed"}</span> : <button className="btn flex gap-x-2" onClick={onEdit}>
-          <span>Update Status</span>
-          <CiEdit className="size-5" />
-        </button>}
+        {booking?.status == "CANCELLED" ||
+        booking?.status === "COMPLETED" ||
+        booking?.status === "CONSULT_NO_SHOW" ? (
+          <span className="gap-x-2">
+            No Operation -{" "}
+            {booking?.status === "CANCELLED"
+              ? "Booking Cancelled"
+              : booking?.status === "COMPLETED"
+                ? "Booking Completed"
+                : "Client Not Show"}
+          </span>
+        ) : (
+          <button className="btn flex gap-x-2" onClick={onEdit}>
+            <span>Update Status</span>
+            <CiEdit className="size-5" />
+          </button>
+        )}
       </td>
     </Table.Row>
   );

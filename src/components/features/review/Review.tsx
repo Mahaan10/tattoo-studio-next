@@ -8,6 +8,7 @@ import useReview from "./useReview";
 import Image from "next/image";
 import RatingStars from "@/components/templates/review/RatingStars";
 import { Star } from "lucide-react";
+import ReviewSkeleton from "@/components/templates/skeleton/skeletons/ReviewSkeleton";
 
 function Review() {
   const { reviews, reviewsIsLoading } = useReview();
@@ -18,7 +19,7 @@ function Review() {
 
   const enableSliderFeatures = reviews?.length >= 4;
 
-  //if (reviewsIsLoading) return null;
+  if (reviewsIsLoading) return null;
   return (
     <section className="mt-10 border border-snow/20 rounded-xl shadow shadow-alabaster/20 bg-onyx">
       <div className="flex flex-col lg:flex-row gap-6 py-5 lg:py-10 px-4">

@@ -1,10 +1,10 @@
 import { HomePageContent } from "@/components/constants/Navigation";
 import Review from "@/components/features/review/Review";
-import Image from "next/image";
+import BlurImage from "@/components/templates/skeleton/BlurImage";
 import Link from "next/link";
 import { MdArrowRightAlt } from "react-icons/md";
 
-async function Home() {
+function Home() {
   return (
     <>
       <div className="relative h-screen w-full overflow-hidden">
@@ -64,11 +64,12 @@ async function Home() {
                 href={c.linkHref}
                 className="relative w-full aspect-3/4 overflow-hidden rounded-2xl bg-onyx transition-all duration-500 ease-in-out group cursor-pointer shadow shadow-alabaster/20 hover:shadow-md hover:z-10"
               >
-                <Image
+                <BlurImage
                   src={c.imgSrc}
                   alt={c.title}
                   fill
-                  priority
+                  preload
+                  blurDataURL="/images/placeholder.png"
                   className="object-cover transition-transform duration-500 group-hover:blur-sm grayscale"
                 />
 

@@ -100,6 +100,12 @@
   }
 }
 
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
 @keyframes inkSpread {
   0% {
     transform: scale(1);
