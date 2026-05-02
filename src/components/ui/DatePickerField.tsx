@@ -19,6 +19,7 @@ interface DatePickerProps<T extends Record<string, any>> {
   minDate?: Date;
   currentMonth?: Date;
   onMonthChange?: (date: Date) => void;
+  disabled?: boolean;
 }
 
 function DatePickerField<T extends Record<string, any>>({
@@ -35,6 +36,7 @@ function DatePickerField<T extends Record<string, any>>({
   minDate,
   currentMonth,
   onMonthChange,
+  disabled,
 }: DatePickerProps<T>) {
   const [isOpen, setIsOpen] = useState(false);
   const [hoveredDate, setHoveredDate] = useState<Date | undefined>();
@@ -131,6 +133,7 @@ function DatePickerField<T extends Record<string, any>>({
                   value={getDisplayValue()}
                   onClick={handleInputClick}
                   placeholder=" "
+                  disabled={disabled}
                   className="block w-full px-3 pb-2.5 pt-4 text-sm bg-transparent border border-onyx/50 hover:border-onyx/75 focus:border-onyx transition-all duration-300 cursor-pointer peer rounded-lg outline-none"
                 />
                 <label className="absolute text-sm text-body duration-300 transform -translate-y-4 scale-75 top-1.5 z-10 opacity-75 origin-left bg-alabaster px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-1.5 peer-focus:scale-75 peer-focus:-translate-y-4 inset-s-1 pointer-events-none transition-all">

@@ -7,6 +7,7 @@ import "swiper/css";
 import "swiper/css/effect-coverflow";
 
 import Image from "next/image";
+import BlurImage from "../skeleton/BlurImage";
 
 type ImageType = {
   artistName: string;
@@ -21,10 +22,10 @@ type LookBookSwiperProps = {
 };
 
 export default function LookBookSwiper({ images }: LookBookSwiperProps) {
-  const enableSliderFeatures = images.length >= 6;
+  const enableSliderFeatures = images.length >= 3;
 
   return (
-    <div className="relative w-full">
+    <div className="relative w-full animate-fade-in">
       <Swiper
         effect="coverflow"
         grabCursor={true}
@@ -63,14 +64,13 @@ export default function LookBookSwiper({ images }: LookBookSwiperProps) {
         {images.map((img) => (
           <SwiperSlide key={img.id}>
             <div className="relative w-full h-100 rounded-2xl overflow-hidden">
-              <Image
+              <BlurImage
                 src={img.coverUrl}
                 alt="Tattoo style"
                 fill
-                loading="lazy"
+                preload
                 sizes="(max-width: 1024px) 100vw, 50vw"
                 className="object-cover"
-                //priority={img.id === 1}
               />
             </div>
           </SwiperSlide>

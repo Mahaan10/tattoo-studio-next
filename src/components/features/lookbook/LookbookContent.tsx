@@ -1,9 +1,11 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import Image from "next/image";
 import LookBookSwiper from "@/components/templates/lookbook/Swiper";
 import useArtist from "../artist/useArtist";
+import BlurImage from "@/components/templates/skeleton/BlurImage";
+import LookbookSkeleton from "@/components/templates/skeleton/skeletons/lookbook/LookbookSkeleton";
+import LookbookSwiperSkeleton from "@/components/templates/skeleton/skeletons/lookbook/LookbookSwiperSkeleton";
 
 interface GalleryImageProps {
   id: string;
@@ -18,24 +20,27 @@ export default function LookBookContent() {
   const [activeId, setActiveId] = useState<string | null>(null);
   const { artistsLookbookItems, artistsLookbookIsLoading } = useArtist();
 
-  const allWorks = artistsLookbookItems.flatMap((artist) =>
-    artist.latestWorks.map((work) => ({
-      ...work,
-      artistName: artist.displayName,
-      artistSlug: artist.slug,
-    })),
-  );
+  const allWorks = useMemo(() => {
+    return artistsLookbookItems.flatMap((artist) =>
+      artist.latestWorks.map((work) => ({
+        ...work,
+        artistName: artist.displayName,
+        artistSlug: artist.slug,
+      })),
+    );
+  }, [artistsLookbookItems]);
 
   const uniqueTags = useMemo(() => {
     const tags = allWorks.flatMap((work) => work.tags);
     return Array.from(new Set(tags));
   }, [allWorks]);
 
-  console.log("artistsLookbookItems =>", artistsLookbookItems);
-  console.log("allWorks =>", allWorks);
-  console.log("uniqueTags =>", uniqueTags);
+  if (artistsLookbookIsLoading && artistsLookbookItems.length === 0) {
+    return <LookbookSkeleton />;
+  }
 
-  if (artistsLookbookIsLoading && allWorks.length === 0) return null; //<div>Loading Lookbook...</div>;
+  const swiperImages = allWorks.slice(0, 6);
+  const isSwiperLoading = artistsLookbookIsLoading && swiperImages.length === 0;
 
   return (
     <>
@@ -48,7 +53,11 @@ export default function LookBookContent() {
           </h1>
         </div>
         <div>
-          <LookBookSwiper images={allWorks.slice(0, 6)} />
+          {isSwiperLoading ? (
+            <LookbookSwiperSkeleton />
+          ) : (
+            <LookBookSwiper images={swiperImages} />
+          )}
         </div>
       </div>
 
@@ -60,7 +69,7 @@ export default function LookBookContent() {
           </span>
           {uniqueTags.map((tag, index) => (
             <button
-              key={index}
+              key={`${tag}-${index}`}
               type="button"
               className="px-4 py-2 mr-2 rounded-[10px] transition-all duration-200 bg-onyx text-snow hover:bg-snow hover:text-onyx font-light capitalize"
             >
@@ -104,10 +113,12 @@ function GalleryImage({
       className="relative w-full overflow-hidden rounded-2xl group aspect-3/4 cursor-pointer shadow shadow-snow/20 hover:shadow-md transition-all duration-200"
     >
       {/* The Image */}
-      <Image
+      <BlurImage
         src={src}
         alt={`Tattoo by ${artistName}`}
         fill
+        preload
+        blurDataURL="/images/placeholder.png"
         sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, (max-width: 1280px) 25vw, 20vw"
         className={`
           object-cover

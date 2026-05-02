@@ -5,14 +5,31 @@ import { LuAtSign, LuInstagram, LuMapPin } from "react-icons/lu";
 import { GrLocationPin } from "react-icons/gr";
 import useArtist from "./useArtist";
 import Image from "next/image";
+import BlurImage from "@/components/templates/skeleton/BlurImage";
+import ArtistDetailsSkeleton from "@/components/templates/skeleton/skeletons/tattoo-artist/ArtistDetailsSkeleton";
+import { toast } from "react-toastify";
 
 function ArtistDetailsView() {
-  const { artistBySlug, artistWorks } = useArtist();
+  const {
+    artistBySlug,
+    artistWorks,
+    getArtistBySlugIsLoading,
+    getArtistBySlugIsError,
+  } = useArtist();
   const [activeId, setActiveId] = useState<string | undefined>(undefined);
 
-  if (!artistBySlug) return null;
-  console.log("artistBySlug =>", artistBySlug);
-  console.log("artistWorks =>", artistWorks);
+  if (getArtistBySlugIsLoading && !artistBySlug) {
+    return <ArtistDetailsSkeleton />;
+  }
+
+  if (!artistBySlug) {
+    return <div>Artist not found.</div>;
+  }
+
+  if (getArtistBySlugIsError) {
+    return toast.error("Failed to fetch Artist details, try again later");
+  }
+
   return (
     <section className="py-16 px-[5%]">
       <div className="container mx-auto py-15">
@@ -27,12 +44,13 @@ function ArtistDetailsView() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-12 items-stretch">
           {/* LEFT: Artist Image and Styles */}
           <div className="lg:col-span-5 xl:col-span-4">
-            <div className="relative w-[285.533px] h-112.5 overflow-hidden rounded-2xl bg-onyx mb-6">
-              <Image
+            <div className="relative w-full aspect-3/4 max-h-112.5 max-w-[285.533px] overflow-hidden rounded-2xl bg-onyx mb-6 border border-snow/20 shadow shadow-alabaster/20">
+              <BlurImage
                 src={artistBySlug.coverUrl}
                 alt={artistBySlug.displayName}
                 fill
-                priority
+                preload
+                blurDataURL="/images/placeholder.png"
                 className="object-cover grayscale"
               />
             </div>
@@ -40,9 +58,9 @@ function ArtistDetailsView() {
             {/* Styles under the image */}
             <div className="flex flex-wrap">
               {artistWorks?.flatMap((work) =>
-                work.tags.map((tag, index) => (
+                work.tags.map((tag) => (
                   <button
-                    key={index}
+                    key={`${work.coverUrl}-${work.createdAt}`}
                     type="button"
                     className="px-4 py-2 mr-2 mb-2 rounded-[10px] transition-all duration-200 bg-onyx text-snow hover:bg-snow hover:text-onyx font-light text-sm capitalize"
                   >
@@ -121,9 +139,9 @@ function ArtistDetailsView() {
                 onClick={() =>
                   setActiveId(activeId === work.id ? undefined : work.id)
                 }
-                className="relative w-full overflow-hidden rounded-2xl group aspect-3/4 cursor-pointer shadow shadow-snow/20 hover:shadow-md transition-all duration-200"
+                className="relative w-full overflow-hidden rounded-2xl group aspect-3/4 cursor-pointer transition-all duration-200 border border-snow/20 shadow shadow-alabaster/20 hover:shadow-md"
               >
-                <Image
+                <BlurImage
                   src={work.coverUrl}
                   alt="Tattoo gallery"
                   fill

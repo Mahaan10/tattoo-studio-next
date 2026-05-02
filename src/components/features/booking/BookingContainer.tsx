@@ -11,9 +11,9 @@ import BookingRequest from "./booking-request/BookingRequest";
 import useBooking from "./useBooking";
 import MedicalDeclaration from "./medical-declaration/MedicalDeclaration";
 import { zodResolver } from "@hookform/resolvers/zod";
-import BookingBreadCrumb from "@/components/templates/booking/BookingBreadCrumb";
 import FormStepper from "@/components/ui/FormStepper";
 import { formatDate } from "@/components/utils/formatter";
+import DotsLoader from "@/components/ui/DotsLoader";
 
 const BOOKING_STEPS = [
   { id: 1, label: "Client Info" /* fields: ["client"] */ },
@@ -29,11 +29,19 @@ function BookingContainer() {
     mode: "onTouched",
   });
 
-  const { trigger, handleSubmit, reset } = methods;
+  const {
+    trigger,
+    handleSubmit,
+    reset,
+    formState: { isValid },
+  } = methods;
 
   const nextStep = async (fields: any[]) => {
     const isValid = await trigger(fields);
-    if (isValid) setStep((prev) => prev + 1);
+    if (!isValid) return;
+
+    await new Promise((r) => setTimeout(r, 150));
+    setStep((prev) => prev + 1);
   };
 
   const prevStep = () => setStep((prev) => prev - 1);
@@ -91,7 +99,7 @@ function BookingContainer() {
 
         <FormProvider {...methods}>
           <form
-            className="grid grid-cols-1 items-center justify-center gap-5 md:gap-6"
+            className={`grid grid-cols-1 items-center justify-center gap-5 md:gap-6 ${bookingAppointmentIsPending && "opacity-70 pointer-events-none"}`}
             onSubmit={handleSubmit(onSubmit)}
           >
             {step === 1 ? (
@@ -101,12 +109,16 @@ function BookingContainer() {
                 <BookingRequest onBack={prevStep} />
                 <button
                   type="submit"
-                  disabled={bookingAppointmentIsPending}
+                  disabled={bookingAppointmentIsPending || !isValid}
                   className="submit-btn"
                 >
-                  {bookingAppointmentIsPending
-                    ? "Submitting ..."
-                    : "Submit Booking"}
+                  {bookingAppointmentIsPending ? (
+                    <>
+                      Submitting <DotsLoader />
+                    </>
+                  ) : (
+                    "Submit Booking"
+                  )}
                 </button>
               </>
             )}

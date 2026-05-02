@@ -62,7 +62,7 @@ function Home() {
               <Link
                 key={c.id}
                 href={c.linkHref}
-                className="relative w-full aspect-3/4 overflow-hidden rounded-2xl bg-onyx transition-all duration-500 ease-in-out group cursor-pointer shadow shadow-alabaster/20 hover:shadow-md hover:z-10"
+                className="relative w-full aspect-3/4 overflow-hidden rounded-2xl bg-onyx transition-all duration-500 ease-in-out group cursor-pointer border border-snow/20 shadow shadow-alabaster/20 hover:shadow-md hover:z-10"
               >
                 <BlurImage
                   src={c.imgSrc}

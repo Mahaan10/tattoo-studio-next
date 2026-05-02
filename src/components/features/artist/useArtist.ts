@@ -15,7 +15,6 @@ export default function useArtist() {
   const params = useParams();
   const slug = typeof params?.slug === "string" ? params.slug : "";
   const artistId = typeof params?.id === "string" ? params.id : "";
-  console.log("params =>", params);
 
   // get single public artist by slug
   const {
@@ -26,6 +25,7 @@ export default function useArtist() {
     queryKey: ["artist", slug],
     queryFn: () => getArtistBySlugApi(slug),
     enabled: !!slug,
+    staleTime: 1000 * 60 * 5 /* 5min */,
   });
 
   const artistBySlug = singleArtistData?.artist || null;
@@ -40,6 +40,8 @@ export default function useArtist() {
   } = useQuery({
     queryKey: ["artists-lookbook"],
     queryFn: getArtistsLookbookApi,
+    placeholderData: (prev) => prev,
+    staleTime: 1000 * 60 * 5 /* 5min */,
   });
 
   const artistsLookbookItems = lookbookData?.items || [];

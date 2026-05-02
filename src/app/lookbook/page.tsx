@@ -5,14 +5,19 @@ import {
   HydrationBoundary,
   QueryClient,
 } from "@tanstack/react-query";
+import { notFound } from "next/navigation";
 
 async function LookBook() {
   const queryClient = new QueryClient();
 
-  await queryClient.prefetchQuery({
+  const data = await queryClient.fetchQuery({
     queryKey: ["artists-lookbook"],
     queryFn: getArtistsLookbookApi,
   });
+
+  if (!data.items) {
+    notFound();
+  }
 
   return (
     <section className="py-16 px-[5%]">

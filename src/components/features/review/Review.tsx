@@ -8,10 +8,11 @@ import useReview from "./useReview";
 import Image from "next/image";
 import RatingStars from "@/components/templates/review/RatingStars";
 import { Star } from "lucide-react";
-import ReviewSkeleton from "@/components/templates/skeleton/skeletons/ReviewSkeleton";
+import ReviewSkeleton from "@/components/templates/skeleton/skeletons/home/ReviewSkeleton";
+import { toast } from "react-toastify";
 
 function Review() {
-  const { reviews, reviewsIsLoading } = useReview();
+  const { reviews, reviewsIsLoading, reviewsIsError } = useReview();
   const [hovered, setHovered] = useState<number>(0);
   const reviewSwiperRef = useRef<any>(null);
 
@@ -19,7 +20,12 @@ function Review() {
 
   const enableSliderFeatures = reviews?.length >= 4;
 
-  if (reviewsIsLoading) return null;
+  const skeletonSlides = [...Array(3)];
+
+  if (reviewsIsError) {
+    toast.error("Failed to fetch reviews from Google");
+  }
+
   return (
     <section className="mt-10 border border-snow/20 rounded-xl shadow shadow-alabaster/20 bg-onyx">
       <div className="flex flex-col lg:flex-row gap-6 py-5 lg:py-10 px-4">
@@ -57,7 +63,7 @@ function Review() {
           modules={[Autoplay]}
           onSwiper={(swiper) => (reviewSwiperRef.current = swiper)}
           autoplay={
-            enableSliderFeatures
+            enableSliderFeatures && !reviewsIsLoading
               ? {
                   delay: 3000,
                   disableOnInteraction: false,
@@ -66,50 +72,58 @@ function Review() {
               : false
           }
           //spaceBetween={25}
-          loop={enableSliderFeatures}
+          loop={enableSliderFeatures && !reviewsIsLoading}
           loopAdditionalSlides={reviews?.length || 0}
           className="w-full lg:w-[80%]"
           breakpoints={{
             0: { slidesPerView: 1 },
-            640: { slidesPerView: 1 },
             768: { slidesPerView: 2 },
-            1024: { slidesPerView: 2 },
           }}
         >
-          {reviews?.map((review, index) => (
-            <SwiperSlide key={index}>
-              <div className="bg-onyx rounded-2xl border text-sm border-snow/20 flex flex-col mx-2 h-full shadow shadow-alabaster/20">
-                {/* Header */}
-                <div className="px-4 py-2 flex items-center justify-between border-b border-snow/20">
-                  <div className="flex items-center gap-x-2">
-                    <Image
-                      src={review?.authorPhotoUrl}
-                      alt={review?.authorName}
-                      width={35}
-                      height={35}
-                      className="object-cover rounded-full"
-                    />
-                    <span className="font-bold text-xs sm:text-sm">
-                      {review?.authorName}
+          {reviewsIsLoading ? (
+            skeletonSlides.map((_, index) => (
+              <SwiperSlide key={`skeleton-${index}`}>
+                <ReviewSkeleton />
+              </SwiperSlide>
+            ))
+          ) : reviewsIsError ? (
+            <div className="">Failed To fetch reviews</div>
+          ) : (
+            reviews?.map((review, index) => (
+              <SwiperSlide key={index}>
+                <div className="bg-onyx rounded-2xl border text-sm border-snow/20 flex flex-col mx-2 h-full shadow shadow-alabaster/20">
+                  {/* Header */}
+                  <div className="px-4 py-2 flex items-center justify-between border-b border-snow/20">
+                    <div className="flex items-center gap-x-2">
+                      <Image
+                        src={review?.authorPhotoUrl}
+                        alt={review?.authorName}
+                        width={35}
+                        height={35}
+                        className="object-cover rounded-full"
+                      />
+                      <span className="font-bold text-xs sm:text-sm">
+                        {review?.authorName}
+                      </span>
+                    </div>
+
+                    <span className="text-[10px] sm:text-xs">
+                      {review?.relativeTimeDescription}
                     </span>
                   </div>
 
-                  <span className="text-[10px] sm:text-xs">
-                    {review?.relativeTimeDescription}
-                  </span>
-                </div>
+                  {/* Content */}
+                  <div className="px-4 py-3 flex flex-col flex-1">
+                    <RatingStars rating={review?.rating} />
 
-                {/* Content */}
-                <div className="px-4 py-3 flex flex-col flex-1">
-                  <RatingStars rating={review?.rating} />
-
-                  <div className="mt-3 text-xs sm:text-sm overflow-y-auto max-h-28">
-                    {review.text}
+                    <div className="mt-3 text-xs sm:text-sm overflow-y-auto max-h-28">
+                      {review.text}
+                    </div>
                   </div>
                 </div>
-              </div>
-            </SwiperSlide>
-          ))}
+              </SwiperSlide>
+            ))
+          )}
         </Swiper>
       </div>
     </section>

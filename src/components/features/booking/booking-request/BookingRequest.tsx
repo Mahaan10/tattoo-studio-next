@@ -91,6 +91,7 @@ function BookingRequest({ onBack }: BookingRequestProps) {
         disabledDates={closedDates}
         currentMonth={currentMonth}
         onMonthChange={setCurrentMonth}
+        disabled={publicConsultAvailabilityIsLoading}
       />
       {/* PreferredDateFrom */}
       {/* <DatePickerField<BookingAppointmentFormData>
