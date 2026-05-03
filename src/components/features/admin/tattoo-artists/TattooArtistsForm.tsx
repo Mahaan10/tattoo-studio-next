@@ -17,6 +17,7 @@ import InputFile from "@/components/ui/InputFile";
 import TextAreaField from "@/components/ui/TextAreaField";
 import { useEffect } from "react";
 import { ArtistInfo } from "@/components/schema & types/artist/artist.types";
+import DotsLoader from "@/components/ui/DotsLoader";
 
 interface TattooArtistFormProps {
   onClose: () => void;
@@ -98,7 +99,6 @@ function TattooArtistsForm({ onClose, artistToEdit }: TattooArtistFormProps) {
   }, [works]);
 
   const onSubmit: SubmitHandler<TattooArtistFormData> = async (data) => {
-    console.log("data =>", data);
     const formData = new FormData();
 
     formData.append("displayName", data.displayName);
@@ -133,7 +133,7 @@ function TattooArtistsForm({ onClose, artistToEdit }: TattooArtistFormProps) {
 
   return (
     <form
-      className="grid grid-cols-1 items-center justify-center gap-5 md:gap-6"
+      className={`grid grid-cols-1 items-center justify-center gap-5 md:gap-6 ${createNewArtistIsPending || editArtistIsPending ? "opacity-70 pointer-events-none" : ""}`}
       onSubmit={handleSubmit(onSubmit)}
     >
       {/* displayName */}
@@ -277,11 +277,21 @@ function TattooArtistsForm({ onClose, artistToEdit }: TattooArtistFormProps) {
         disabled={createNewArtistIsPending || editArtistIsPending || !isValid}
         className="submit-btn"
       >
-        {createNewArtistIsPending || editArtistIsPending
-          ? "Submitting ..."
-          : artistToEdit
-            ? "Update Artist"
-            : "Create Artist"}
+        {createNewArtistIsPending || editArtistIsPending ? (
+          artistToEdit ? (
+            <>
+              Updating <DotsLoader />
+            </>
+          ) : (
+            <>
+              Creating <DotsLoader />
+            </>
+          )
+        ) : artistToEdit ? (
+          "Update Artist"
+        ) : (
+          "Create Artist"
+        )}
       </button>
     </form>
   );

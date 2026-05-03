@@ -14,16 +14,38 @@ import Modal from "@/components/ui/Modal";
 import UpdateBookingStatusForm from "./UpdateBookingStatusForm";
 import StatusBadge from "@/components/templates/admin/booking/StatusBadge";
 import { BookingStatus } from "@/components/schema & types/booking/booking-appointment.types";
+import { toast } from "react-toastify";
+import BlurImage from "@/components/templates/skeleton/BlurImage";
 
 function BookingDetails() {
-  const { singleBooking, singleBookingIsLoading } = useBooking();
+  const { singleBooking, singleBookingIsLoading, singleBookingIsError } =
+    useBooking();
   const [index, setIndex] = useState<number>(-1);
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
-  if (singleBookingIsLoading) return null;
-
   const { client, uploads } = singleBooking || {};
-  console.log("singleBooking =>", singleBooking);
+
+  if (singleBookingIsLoading) {
+    return (
+      <div className="p-6 space-y-6 animate-pulse">
+        <div className="h-6 w-40 bg-onyx rounded" />
+        <div className="grid grid-cols-2 gap-6">
+          <div className="h-40 bg-onyx rounded" />
+          <div className="h-40 bg-onyx rounded" />
+        </div>
+      </div>
+    );
+  }
+
+  if (singleBookingIsError) {
+    toast.error("Failed to load booking details, try again");
+    return (
+      <div className="flex items-center justify-center h-[60vh]">
+        <p>Failed to load booking details, try again</p>
+      </div>
+    );
+  }
+
   return (
     <>
       <div className="p-4 md:p-6">
@@ -110,10 +132,12 @@ function BookingDetails() {
                       onClick={() => setIndex(i)}
                       className="relative w-full aspect-3/4 overflow-hidden rounded-lg border border-snow/50 shadow shadow-alabaster/20"
                     >
-                      <Image
+                      <BlurImage
                         src={img.secureUrl}
                         alt="reference"
                         fill
+                        preload
+                        blurDataURL="/images/placeholder.png"
                         className="object-cover hover:scale-105 transition-transform duration-500"
                       />
                     </button>

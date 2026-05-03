@@ -54,6 +54,7 @@ export default function useArtist() {
   } = useQuery({
     queryKey: ["artists"],
     queryFn: getAllArtistsApi,
+    staleTime: 1000 * 60 * 5 /* 5min */,
   });
 
   const allArtists = data?.items || [];
@@ -82,6 +83,9 @@ export default function useArtist() {
       onSuccess: (data) => {
         console.log("editArtistOnSuccessData =>", data);
         toast.success(`Edit ${data.displayName} successfully`);
+        queryClient.invalidateQueries({ queryKey: ["artists"] });
+        queryClient.invalidateQueries({ queryKey: ["single-artist"] });
+        queryClient.invalidateQueries({ queryKey: ["artists-lookbook"] });
       },
 
       onError: () => {

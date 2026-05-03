@@ -5,14 +5,19 @@ import {
   HydrationBoundary,
   QueryClient,
 } from "@tanstack/react-query";
+import { notFound } from "next/navigation";
 
 async function Articles() {
   const queryClient = new QueryClient();
 
-  await queryClient.prefetchQuery({
+  const data = await queryClient.fetchQuery({
     queryKey: ["articles"],
     queryFn: getArticlesApi,
   });
+
+  if (!data.items) {
+    notFound();
+  }
 
   return (
     <section className="py-16 px-[5%]">

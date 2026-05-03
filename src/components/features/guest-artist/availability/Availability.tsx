@@ -8,6 +8,7 @@ import { useEffect } from "react";
 import { GuestArtistDaysAvailability } from "@/components/schema & types/guest-artist/guest-artist.types";
 import useGuestArtistBooking from "../useGuestArtistBooking";
 import ReadOnlyField from "@/components/ui/ReadOnlyField";
+import DotsLoader from "@/components/ui/DotsLoader";
 
 interface AvailabilityProps {
   onNext: () => void;
@@ -100,8 +101,11 @@ function Availability({ onNext }: AvailabilityProps) {
 
   const finalPriceText = `${finalPrice.toFixed(2)}€`;
 
-  const availabilityText = tableAvailabilityIsLoading
-    ? "Checking availability..."
+  const showPricing =
+    !tableAvailabilityIsLoading && totalDays > 0 && numberOfTables;
+
+  const availabilityContent = tableAvailabilityIsLoading
+    ? `Checking availability ${(<DotsLoader />)}`
     : tableAvailabilityIsError
       ? "Error loading availability"
       : maxTablesAvailable > 0
@@ -109,7 +113,9 @@ function Availability({ onNext }: AvailabilityProps) {
         : "No tables available";
 
   return (
-    <>
+    <div
+      className={`flex flex-col gap-4 ${tableAvailabilityIsLoading && "opacity-70 pointer-events-none"}`}
+    >
       <DatePickerField<GuestArtistBookingAppointment>
         label="Select Dates"
         name={"dateRange" as any}
@@ -123,7 +129,7 @@ function Availability({ onNext }: AvailabilityProps) {
 
       {/* Availability */}
       {isDateSelected && (
-        <ReadOnlyField label="Availability" value={availabilityText} />
+        <ReadOnlyField label="Availability" value={availabilityContent} />
       )}
 
       {/* Tables */}
@@ -132,7 +138,11 @@ function Availability({ onNext }: AvailabilityProps) {
         name="numberOfTables"
         register={register}
         errors={errors.numberOfTables}
-        options={tableOptions}
+        options={
+          tableAvailabilityIsLoading
+            ? [{ id: 0, label: "Loading ...", value: "" }]
+            : tableOptions
+        }
         disabled={
           !isDateSelected ||
           tableAvailabilityIsLoading ||
@@ -140,7 +150,7 @@ function Availability({ onNext }: AvailabilityProps) {
         }
       />
 
-      {totalDays > 0 && numberOfTables && !isMonthly && (
+      {showPricing && !isMonthly && (
         <ReadOnlyField label="Total Price" value={basePriceText} />
       )}
 
@@ -161,12 +171,12 @@ function Availability({ onNext }: AvailabilityProps) {
       <button
         type="button"
         onClick={onNext}
-        disabled={!isDateSelected || maxTablesAvailable === 0}
+        disabled={!isDateSelected || maxTablesAvailable === 0 || !isValid}
         className="submit-btn"
       >
         Continue
       </button>
-    </>
+    </div>
   );
 }
 

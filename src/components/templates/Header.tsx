@@ -25,6 +25,8 @@ import {
 import { BsCaretDown } from "react-icons/bs";
 import { HiOutlinePower } from "react-icons/hi2";
 import useAuth from "../features/auth/useAuth";
+import DotsLoader from "../ui/DotsLoader";
+import BlurImage from "./skeleton/BlurImage";
 
 function Header() {
   const { logout, logoutIsPending } = useAuth();
@@ -49,9 +51,6 @@ function Header() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  if (!pathname) return null;
-  ///*  */if (currentUserIsLoading) return null;
-
   return (
     <>
       <header
@@ -69,17 +68,20 @@ function Header() {
         </div>
         {/* Admin Login Modal & Logo */}
 
-        {!user ? (
+        {currentUserIsLoading ? (
+          <div className="w-24 h-10 bg-snow/10 animate-pulse rounded-md" />
+        ) : !user ? (
           <button
             className="relative w-18 h-18 order-1 lg:order-0"
             onClick={() => setIsModalOpen((prev) => !prev)}
           >
-            <Image
+            <BlurImage
               src="/images/Logo.png"
               alt="Logo"
               fill
               quality={75}
-              priority
+              preload
+              blurDataURL="/images/placeholder.png"
               className="object-cover"
             />
           </button>
@@ -125,9 +127,10 @@ function Header() {
 
               <DropdownMenuItem
                 onClick={logoutHandler}
+                disabled={logoutIsPending}
                 className="flex items-center justify-between gap-x-2 hover:bg-red-700 cursor-pointer p-2 transition-colors duration-200 focus:text-white-smoke/80"
               >
-                <span>Logout</span>
+                <span>{logoutIsPending ? <DotsLoader /> : "Logout"}</span>
                 <HiOutlinePower className="w-6! h-6! opacity-75" />
               </DropdownMenuItem>
             </DropdownMenuContent>

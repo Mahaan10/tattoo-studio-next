@@ -36,7 +36,10 @@ function GuestArtistContainer() {
 
   const nextStep = async () => {
     const valid = await trigger(["startDate", "endDate", "numberOfTables"]);
-    if (valid) setStep(2);
+    if (!valid) return;
+
+    await new Promise((r) => setTimeout(r, 150));
+    setStep(2);
   };
 
   const prevStep = () => setStep(1);

@@ -5,6 +5,7 @@ import InputField from "@/components/ui/InputField";
 import CheckBoxInput from "@/components/ui/CheckBoxInput";
 import { GuestArtistBookingAppointment } from "@/components/schema & types/guest-artist/guest-artist.schema";
 import { HiArrowLongLeft } from "react-icons/hi2";
+import DotsLoader from "@/components/ui/DotsLoader";
 
 interface DetailsProps {
   onBack: () => void;
@@ -14,11 +15,11 @@ interface DetailsProps {
 function Details({ onBack, isSubmitting }: DetailsProps) {
   const {
     register,
-    formState: { errors },
+    formState: { errors, isValid },
   } = useFormContext<GuestArtistBookingAppointment>();
 
   return (
-    <>
+    <div className={`${isSubmitting && "opacity-70 pointer-events-none"}`}>
       <div className="flex items-center justify-start">
         <button
           type="button"
@@ -63,10 +64,20 @@ function Details({ onBack, isSubmitting }: DetailsProps) {
         errors={errors.acknowledgment}
       />
 
-      <button type="submit" disabled={isSubmitting} className="submit-btn">
-        {isSubmitting ? "Processing..." : "Proceed to Payment"}
+      <button
+        type="submit"
+        disabled={isSubmitting || !isValid}
+        className="submit-btn"
+      >
+        {isSubmitting ? (
+          <>
+            Processing <DotsLoader />
+          </>
+        ) : (
+          "Proceed to Payment"
+        )}
       </button>
-    </>
+    </div>
   );
 }
 

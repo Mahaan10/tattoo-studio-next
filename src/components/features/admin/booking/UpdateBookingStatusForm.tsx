@@ -19,6 +19,7 @@ import DatePickerField from "@/components/ui/DatePickerField";
 import useArtist from "../../artist/useArtist";
 import InputField from "@/components/ui/InputField";
 import { keyof } from "zod";
+import DotsLoader from "@/components/ui/DotsLoader";
 
 export const STATUS_TRANSITIONS: Record<
   /* BookingStatus */ any,
@@ -41,7 +42,6 @@ function UpdateBookingStatusForm({
   booking,
   onClose,
 }: UpdateBookingStatusFormProps) {
-
   const {
     updateBookingStatus,
     updateBookingStatusIsPending,
@@ -57,13 +57,13 @@ function UpdateBookingStatusForm({
     watch,
     control,
     formState: { errors, isValid },
-    reset
+    reset,
   } = useForm<UpdateStatusFormValues>({
     mode: "onChange",
     resolver: zodResolver(UpdateStatusValidationSchema),
     defaultValues: {
-      status: undefined
-    }
+      status: undefined,
+    },
   });
 
   const availableStatuses =
@@ -75,15 +75,20 @@ function UpdateBookingStatusForm({
   // );
 
   const filteredStatusOptions = [
-    { id: 0, value: booking.status, label: `(Current) ${formatBookingStatus(booking.status)}` },
-    ...BookingStatus.filter((option) => availableStatuses.includes(option.value as any))
-  ]
+    {
+      id: 0,
+      value: booking.status,
+      label: `(Current) ${formatBookingStatus(booking.status)}`,
+    },
+    ...BookingStatus.filter((option) =>
+      availableStatuses.includes(option.value as any),
+    ),
+  ];
 
-  const status = watch("status")
+  const status = watch("status");
 
   const onSubmit: SubmitHandler<UpdateStatusFormValues> = (data) => {
     if (data.status === "TATTOO_SCHEDULED") {
-
       const newTattooSchedule = {
         scheduledDate: data.scheduledDate!,
         artistId: data.artistId!,
@@ -91,15 +96,17 @@ function UpdateBookingStatusForm({
         durationNote: data.durationNote!,
         notes: data.notes || "",
       };
-      scheduleTattoo({ bookingId: booking.id, newTattooSchedule }, {
-        onSuccess: () => {
-          reset()
-          onClose()
-        }
-      });
+      scheduleTattoo(
+        { bookingId: booking.id, newTattooSchedule },
+        {
+          onSuccess: () => {
+            reset();
+            onClose();
+          },
+        },
+      );
 
       return;
-      
     } else {
       const newBookingStatus = {
         status: data.status,
@@ -107,13 +114,11 @@ function UpdateBookingStatusForm({
         cancelReason: data.cancelReason,
       };
 
-      updateBookingStatus(
-        { bookingId: booking.id, newBookingStatus }
-      );
+      updateBookingStatus({ bookingId: booking.id, newBookingStatus });
     }
 
-    reset()
-    onClose()
+    reset();
+    onClose();
   };
 
   return (
@@ -129,7 +134,7 @@ function UpdateBookingStatusForm({
         errors={errors.status}
         options={filteredStatusOptions}
         required
-      //defaultValue={booking.status}
+        //defaultValue={booking.status}
       />
 
       {/* Admin notes */}
@@ -157,28 +162,63 @@ function UpdateBookingStatusForm({
       {status === "TATTOO_SCHEDULED" && (
         <>
           {/* Schedule Date */}
-          <DatePickerField<UpdateStatusFormValues> name="scheduledDate" label="Schedule Date" control={control} errors={errors.scheduledDate} disablePast required />
+          <DatePickerField<UpdateStatusFormValues>
+            name="scheduledDate"
+            label="Schedule Date"
+            control={control}
+            errors={errors.scheduledDate}
+            disablePast
+            required
+          />
 
           {/* Artist Id */}
-          <SelectBox<UpdateStatusFormValues> name="artistId" label="Artist" register={register} options={allArtists} errors={errors.artistId} />
+          {allArtistsIsLoading ? (
+            <p className="text-sm">Loading artists...</p>
+          ) : (
+            <SelectBox<UpdateStatusFormValues>
+              name="artistId"
+              label="Artist"
+              register={register}
+              options={allArtists}
+              errors={errors.artistId}
+            />
+          )}
 
           {/* <input name="stationId" />
           <input name="durationNote" /> */}
 
           {/* Duration Note */}
-          <InputField<UpdateStatusFormValues> name="durationNote" label="Duration hour note" register={register} errors={errors.durationNote} />
+          <InputField<UpdateStatusFormValues>
+            name="durationNote"
+            label="Duration hour note"
+            register={register}
+            errors={errors.durationNote}
+          />
 
           {/* Notes */}
-          <TextAreaField<UpdateStatusFormValues> name="notes" label="Notes" register={register} errors={errors.notes} />
+          <TextAreaField<UpdateStatusFormValues>
+            name="notes"
+            label="Notes"
+            register={register}
+            errors={errors.notes}
+          />
         </>
       )}
 
       <button
         type="submit"
-        disabled={updateBookingStatusIsPending || !isValid}
+        disabled={
+          updateBookingStatusIsPending || scheduleTattooIsPending || !isValid
+        }
         className="submit-btn"
       >
-        {updateBookingStatusIsPending ? "Submitting ..." : "Update Status"}
+        {updateBookingStatusIsPending || scheduleTattooIsPending ? (
+          <>
+            Updating <DotsLoader />
+          </>
+        ) : (
+          "Update Status"
+        )}
       </button>
     </form>
   );

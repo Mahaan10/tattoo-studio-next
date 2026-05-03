@@ -6,6 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { PiTrash } from "react-icons/pi";
 import { CiEdit } from "react-icons/ci";
+import DotsLoader from "@/components/ui/DotsLoader";
 
 interface TattooArtistsRowProps {
   index: number;
@@ -70,13 +71,15 @@ function TattooArtistsRow({ artist, index, onEdit }: TattooArtistsRowProps) {
           onClick={handleActiveToggle}
           className={`relative w-11 h-6 rounded-full transition-colors ${
             artist.status === "ACTIVE" ? "bg-green-600" : "bg-gray-300"
-          } ${editArtistStatusIsPending ? "opacity-50 cursor-not-allowed" : ""}`}
+          } ${editArtistStatusIsPending && "opacity-70 cursor-not-allowed"}`}
         >
           <span
             className={`absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full transition-transform ${
               artist.status === "INACTIVE" ? "translate-x-5" : ""
             }`}
-          />
+          >
+            {editArtistStatusIsPending ? <DotsLoader /> : null}
+          </span>
         </button>
       </td>
       <td>

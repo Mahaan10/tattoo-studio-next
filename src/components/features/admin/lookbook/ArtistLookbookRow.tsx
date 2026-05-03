@@ -4,12 +4,10 @@ import Image from "next/image";
 
 interface ArtistLookbookRowProps {
   index: number;
-  onEdit: () => void;
   work: ArtistWork;
 }
 
-function ArtistLookbookRow({ work, index, onEdit }: ArtistLookbookRowProps) {
-  console.log("work =>", work);
+function ArtistLookbookRow({ work, index }: ArtistLookbookRowProps) {
   return (
     <Table.Row>
       <td>{index + 1}</td>

@@ -60,7 +60,7 @@ function BookingRow({ booking, index, onEdit }: BookingRowProps) {
                 : "Client Not Show"}
           </span>
         ) : (
-          <button className="btn flex gap-x-2" onClick={onEdit}>
+          <button className="btn flex gap-x-2 mx-auto" onClick={onEdit}>
             <span>Update Status</span>
             <CiEdit className="size-5" />
           </button>

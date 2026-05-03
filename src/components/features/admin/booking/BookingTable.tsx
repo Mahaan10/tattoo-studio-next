@@ -7,6 +7,7 @@ import { useState } from "react";
 import { BookingInfo } from "@/components/schema & types/booking/booking-appointment.types";
 import Modal from "@/components/ui/Modal";
 import UpdateBookingStatusForm from "./UpdateBookingStatusForm";
+import { toast } from "react-toastify";
 
 function BookingTable() {
   const { bookings, bookingIsLoading, bookingIsError } = useBooking();
@@ -14,50 +15,65 @@ function BookingTable() {
   const [bookingToUpdateStatus, setBookingToUpdateStatus] =
     useState<BookingInfo | null>(null);
 
-  console.log("bookingToUpdateStatus =>", bookingToUpdateStatus);
-  console.log("bookings =>", bookings);
-
-  if (bookingIsLoading) return null;
+  if (bookingIsError) {
+    toast.error("Failed to load bookings, try again");
+    return (
+      <div className="container">
+        <p className="text-red-500">Failed to load bookings</p>
+      </div>
+    );
+  }
 
   return (
     <>
-      {bookings?.length === 0 ? (
-        <p className="">No Booking sets yet</p>
-      ) : (
-        <>
-          <Table>
-            <Table.Header>
-              <th className="py-2">#</th>
-              <th>Name</th>
-              <th>Email</th>
-              <th>Phone</th>
-              <th>Status</th>
-              <th>Budget Range</th>
-              <th>Consult Date</th>
-              <th>Details</th>
-              <th>Operation</th>
-            </Table.Header>
-            <Table.Body>
-              {bookings.map((booking, index) => (
-                <BookingRow
-                  key={booking.id}
-                  booking={booking}
-                  //index={(currentPage - 1) * 6 + index}
-                  index={index}
-                  onEdit={() => setBookingToUpdateStatus(booking)}
-                />
-              ))}
-            </Table.Body>
-          </Table>
-          {/* <div className="flex justify-center mt-4">
+      <Table>
+        <Table.Header>
+          <th className="py-2">#</th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Phone</th>
+          <th>Status</th>
+          <th>Budget Range</th>
+          <th>Consult Date</th>
+          <th>Details</th>
+          <th>Operation</th>
+        </Table.Header>
+        <Table.Body>
+          {bookingIsLoading ? (
+            [...Array(6)].map((_, i) => (
+              <Table.Row key={i}>
+                <td colSpan={9}>
+                  <div className="h-10 bg-snow/10 animate-pulse rounded" />
+                </td>
+              </Table.Row>
+            ))
+          ) : bookings.length === 0 ? (
+            <Table.Row>
+              <td colSpan={4} className="py-4">
+                No Bookings yet
+              </td>
+            </Table.Row>
+          ) : (
+            bookings.map((booking, index) => (
+              <BookingRow
+                key={booking.id}
+                booking={booking}
+                //index={(currentPage - 1) * 6 + index}
+                index={index}
+                onEdit={() => setBookingToUpdateStatus(booking)}
+              />
+            ))
+          )}
+        </Table.Body>
+      </Table>
+      {/* <div className="flex justify-center mt-4">
                 <Pagination
                   currentPage={currentPage}
                   totalPages={totalPages}
                   onPageChange={goToPage}
                 />
               </div> */}
-        </>
-      )}
+
       {/* Edit Course */}
       {bookingToUpdateStatus && (
         <Modal
