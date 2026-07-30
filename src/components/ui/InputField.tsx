@@ -1,12 +1,19 @@
 import { useTranslations } from "next-intl";
-import { FieldError, Path, UseFormRegister } from "react-hook-form";
+import {
+  FieldError,
+  FieldValues,
+  Path,
+  RegisterOptions,
+  UseFormRegister,
+} from "react-hook-form";
 
-interface InputFieldProps<T extends Record<string, any>> {
+interface InputFieldProps<T extends FieldValues> {
   label: string;
   name: Path<T>;
   type?: string;
   register: UseFormRegister<T>;
-  errors: FieldError | undefined;
+  registerOptions?: RegisterOptions<T, Path<T>>;
+  errors?: FieldError;
   required?: boolean;
   translationNameSpace?: string;
 }
@@ -19,6 +26,7 @@ function InputField<T extends Record<string, any>>({
   errors,
   required,
   translationNameSpace,
+  registerOptions,
 }: InputFieldProps<T>) {
   const t = useTranslations(translationNameSpace);
 
@@ -32,7 +40,7 @@ function InputField<T extends Record<string, any>>({
       <input
         type={type}
         placeholder=" "
-        {...register(name)}
+        {...register(name, registerOptions)}
         id={label}
         className="block w-full px-3 pb-2.5 pt-4 text-sm bg-transparent border border-onyx/50 hover:border-onyx/75 focus:border-onyx transition-all duration-300 focus:shadow-xs focus:shadow-onyx appearance-none focus:outline-none peer rounded-lg"
       />

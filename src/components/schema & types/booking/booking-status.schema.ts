@@ -15,7 +15,9 @@ export const UpdateStatusValidationSchema = z
     scheduledDate: z.date({ message: "Schedule date is required" }).optional(),
     artistId: z.string({ message: "Artist must be selected" }).optional(),
     // stationId: z.string().optional(),
-    durationNote: z.string().optional(),
+    startsAt: z.string().optional(),
+    endsAt: z.string().optional(),
+    endDate: z.date().optional(),
     notes: z.string().optional(),
     agreedPriceCents: z.coerce
       .number({
@@ -47,6 +49,22 @@ export const UpdateStatusValidationSchema = z
           path: ["artistId"],
           code: z.ZodIssueCode.custom,
           message: "Artist must be selected",
+        });
+      }
+
+      if (!data.startsAt) {
+        ctx.addIssue({
+          path: ["startsAt"],
+          code: z.ZodIssueCode.custom,
+          message: "Start Time is required",
+        });
+      }
+
+      if (!data.endsAt) {
+        ctx.addIssue({
+          path: ["endDate"],
+          code: z.ZodIssueCode.custom,
+          message: "End time is required",
         });
       }
     }

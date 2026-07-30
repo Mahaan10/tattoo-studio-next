@@ -151,9 +151,10 @@ export interface TattooScheduledProps {
   scheduledDate: Date;
   artistId?: string;
   stationId?: string;
-  durationNote: string;
   notes?: string;
   agreedPriceCents?: number;
+  startsAt?: string;
+  endsAt?: string;
 }
 
 export interface WalkInResponseProps {

@@ -86,3 +86,7 @@ export function mergeDateAndTime(date: Date, time: string) {
     milliseconds: 0,
   }).toISOString();
 }
+
+export function euroToCents(euro: number) {
+  return Math.round(euro * 100);
+}

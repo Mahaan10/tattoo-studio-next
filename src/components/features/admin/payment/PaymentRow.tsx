@@ -51,9 +51,11 @@ function PaymentRow({ payment, index, onView }: PaymentRowProps) {
       <td>{formattedDate(payment?.paidAt)}</td>
 
       <td>
-        <button onClick={() => onView?.(payment)} className="p-1.5 btn">
-          <EyeIcon className="size-5" />
-        </button>
+        <div className="flex items-center justify-center gap-x-2">
+          <button onClick={() => onView?.(payment)} className="p-1.5 btn">
+            <EyeIcon className="size-5" />
+          </button>
+        </div>
       </td>
     </Table.Row>
   );

@@ -42,3 +42,12 @@ export interface PaymentResponse {
   limit: number;
   items: PaymentInfo[];
 }
+
+export interface CashPaymentInfo {
+  source: PaymentSource;
+  grossCents: number;
+  bookingRequestId?: string;
+  guestArtistBookingId?: string;
+  note?: string;
+  paidAt: string;
+}

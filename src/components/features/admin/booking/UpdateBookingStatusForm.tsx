@@ -13,13 +13,20 @@ import {
   BookingStatusCancelReason,
 } from "@/components/constants/Constants";
 import TextAreaField from "@/components/ui/TextAreaField";
-import { BookingInfo } from "@/components/schema & types/booking/booking-appointment.types";
-import { formatBookingStatus } from "@/components/utils/formatter";
+import {
+  BookingInfo,
+  TattooScheduledProps,
+} from "@/components/schema & types/booking/booking-appointment.types";
+import {
+  formatBookingStatus,
+  mergeDateAndTime,
+} from "@/components/utils/formatter";
 import DatePickerField from "@/components/ui/DatePickerField";
 import useArtist from "../../artist/useArtist";
 import InputField from "@/components/ui/InputField";
 import DotsLoader from "@/components/ui/DotsLoader";
 import { useTranslations } from "next-intl";
+import TimePickerField from "@/components/ui/TimePickerField";
 
 export const STATUS_TRANSITIONS: Record<
   /* BookingStatus */ any,
@@ -63,7 +70,7 @@ function UpdateBookingStatusForm({
     mode: "onChange",
     resolver: zodResolver(UpdateStatusValidationSchema) as any,
     defaultValues: {
-      status: undefined,
+      status: booking.status,
     },
   });
 
@@ -90,14 +97,17 @@ function UpdateBookingStatusForm({
 
   const onSubmit: SubmitHandler<UpdateStatusFormValues> = (data) => {
     if (data.status === "TATTOO_SCHEDULED") {
-      const newTattooSchedule = {
+      const newTattooSchedule: TattooScheduledProps = {
         scheduledDate: data.scheduledDate!,
         artistId: data.artistId!,
         // stationId: data.stationId!,
-        durationNote: data.durationNote!,
         notes: data.notes || "",
         agreedPriceCents:
           data.agreedPriceCents && Math.round(data.agreedPriceCents * 100),
+
+        startsAt: mergeDateAndTime(data.scheduledDate!, data.startsAt!),
+
+        endsAt: mergeDateAndTime(data.scheduledDate!, data.endsAt!),
       };
 
       scheduleTattoo(
@@ -201,12 +211,20 @@ function UpdateBookingStatusForm({
           {/* <input name="stationId" />
           <input name="durationNote" /> */}
 
-          {/* Duration Note */}
-          <InputField<UpdateStatusFormValues>
-            name="durationNote"
-            label={t("durationNote")}
-            register={register}
-            errors={errors.durationNote}
+          {/* Starts At */}
+          <TimePickerField<UpdateStatusFormValues>
+            name="startsAt"
+            label="Start Time"
+            control={control}
+            errors={errors.startsAt}
+          />
+
+          {/* End Time */}
+          <TimePickerField<UpdateStatusFormValues>
+            name="endsAt"
+            label="End Time"
+            control={control}
+            errors={errors.endsAt}
           />
 
           {/* Notes */}

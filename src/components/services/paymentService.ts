@@ -1,5 +1,6 @@
 import { AxiosResponse } from "axios";
 import {
+  CashPaymentInfo,
   PaymentMethod,
   PaymentResponse,
   PaymentSource,
@@ -33,4 +34,12 @@ export default function getAllPaymentsApi({
       },
     })
     .then(({ data }: AxiosResponse<PaymentResponse>) => data);
+}
+
+export function createCashPaymentApi(
+  newCashPayment: CashPaymentInfo,
+): Promise<CashPaymentInfo> {
+  return http
+    .post("/admin/payments", newCashPayment)
+    .then(({ data }: AxiosResponse<CashPaymentInfo>) => data);
 }

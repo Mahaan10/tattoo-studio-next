@@ -29,7 +29,7 @@ function Item({ label, value }: { label: string; value: React.ReactNode }) {
     <div className="rounded-lg border border-snow/10 bg-card p-4">
       <p className="mb-1 text-xs tracking-wide text-snow/50">{label}</p>
 
-      <p className="break-words font-medium text-snow">{value}</p>
+      <p className="wrap-break-word font-medium text-snow">{value}</p>
     </div>
   );
 }

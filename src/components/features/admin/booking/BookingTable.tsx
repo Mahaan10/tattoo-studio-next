@@ -11,6 +11,8 @@ import { toast } from "react-toastify";
 import { useTranslations } from "next-intl";
 import usePagination from "@/components/hook/usePagination";
 import Pagination from "@/components/templates/admin/Pagination";
+import { PaymentInfo } from "@/components/schema & types/payment/payment.types";
+import CashPaymentForm from "../payment/CashPaymentForm";
 
 function BookingTable() {
   const t = useTranslations("admin.bookings.table");
@@ -20,6 +22,12 @@ function BookingTable() {
 
   const [bookingToUpdateStatus, setBookingToUpdateStatus] =
     useState<BookingInfo | null>(null);
+
+  const [selectedPayment, setSelectedPayment] = useState<PaymentInfo | null>(
+    null,
+  );
+
+  const [cashModalOpen, setCashModalOpen] = useState<boolean>(false);
 
   useEffect(() => {
     if (bookingIsError) {
@@ -34,6 +42,11 @@ function BookingTable() {
       </div>
     );
   }
+
+  const handleCashPayment = (payment: PaymentInfo) => {
+    setSelectedPayment(payment);
+    setCashModalOpen(true);
+  };
 
   return (
     <>
@@ -71,6 +84,7 @@ function BookingTable() {
                 booking={booking}
                 index={(currentPage - 1) * 6 + index + 1}
                 onEdit={() => setBookingToUpdateStatus(booking)}
+                onCash={handleCashPayment}
               />
             ))
           )}
@@ -93,6 +107,15 @@ function BookingTable() {
           <UpdateBookingStatusForm
             booking={bookingToUpdateStatus}
             onClose={() => setBookingToUpdateStatus(null)}
+          />
+        </Modal>
+      )}
+
+      {cashModalOpen && selectedPayment && (
+        <Modal onClose={() => setCashModalOpen(false)} title="Cash Payment">
+          <CashPaymentForm
+            onClose={() => setCashModalOpen(false)}
+            payment={selectedPayment}
           />
         </Modal>
       )}

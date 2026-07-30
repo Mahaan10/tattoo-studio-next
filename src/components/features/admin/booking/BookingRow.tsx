@@ -6,18 +6,20 @@ import { bookingStatusStyles } from "@/components/templates/admin/booking/bookin
 import StatusBadge from "@/components/templates/admin/StatusBadge";
 import Table from "@/components/ui/Table";
 import formattedDate, { formatBudgetRange } from "@/components/utils/formatter";
-import { CircleCheck } from "lucide-react";
+import { PlusIcon } from "lucide-react";
 import Link from "next/link";
 import { CiEdit } from "react-icons/ci";
 import { useTranslations } from "next-intl";
+import { PaymentInfo } from "@/components/schema & types/payment/payment.types";
 
 interface BookingRowProps {
   index: number;
   onEdit: () => void;
   booking: BookingInfo;
+  onCash?: (payment: PaymentInfo) => void;
 }
 
-function BookingRow({ booking, index, onEdit }: BookingRowProps) {
+function BookingRow({ booking, index, onEdit, onCash }: BookingRowProps) {
   const t = useTranslations("admin.bookings.row");
   return (
     <Table.Row>
@@ -63,12 +65,21 @@ function BookingRow({ booking, index, onEdit }: BookingRowProps) {
               </span>
             </span>
           ) : (
-            <button
-              className="flex items-center justify-center size-9 rounded-xl border border-snow/10 hover:bg-black bg-onyx text-snow/75 text-center transition-all duration-300 hover:border-snow/25"
-              onClick={onEdit}
-            >
-              <CiEdit className="size-5" />
-            </button>
+            <div className="flex items-center gap-x-2">
+              <button
+                className="flex items-center justify-center size-9 rounded-xl border border-snow/10 hover:bg-black bg-onyx text-snow/75 text-center transition-all duration-300 hover:border-snow/25"
+                onClick={onEdit}
+              >
+                <CiEdit className="size-5" />
+              </button>
+
+              {booking.status === "TATTOO_SCHEDULED" && (
+                <button className="flex items-center justify-center size-9 rounded-xl border border-snow/10 hover:bg-black bg-onyx text-snow/75 text-center transition-all duration-300 hover:border-snow/25">
+                  {/* onClick={() => onCash?.(payment)} */}
+                  <PlusIcon className="size-5" />
+                </button>
+              )}
+            </div>
           )}
         </div>
       </td>
