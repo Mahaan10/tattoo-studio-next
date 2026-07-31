@@ -1,3 +1,9 @@
+import {
+  PaymentMethod,
+  PaymentSource,
+  PaymentStatus,
+} from "../payment/payment.types";
+
 export interface ClientInfoProps {
   id?: string;
   firstName: string;
@@ -52,7 +58,7 @@ export interface BookingInfo {
   description: string;
   budgetRange: string;
   referrer: string;
-  bookingType: string;
+  bookingType: BookingType;
   consultDate: Date;
   consultSlotId: string;
   checkedInAt: Date | null;
@@ -60,6 +66,8 @@ export interface BookingInfo {
   approvedAt: Date | null;
   completedAt: Date | null;
   cancelledAt: Date | null;
+  createdAt: Date | undefined | string;
+  source: IntakeSources;
 }
 
 export interface BookingResponse {
@@ -90,9 +98,9 @@ export interface BookingPayments {
   id: string;
   grossCents: number;
   currency: string;
-  method: string;
-  source: string;
-  status: string;
+  method: PaymentMethod;
+  source: PaymentSource;
+  status: PaymentStatus;
   paidAt: Date;
   note: string;
 }

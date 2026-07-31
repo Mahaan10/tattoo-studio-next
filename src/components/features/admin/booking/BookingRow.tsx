@@ -1,22 +1,17 @@
-import {
-  BookingInfo,
-  BookingStatus,
-} from "@/components/schema & types/booking/booking-appointment.types";
+import { BookingInfo } from "@/components/schema & types/booking/booking-appointment.types";
 import { bookingStatusStyles } from "@/components/templates/admin/booking/bookingStatusStyles";
 import StatusBadge from "@/components/templates/admin/StatusBadge";
 import Table from "@/components/ui/Table";
 import formattedDate, { formatBudgetRange } from "@/components/utils/formatter";
-import { PlusIcon } from "lucide-react";
+import { Eye, Pencil, Plus } from "lucide-react";
 import Link from "next/link";
-import { CiEdit } from "react-icons/ci";
 import { useTranslations } from "next-intl";
-import { PaymentInfo } from "@/components/schema & types/payment/payment.types";
 
 interface BookingRowProps {
   index: number;
   onEdit: () => void;
   booking: BookingInfo;
-  onCash?: (payment: PaymentInfo) => void;
+  onCash?: (booking: any) => void;
 }
 
 function BookingRow({ booking, index, onEdit, onCash }: BookingRowProps) {
@@ -46,40 +41,35 @@ function BookingRow({ booking, index, onEdit, onCash }: BookingRowProps) {
       <td>{formatBudgetRange(booking.budgetRange)}</td>
       <td>{formattedDate(booking.consultDate)}</td>
       <td>
-        <Link href={`/admin/booking/${booking.id}`} className="btn">
-          {t("viewDetails")}
-        </Link>
-      </td>
-      <td>
-        <div className="flex items-center justify-center gap-x-2">
-          {booking?.status == "CANCELLED" ||
-          booking?.status === "COMPLETED" ||
-          booking?.status === "CONSULT_NO_SHOW" ? (
-            <span className="gap-x-2">
-              <span className="text-xs text-snow/50">
-                {booking.status === "CANCELLED"
-                  ? t("bookingCancelled")
-                  : booking.status === "COMPLETED"
-                    ? t("bookingCompleted")
-                    : t("clientNoShow")}
-              </span>
-            </span>
-          ) : (
-            <div className="flex items-center gap-x-2">
+        <div className="flex items-center justify-center gap-2">
+          <Link
+            href={`/admin/booking/${booking.id}`}
+            title={t("viewDetails")}
+            className="flex items-center justify-center size-9 rounded-xl border border-snow/10 hover:bg-black bg-onyx text-snow/75 text-center transition-all duration-300 hover:border-snow/25"
+          >
+            <Eye className="size-4" />
+          </Link>
+
+          {!["CANCELLED", "COMPLETED", "CONSULT_NO_SHOW"].includes(
+            booking.status,
+          ) && (
+            <>
               <button
                 className="flex items-center justify-center size-9 rounded-xl border border-snow/10 hover:bg-black bg-onyx text-snow/75 text-center transition-all duration-300 hover:border-snow/25"
                 onClick={onEdit}
               >
-                <CiEdit className="size-5" />
+                <Pencil className="size-4" />
               </button>
 
               {booking.status === "TATTOO_SCHEDULED" && (
-                <button className="flex items-center justify-center size-9 rounded-xl border border-snow/10 hover:bg-black bg-onyx text-snow/75 text-center transition-all duration-300 hover:border-snow/25">
-                  {/* onClick={() => onCash?.(payment)} */}
-                  <PlusIcon className="size-5" />
+                <button
+                  className="flex items-center justify-center size-9 rounded-xl border border-snow/10 hover:bg-black bg-onyx text-snow/75 text-center transition-all duration-300 hover:border-snow/25"
+                  onClick={() => onCash?.(booking)}
+                >
+                  <Plus className="size-4" />
                 </button>
               )}
-            </div>
+            </>
           )}
         </div>
       </td>
@@ -88,3 +78,5 @@ function BookingRow({ booking, index, onEdit, onCash }: BookingRowProps) {
 }
 
 export default BookingRow;
+
+/* flex items-center justify-center size-9 rounded-xl border border-snow/10 hover:bg-black bg-onyx text-snow/75 text-center transition-all duration-300 hover:border-snow/25 */

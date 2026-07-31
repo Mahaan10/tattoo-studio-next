@@ -18,6 +18,19 @@ import { bookingStatusStyles } from "@/components/templates/admin/booking/bookin
 import Link from "next/link";
 import { BsArrowLeft } from "react-icons/bs";
 import { useTranslations } from "next-intl";
+import { BookingType } from "@/components/schema & types/booking/booking-appointment.types";
+import { paymentStatusStyles } from "@/components/templates/admin/booking/paymentStatusStyles";
+import { bookingSourceLabels } from "./booking.constants";
+import {
+  paymentMethodMap,
+  paymentSourceMap,
+} from "../payment/payment.constants";
+
+export const bookingTypeLabels: Record<BookingType, string> = {
+  CONSULTATION: "Consultation",
+  APPOINTMENT: "Appointment",
+  COVER_UP: "Cover Up",
+};
 
 function BookingDetails() {
   const t = useTranslations("admin.bookings.details");
@@ -27,7 +40,7 @@ function BookingDetails() {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const { client, uploads } = singleBooking || {};
-
+  console.log("singleBooking =>", singleBooking);
   const tattooSession = singleBooking?.tattooSessions?.[0];
   useEffect(() => {
     if (singleBookingIsError) {
@@ -59,41 +72,104 @@ function BookingDetails() {
     <>
       <div className="p-4 md:p-6">
         {/* HEADER */}
-        <div className="flex items-center justify-between mb-6">
-          <div className="">
-            <h1 className="text-xl md:text-2xl font-semibold">
-              {client?.firstName} {client?.lastName}
-            </h1>
-            <p className="text-sm text-snow/50">{t("bookingOverview")}</p>
-          </div>
-          {singleBooking?.status == "CANCELLED" ||
-          singleBooking?.status == "COMPLETED" ||
-          singleBooking?.status === "CONSULT_NO_SHOW" ? (
-            ""
-          ) : (
-            <div className="flex items-center">
-              <button
-                className="btn flex gap-x-2 text-sm"
-                onClick={() => setIsOpen(true)}
-              >
-                <span>{t("updateStatus")}</span>
-                <CiEdit className="size-5" />
-              </button>
+
+        <div className="mb-8">
+          {/* Back button */}
+          <Link
+            href="/admin/booking"
+            className="inline-flex items-center gap-2 text-sm text-snow/60 hover:text-snow transition-colors"
+          >
+            <BsArrowLeft className="size-4" />
+            {t("backToBookings")}
+          </Link>
+
+          <div className="mt-5 flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
+            <div>
+              <div className="flex flex-wrap items-center gap-3">
+                <h1 className="text-3xl font-semibold tracking-tight">
+                  {client?.firstName} {client?.lastName}
+                </h1>
+
+                {singleBooking?.status && (
+                  <StatusBadge
+                    status={singleBooking.status}
+                    styles={bookingStatusStyles}
+                  />
+                )}
+              </div>
+
+              <div className="mt-2 flex flex-wrap items-center gap-5 text-sm text-snow/50">
+                <span>
+                  Created
+                  <span className="ml-2 text-snow tracking-widest">
+                    {formattedDate(singleBooking?.createdAt)}
+                  </span>
+                </span>
+              </div>
             </div>
-          )}
+
+            {!["CANCELLED", "COMPLETED", "CONSULT_NO_SHOW"].includes(
+              singleBooking?.status ?? "",
+            ) && (
+              <button
+                onClick={() => setIsOpen(true)}
+                className="btn flex items-center gap-2"
+              >
+                <CiEdit className="size-5" />
+                {t("updateStatus")}
+              </button>
+            )}
+          </div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* LEFT SIDE */}
           <div className="space-y-6">
+            {/* Summary Card */}
+            <Card title="Booking Summary">
+              <div className="grid gap-4 grid-cols-1 sm:grid-cols-2">
+                <SummaryItem
+                  label="Booking Type"
+                  value={
+                    singleBooking &&
+                    bookingTypeLabels[singleBooking.bookingType]
+                  }
+                />
+
+                <SummaryItem
+                  label="Agreed Price"
+                  value={formatEuro(singleBooking?.agreedPriceCents)}
+                />
+
+                <SummaryItem
+                  label="Paid"
+                  value={formatEuro(singleBooking?.paidCents)}
+                />
+
+                <SummaryItem
+                  label="Remaining"
+                  value={formatEuro(singleBooking?.remainingCents)}
+                />
+              </div>
+            </Card>
+
             {/* CLIENT CARD */}
-            <Card title={t("client")}>
+            <Card title="Client">
               <Info
-                label={t("name")}
+                label="Name"
                 value={`${client?.firstName} ${client?.lastName}`}
               />
-              <Info label={t("email")} value={client?.email} />
-              <Info label={t("phone")} value={client?.phone} />
+
+              <Info label="Email" value={client?.email} />
+
+              <Info label="Phone" value={client?.phone} />
+
+              <Info
+                label="Booking Source"
+                value={
+                  singleBooking && bookingSourceLabels[singleBooking.source]
+                }
+              />
             </Card>
 
             {/* BOOKING META */}
@@ -236,16 +312,41 @@ function BookingDetails() {
             ) : (
               <p className="text-sm text-snow/50">{t("noImages")}</p>
             )}
+
+            <Card title="Payment History">
+              {singleBooking?.payments.length ? (
+                <div className="space-y-4">
+                  {singleBooking.payments.map((payment) => (
+                    <div
+                      key={payment.id}
+                      className="rounded-xl bg-carbon-black p-4"
+                    >
+                      <div className="flex justify-between">
+                        <h3 className="font-semibold">
+                          {formatEuro(payment.grossCents)}
+                        </h3>
+
+                        <StatusBadge
+                          status={payment.status}
+                          styles={paymentStatusStyles}
+                        />
+                      </div>
+
+                      <div className="mt-2 text-sm text-snow/60 space-y-1">
+                        <p>Method: {paymentMethodMap[payment.method]}</p>
+                        <p>Source: {paymentSourceMap[payment.source]}</p>
+                        <p>{formattedDate(payment.paidAt)}</p>
+
+                        {payment.note && <p>{payment.note}</p>}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <p>No payments yet.</p>
+              )}
+            </Card>
           </div>
-        </div>
-
-        {/* BACK BUTTON */}
-
-        <div>
-          <Link href="/admin/booking" className="btn text-sm mt-10">
-            <BsArrowLeft className="size-5" />
-            {t("backToBookings")}
-          </Link>
         </div>
       </div>
 
@@ -292,6 +393,26 @@ function TextBlock({ label, value }: { label: ReactNode; value?: ReactNode }) {
       <div className="text-sm bg-carbon-black rounded-xl p-3 leading-relaxed whitespace-pre-wrap">
         {value}
       </div>
+    </div>
+  );
+}
+
+function SummaryItem({
+  label,
+  value,
+}: {
+  label: string;
+  value: React.ReactNode;
+}) {
+  return (
+    <div className="min-w-0 rounded-xl border border-snow/10 bg-carbon-black p-4">
+      <p className="text-xs uppercase tracking-wider text-snow/40 truncate">
+        {label}
+      </p>
+
+      <p className="mt-2 text-lg font-semibold wrap-break-word">
+        {value ?? "-"}
+      </p>
     </div>
   );
 }

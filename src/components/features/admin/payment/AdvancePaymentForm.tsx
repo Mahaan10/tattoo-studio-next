@@ -3,26 +3,25 @@
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import {
-  CashPaymentSchema,
-  CashPaymentSchemaForm,
-} from "@/components/schema & types/payment/payment.schema";
-
 import { PaymentInfo } from "@/components/schema & types/payment/payment.types";
 
 import InputField from "@/components/ui/InputField";
 import TextAreaField from "@/components/ui/TextAreaField";
-import { euroToCents, formatEuro } from "@/components/utils/formatter";
-import useCashPayment from "./useCashPayment";
+import { euroToCents } from "@/components/utils/formatter";
 import { z } from "zod";
+import useAdvancePayment from "./useAdvancePayment";
+import {
+  AdvancePaymentSchema,
+  AdvancePaymentSchemaForm,
+} from "@/components/schema & types/payment/payment.schema";
 
-interface CashPaymentProps {
+interface AdvancePaymentProps {
   onClose: () => void;
-  payment: PaymentInfo;
+  bookingId: string;
 }
 
-function CashPaymentForm({ onClose, payment }: CashPaymentProps) {
-  const { cashPayment, cashPaymentIsPending } = useCashPayment();
+function AdvancePaymentForm({ onClose, bookingId }: AdvancePaymentProps) {
+  const { advancePayment, advancePaymentIsPending } = useAdvancePayment();
 
   const {
     register,
@@ -30,39 +29,37 @@ function CashPaymentForm({ onClose, payment }: CashPaymentProps) {
     reset,
     formState: { errors },
   } = useForm<
-    z.input<typeof CashPaymentSchema>,
+    z.input<typeof AdvancePaymentSchema>,
     any,
-    z.output<typeof CashPaymentSchema>
+    z.output<typeof AdvancePaymentSchema>
   >({
-    resolver: zodResolver(CashPaymentSchema),
+    resolver: zodResolver(AdvancePaymentSchema),
   });
-  console.log("selectedPayment =>", payment);
-  const onSubmit: SubmitHandler<CashPaymentSchemaForm> = (data) => {
+
+  const onSubmit: SubmitHandler<AdvancePaymentSchemaForm> = (data) => {
     console.log("data =>", data);
 
-    const newCashPayment = {
-      source: payment.source,
+    const newAdvancePayment = {
+      source: "TATTOO",
       grossCents: euroToCents(data.grossEuro),
-      bookingRequestId:
-        payment.source === "TATTOO" ? payment.context.reference : undefined,
-      guestArtistBookingId:
-        payment.source === "GUEST_TABLE"
-          ? payment.context.reference
-          : undefined,
+      bookingRequestId: bookingId,
+      // guestArtistBookingId:
+      //   payment.source === "GUEST_TABLE"
+      //     ? payment.context.reference
+      //     : undefined,
       note: data.note,
-      paidAt: new Date().toISOString(),
     };
 
-    cashPayment(newCashPayment);
+    advancePayment(newAdvancePayment);
 
     reset();
     onClose();
-    console.log("newCashPayment =>", newCashPayment);
+    console.log("newAdvancePayment =>", newAdvancePayment);
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-      <InputField<CashPaymentSchemaForm>
+      <InputField<AdvancePaymentSchemaForm>
         label="Amount (€)"
         name="grossEuro"
         type="tel"
@@ -71,7 +68,7 @@ function CashPaymentForm({ onClose, payment }: CashPaymentProps) {
         errors={errors.grossEuro}
       />
 
-      <TextAreaField<CashPaymentSchemaForm>
+      <TextAreaField<AdvancePaymentSchemaForm>
         label="Note"
         name="note"
         register={register}
@@ -85,14 +82,14 @@ function CashPaymentForm({ onClose, payment }: CashPaymentProps) {
 
         <button
           type="submit"
-          disabled={cashPaymentIsPending}
+          disabled={advancePaymentIsPending}
           className="submit-btn"
         >
-          {cashPaymentIsPending ? "Saving..." : "Save Payment"}
+          {advancePaymentIsPending ? "Saving..." : "Save Payment"}
         </button>
       </div>
     </form>
   );
 }
 
-export default CashPaymentForm;
+export default AdvancePaymentForm;

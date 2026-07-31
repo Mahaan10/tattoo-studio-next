@@ -11,8 +11,7 @@ import { toast } from "react-toastify";
 import { useTranslations } from "next-intl";
 import usePagination from "@/components/hook/usePagination";
 import Pagination from "@/components/templates/admin/Pagination";
-import { PaymentInfo } from "@/components/schema & types/payment/payment.types";
-import CashPaymentForm from "../payment/CashPaymentForm";
+import AdvancePaymentForm from "../payment/AdvancePaymentForm";
 
 function BookingTable() {
   const t = useTranslations("admin.bookings.table");
@@ -23,12 +22,12 @@ function BookingTable() {
   const [bookingToUpdateStatus, setBookingToUpdateStatus] =
     useState<BookingInfo | null>(null);
 
-  const [selectedPayment, setSelectedPayment] = useState<PaymentInfo | null>(
-    null,
-  );
+  const [selectedBooking, setSelectedBooking] = useState<string | null>(null);
 
   const [cashModalOpen, setCashModalOpen] = useState<boolean>(false);
-
+  console.log("bookings =>", bookings);
+  console.log("bookingToUpdateStatus =>", bookingToUpdateStatus);
+  console.log("selectedBooking =>", selectedBooking);
   useEffect(() => {
     if (bookingIsError) {
       toast.error(t("loadError"));
@@ -43,8 +42,8 @@ function BookingTable() {
     );
   }
 
-  const handleCashPayment = (payment: PaymentInfo) => {
-    setSelectedPayment(payment);
+  const handleCashPayment = (booking: BookingInfo) => {
+    setSelectedBooking(booking?.id);
     setCashModalOpen(true);
   };
 
@@ -59,7 +58,6 @@ function BookingTable() {
           <th>{t("status")}</th>
           <th>{t("budgetRange")}</th>
           <th>{t("consultDate")}</th>
-          <th>{t("details")}</th>
           <th>{t("operation")}</th>
         </Table.Header>
         <Table.Body>
@@ -111,11 +109,11 @@ function BookingTable() {
         </Modal>
       )}
 
-      {cashModalOpen && selectedPayment && (
+      {cashModalOpen && selectedBooking && (
         <Modal onClose={() => setCashModalOpen(false)} title="Cash Payment">
-          <CashPaymentForm
+          <AdvancePaymentForm
             onClose={() => setCashModalOpen(false)}
-            payment={selectedPayment}
+            bookingId={selectedBooking}
           />
         </Modal>
       )}

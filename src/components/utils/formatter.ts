@@ -67,12 +67,14 @@ export function getDatesInRange(start: Date, end: Date) {
   return dates;
 }
 
-export function formatEuro(cents?: number | null) {
+export function formatEuro(cents?: number | null, showDecimals = false) {
   if (cents == null) return "-";
 
-  return new Intl.NumberFormat("de-DE", {
+  return new Intl.NumberFormat("en-US", {
     style: "currency",
     currency: "EUR",
+    minimumFractionDigits: showDecimals ? 2 : 0,
+    maximumFractionDigits: showDecimals ? 2 : 0,
   }).format(cents / 100);
 }
 
