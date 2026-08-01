@@ -1,4 +1,6 @@
-import getOverviewAnalyticsApi from "@/components/services/analyticService";
+import getOverviewAnalyticsApi, {
+  getRevenueAnalyticsApi,
+} from "@/components/services/analyticService";
 import { formatDate } from "@/components/utils/formatter";
 import { useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
@@ -44,10 +46,36 @@ export default function useAnalytic({
       }),
   });
 
+  /* Revenue Analytics */
+  const {
+    data: revenueAnalyticsData,
+    isLoading: revenueAnalyticsIsLoading,
+    isError: revenueAnalyticsIsError,
+  } = useQuery({
+    queryKey: [
+      "revenue",
+      fromFormattedDate,
+      toFormattedDate,
+      timezone,
+      includeWalkIn,
+    ],
+    queryFn: () =>
+      getRevenueAnalyticsApi({
+        from: fromFormattedDate,
+        to: toFormattedDate,
+        timezone,
+        includeWalkIn,
+      }),
+  });
+
   return {
     // overview analytics
     overviewAnalyticsData,
     overviewAnalyticsIsLoading,
     overviewAnalyticsIsError,
+    // revenue analytics
+    revenueAnalyticsData,
+    revenueAnalyticsIsLoading,
+    revenueAnalyticsIsError,
   };
 }

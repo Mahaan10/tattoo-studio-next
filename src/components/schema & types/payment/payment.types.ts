@@ -44,10 +44,10 @@ export interface PaymentResponse {
 }
 
 export interface CashPaymentInfo {
-  source: PaymentSource;
+  source: PaymentSource | string;
   grossCents: number;
   bookingRequestId?: string;
   guestArtistBookingId?: string;
   note?: string;
-  paidAt: string;
+  paidAt?: string;
 }

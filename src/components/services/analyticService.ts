@@ -1,5 +1,8 @@
 import { AxiosResponse } from "axios";
-import { OverviewAnalyticsInfo } from "../schema & types/analytics/analytics.types";
+import {
+  OverviewAnalyticsInfo,
+  RevenueAnalyticsResponse,
+} from "../schema & types/analytics/analytics.types";
 import http from "./httpService";
 
 interface OverviewAnalyticsParams {
@@ -25,4 +28,22 @@ export default function getOverviewAnalyticsApi({
       },
     })
     .then(({ data }: AxiosResponse<OverviewAnalyticsInfo>) => data);
+}
+
+export function getRevenueAnalyticsApi({
+  from,
+  includeWalkIn,
+  timezone,
+  to,
+}: OverviewAnalyticsParams): Promise<RevenueAnalyticsResponse> {
+  return http
+    .get("admin/analytics/revenue", {
+      params: {
+        from,
+        to,
+        timezone,
+        includeWalkIn,
+      },
+    })
+    .then(({ data }: AxiosResponse<RevenueAnalyticsResponse>) => data);
 }

@@ -11,7 +11,7 @@ interface BookingRowProps {
   index: number;
   onEdit: () => void;
   booking: BookingInfo;
-  onCash?: (booking: any) => void;
+  onCash?: (booking: BookingInfo) => void;
 }
 
 function BookingRow({ booking, index, onEdit, onCash }: BookingRowProps) {
@@ -78,5 +78,3 @@ function BookingRow({ booking, index, onEdit, onCash }: BookingRowProps) {
 }
 
 export default BookingRow;
-
-/* flex items-center justify-center size-9 rounded-xl border border-snow/10 hover:bg-black bg-onyx text-snow/75 text-center transition-all duration-300 hover:border-snow/25 */

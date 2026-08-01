@@ -11,6 +11,8 @@ import AppointmentRow from "./AppointmentRow";
 import { AppointmentInfo } from "@/components/schema & types/appointment/appointment.types";
 import Modal from "@/components/ui/Modal";
 import ConfirmCheckIn from "@/components/templates/admin/appointment/ConfirmCheckIn";
+import { BookingInfo } from "@/components/schema & types/booking/booking-appointment.types";
+import AdvancePaymentForm from "../payment/AdvancePaymentForm";
 
 interface AppointmentTableProps {
   date: Date;
@@ -27,6 +29,9 @@ function AppointmentTable({ date, period }: AppointmentTableProps) {
     checkInBookingIsPending,
   } = useAppointment({ date, period });
 
+  const [selectedBooking, setSelectedBooking] = useState<string | null>(null);
+
+  const [cashModalOpen, setCashModalOpen] = useState<boolean>(false);
   /* filter appointment based on status */
   const filteredAppointments = useMemo(
     () =>
@@ -55,6 +60,11 @@ function AppointmentTable({ date, period }: AppointmentTableProps) {
     return <div className="text-red-500 text-sm">{t("table.loadError")}</div>;
   }
 
+  const handleCashPayment = (booking: BookingInfo) => {
+    setSelectedBooking(booking?.id);
+    setCashModalOpen(true);
+  };
+
   return (
     <>
       <Table>
@@ -63,7 +73,6 @@ function AppointmentTable({ date, period }: AppointmentTableProps) {
           <th>{t("table.client")}</th>
           <th>{t("table.date")}</th>
           <th>{t("table.status")}</th>
-          <th>{t("table.details")}</th>
           <th>{t("table.operation")}</th>
         </Table.Header>
         <Table.Body>
@@ -87,6 +96,7 @@ function AppointmentTable({ date, period }: AppointmentTableProps) {
                 key={appointment?.booking.id}
                 appointment={appointment}
                 onCheckIn={() => setCheckInClientAppointment(appointment)}
+                onCash={handleCashPayment}
                 index={(currentPage - 1) * 6 + index + 1}
               />
             ))
@@ -116,6 +126,15 @@ function AppointmentTable({ date, period }: AppointmentTableProps) {
                 },
               });
             }}
+          />
+        </Modal>
+      )}
+
+      {cashModalOpen && selectedBooking && (
+        <Modal onClose={() => setCashModalOpen(false)} title="Cash Payment">
+          <AdvancePaymentForm
+            onClose={() => setCashModalOpen(false)}
+            bookingId={selectedBooking}
           />
         </Modal>
       )}

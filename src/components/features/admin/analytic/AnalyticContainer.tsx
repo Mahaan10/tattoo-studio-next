@@ -23,13 +23,20 @@ function AnalyticContainer() {
     includeWalkIn: true,
   });
 
-  const { overviewAnalyticsData, overviewAnalyticsIsLoading } = useAnalytic({
+  const {
+    overviewAnalyticsData,
+    overviewAnalyticsIsLoading,
+    revenueAnalyticsIsLoading,
+    revenueAnalyticsData,
+    revenueAnalyticsIsError,
+    overviewAnalyticsIsError,
+  } = useAnalytic({
     from: filters.from,
     to: filters.to,
     timezone: "Europe/Berlin",
     includeWalkIn: filters.includeWalkIn,
   });
-
+  console.log("revenue =>", revenueAnalyticsData);
   const bookingSourceData = useMemo(() => {
     if (!overviewAnalyticsData) return [];
 

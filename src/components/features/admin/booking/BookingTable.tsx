@@ -25,9 +25,7 @@ function BookingTable() {
   const [selectedBooking, setSelectedBooking] = useState<string | null>(null);
 
   const [cashModalOpen, setCashModalOpen] = useState<boolean>(false);
-  console.log("bookings =>", bookings);
-  console.log("bookingToUpdateStatus =>", bookingToUpdateStatus);
-  console.log("selectedBooking =>", selectedBooking);
+
   useEffect(() => {
     if (bookingIsError) {
       toast.error(t("loadError"));

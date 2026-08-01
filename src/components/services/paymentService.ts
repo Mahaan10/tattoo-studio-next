@@ -36,8 +36,10 @@ export default function getAllPaymentsApi({
     .then(({ data }: AxiosResponse<PaymentResponse>) => data);
 }
 
-export function createAdvancePaymentApi(newAdvancePayment: any): Promise<any> {
+export function createAdvancePaymentApi(
+  newAdvancePayment: CashPaymentInfo,
+): Promise<CashPaymentInfo> {
   return http
     .post("/admin/payments", newAdvancePayment)
-    .then(({ data }: AxiosResponse<any>) => data);
+    .then(({ data }: AxiosResponse<CashPaymentInfo>) => data);
 }

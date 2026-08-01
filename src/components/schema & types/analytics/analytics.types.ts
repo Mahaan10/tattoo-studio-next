@@ -26,3 +26,27 @@ export interface OverviewAnalyticsInfo {
   bySource: Partial<Record<IntakeSources, number>>;
   byBookingType: Partial<Record<BookingType, number>>;
 }
+
+export interface RevenueAnalyticsInfo {
+  grossCents: number;
+  netCents: number;
+  vatAmountCents: number;
+  count: number;
+  vatRateBps?: number;
+}
+
+export interface RevenueAnalyticsResponse {
+  timezone: string;
+  range: {
+    startUtc: Date;
+    endUtc: Date;
+  };
+  currency: string;
+  totals: RevenueAnalyticsInfo;
+  bySource: {
+    VOUCHER: RevenueAnalyticsInfo;
+    TATTOO: RevenueAnalyticsInfo;
+    GUEST_TABLE: RevenueAnalyticsInfo;
+  };
+  byVatRate: RevenueAnalyticsInfo[];
+}

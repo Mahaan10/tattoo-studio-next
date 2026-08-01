@@ -25,6 +25,7 @@ import {
   paymentMethodMap,
   paymentSourceMap,
 } from "../payment/payment.constants";
+import BookingDetailsSkeleton from "@/components/templates/skeleton/skeletons/booking/BookingDetailsSkeleton";
 
 export const bookingTypeLabels: Record<BookingType, string> = {
   CONSULTATION: "Consultation",
@@ -49,15 +50,7 @@ function BookingDetails() {
   }, [singleBookingIsError, t]);
 
   if (singleBookingIsLoading) {
-    return (
-      <div className="p-6 space-y-6 animate-pulse">
-        <div className="h-6 w-40 bg-onyx rounded" />
-        <div className="grid grid-cols-2 gap-6">
-          <div className="h-40 bg-onyx rounded" />
-          <div className="h-40 bg-onyx rounded" />
-        </div>
-      </div>
-    );
+    return <BookingDetailsSkeleton />;
   }
 
   if (singleBookingIsError) {
