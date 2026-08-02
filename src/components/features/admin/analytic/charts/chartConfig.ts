@@ -88,3 +88,25 @@ export const bookingStatusConfig = {
     color: colors.brand,
   },
 } satisfies ChartConfig;
+
+export const revenueTrendConfig = {
+  gross: {
+    label: "Gross Revenue",
+    color: colors.brand,
+  },
+
+  count: {
+    label: "Transactions",
+    color: colors.violet,
+  },
+
+  net: {
+    label: "Net Revenue",
+    color: colors.emerald,
+  },
+
+  vat: {
+    label: "VAT",
+    color: colors.blue,
+  },
+} satisfies ChartConfig;

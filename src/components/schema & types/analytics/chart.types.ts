@@ -20,3 +20,20 @@ export interface BarChartCardProps extends ChartCardProps {
   data: ChartItem[];
   config: ChartConfig;
 }
+
+export interface RevenueTrendChartItem {
+  label: string;
+  gross: number;
+  net: number;
+  vat: number;
+  count: number;
+}
+
+export interface BookingTrendChartItem {
+  label: string;
+  total: number;
+  approved: number;
+  completed: number;
+  cancelled: number;
+  noShow: number;
+}

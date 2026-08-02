@@ -12,36 +12,39 @@ import {
   bookingSourceConfig,
   bookingStatusConfig,
   bookingTypeConfig,
+  revenueTrendConfig,
 } from "./charts/chartConfig";
 import BarChartCard from "./charts/BarChartCard";
 import HorizontalBarChart from "./charts/HorizontalBarChart";
+import formattedDate from "@/components/utils/formatter";
+import { format } from "date-fns";
+import RevenueTrendChart from "./charts/RevenueTrendChart";
 
 function AnalyticContainer() {
   const [filters, setFilters] = useState<AnalyticsFilterForm>({
     from: startOfMonth(new Date()),
     to: new Date(),
     includeWalkIn: true,
+    granularity: "day",
   });
 
   const {
     overviewAnalyticsData,
     overviewAnalyticsIsLoading,
-    revenueAnalyticsIsLoading,
-    revenueAnalyticsData,
-    revenueAnalyticsIsError,
     overviewAnalyticsIsError,
-    timeseriesAnalyticsData,
-    timeseriesAnalyticsIsLoading,
-    timeseriesAnalyticsIsError
+    revenueTimelineData,
+    revenueTimelineIsLoading,
+    revenueTimelineIsError,
   } = useAnalytic({
     from: filters.from,
     to: filters.to,
     timezone: "Europe/Berlin",
     includeWalkIn: filters.includeWalkIn,
-    granularity: "day" // should be filters.granularity 
+    granularity: filters.granularity,
   });
-  console.log("revenue =>", revenueAnalyticsData);
-  console.log("timeseries =>", timeseriesAnalyticsData)
+
+  console.log("revenueTimeline =>", revenueTimelineData);
+
   const bookingSourceData = useMemo(() => {
     if (!overviewAnalyticsData) return [];
 
@@ -78,13 +81,32 @@ function AnalyticContainer() {
     );
   }, [overviewAnalyticsData]);
 
-  if (overviewAnalyticsIsLoading) return <p>Loading...</p>;
+  const revenueTrendData = useMemo(() => {
+    if (!revenueTimelineData) return [];
+
+    return revenueTimelineData.items.map((item) => ({
+      label: format(new Date(item.startUtc), "MMM d"),
+      gross: item.totals.grossCents / 100,
+      net: item.totals.netCents / 100,
+      vat: item.totals.vatAmountCents / 100,
+      count: item.totals.count,
+    }));
+  }, [revenueTimelineData]);
+
+  if (overviewAnalyticsIsLoading || revenueTimelineIsLoading)
+    return <p>Loading...</p>;
+
+  if (!overviewAnalyticsData || !revenueTimelineData) {
+    return null;
+  }
 
   return (
     <div className="space-y-8">
       <OverviewFilters defaultValues={filters} onSubmit={setFilters} />
 
-      <AnalyticsCards analytics={overviewAnalyticsData!} />
+      <AnalyticsCards analytics={overviewAnalyticsData} />
+
+      <RevenueTrendChart data={revenueTrendData} config={revenueTrendConfig} />
 
       <div className="grid gap-6 grid-cols-1 2xl:grid-cols-2">
         <PieChartCard

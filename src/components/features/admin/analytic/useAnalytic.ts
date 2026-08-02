@@ -1,6 +1,7 @@
 import getOverviewAnalyticsApi, {
-  getRevenueAnalyticsApi,
-  getTimeseriesAnalyticsApi,
+  //getRevenueAnalyticsApi,
+  getRevenueTimeseriesAnalyticsApi,
+  //getTimeseriesAnalyticsApi,
 } from "@/components/services/analyticService";
 import { formatDate } from "@/components/utils/formatter";
 import { useQuery } from "@tanstack/react-query";
@@ -50,35 +51,60 @@ export default function useAnalytic({
   });
 
   /* Revenue Analytics */
-  const {
-    data: revenueAnalyticsData,
-    isLoading: revenueAnalyticsIsLoading,
-    isError: revenueAnalyticsIsError,
-  } = useQuery({
-    queryKey: [
-      "revenue",
-      fromFormattedDate,
-      toFormattedDate,
-      timezone,
-      includeWalkIn,
-    ],
-    queryFn: () =>
-      getRevenueAnalyticsApi({
-        from: fromFormattedDate,
-        to: toFormattedDate,
-        timezone,
-        includeWalkIn,
-      }),
-  });
+  // const {
+  //   data: revenueAnalyticsData,
+  //   isLoading: revenueAnalyticsIsLoading,
+  //   isError: revenueAnalyticsIsError,
+  // } = useQuery({
+  //   queryKey: [
+  //     "revenue",
+  //     fromFormattedDate,
+  //     toFormattedDate,
+  //     timezone,
+  //     includeWalkIn,
+  //   ],
+  //   queryFn: () =>
+  //     getRevenueAnalyticsApi({
+  //       from: fromFormattedDate,
+  //       to: toFormattedDate,
+  //       timezone,
+  //       includeWalkIn,
+  //     }),
+  // });
 
   /* Timeseries Analytics */
+  // const {
+  //   data: timeseriesAnalyticsData,
+  //   isLoading: timeseriesAnalyticsIsLoading,
+  //   isError: timeseriesAnalyticsIsError,
+  // } = useQuery({
+  //   queryKey: [
+  //     "timeseries",
+  //     fromFormattedDate,
+  //     toFormattedDate,
+  //     timezone,
+  //     includeWalkIn,
+  //     granularity,
+  //   ],
+  //   queryFn: () =>
+  //     getTimeseriesAnalyticsApi({
+  //       from: fromFormattedDate,
+  //       to: toFormattedDate,
+  //       timezone,
+  //       includeWalkIn,
+  //       granularity,
+  //     }),
+  // });
+
+  /* Revenue Timeseries Analytics */
+
   const {
-    data: timeseriesAnalyticsData,
-    isLoading: timeseriesAnalyticsIsLoading,
-    isError: timeseriesAnalyticsIsError,
+    data: revenueTimelineData,
+    isLoading: revenueTimelineIsLoading,
+    isError: revenueTimelineIsError,
   } = useQuery({
     queryKey: [
-      "timeseries",
+      "revenue-timeseries",
       fromFormattedDate,
       toFormattedDate,
       timezone,
@@ -86,7 +112,7 @@ export default function useAnalytic({
       granularity,
     ],
     queryFn: () =>
-      getTimeseriesAnalyticsApi({
+      getRevenueTimeseriesAnalyticsApi({
         from: fromFormattedDate,
         to: toFormattedDate,
         timezone,
@@ -101,12 +127,16 @@ export default function useAnalytic({
     overviewAnalyticsIsLoading,
     overviewAnalyticsIsError,
     // revenue analytics
-    revenueAnalyticsData,
-    revenueAnalyticsIsLoading,
-    revenueAnalyticsIsError,
+    // revenueAnalyticsData,
+    // revenueAnalyticsIsLoading,
+    // revenueAnalyticsIsError,
     // timeseries analytics
-    timeseriesAnalyticsData,
-    timeseriesAnalyticsIsLoading,
-    timeseriesAnalyticsIsError,
+    // timeseriesAnalyticsData,
+    // timeseriesAnalyticsIsLoading,
+    // timeseriesAnalyticsIsError,
+    // revenue timeseries analytics
+    revenueTimelineData,
+    revenueTimelineIsError,
+    revenueTimelineIsLoading,
   };
 }

@@ -3,7 +3,7 @@
 import { AnalyticsFilterForm } from "@/components/schema & types/analytics/analytics.types";
 import CheckBoxInput from "@/components/ui/CheckBoxInput";
 import DatePickerField from "@/components/ui/DatePickerField";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 
 interface OverviewFiltersProps {
   defaultValues: AnalyticsFilterForm;
@@ -28,7 +28,7 @@ function OverviewFilters({ defaultValues, onSubmit }: OverviewFiltersProps) {
       onSubmit={handleSubmit(onSubmit)}
       className="rounded-xl border border-snow/20 bg-card p-5"
     >
-      <div className="grid gap-5 grid-cols-1 sm:grid-cols-2 xl:grid-cols-4">
+      <div className="grid gap-5 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-5">
         <DatePickerField
           label="From"
           name="from"
@@ -48,6 +48,22 @@ function OverviewFilters({ defaultValues, onSubmit }: OverviewFiltersProps) {
           isDark
         />
 
+        <Controller
+          control={control}
+          name="granularity"
+          render={({ field }) => (
+            <select
+              value={field.value}
+              onChange={field.onChange}
+              className="border border-alabaster/50 rounded-lg px-3 py-3 bg-transparent"
+            >
+              <option value="day">Daily</option>
+              <option value="week">Weekly</option>
+              <option value="month">Monthly</option>
+            </select>
+          )}
+        />
+
         <CheckBoxInput
           label="Include walk-in bookings"
           name="includeWalkIn"
@@ -60,7 +76,7 @@ function OverviewFilters({ defaultValues, onSubmit }: OverviewFiltersProps) {
             type="submit"
             className="submit-btn w-full text-sm lg:text-base"
           >
-            Refresh
+            Apply Filters
           </button>
         </div>
       </div>

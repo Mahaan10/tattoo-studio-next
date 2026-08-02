@@ -30,7 +30,7 @@ function CheckBoxInput<T extends Record<string, any>>({
           {...register(name)}
           className="w-5 h-5 mt-0.5 accent-onyx rounded border-onyx/20 cursor-pointer"
         />
-        <span className="text-sm text-body group-hover:text-onyx transition-colors">
+        <span className="text-sm text-body group-hover:text-snow/75 transition-colors">
           {label}
         </span>
       </label>

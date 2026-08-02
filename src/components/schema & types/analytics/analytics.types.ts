@@ -2,11 +2,13 @@ import {
   BookingType,
   IntakeSources,
 } from "../booking/booking-appointment.types";
+import { PaymentSource } from "../payment/payment.types";
 
 export interface AnalyticsFilterForm {
   from: Date;
   to: Date;
   includeWalkIn: boolean;
+  granularity: TimeseriesGranularity;
 }
 
 export type OverviewAnalyticsStatus =
@@ -73,4 +75,31 @@ export interface TimeseriesAnalyticsResponse {
   };
   granularity: TimeseriesGranularity;
   items: TimeseriesAnalyticsInfo[];
+}
+
+export interface RevenueTimeseriesItem {
+  key: string;
+  label: string;
+
+  startUtc: Date | string;
+  endUtc: Date | string;
+
+  totals: RevenueAnalyticsInfo;
+
+  bySource: Partial<Record<PaymentSource, RevenueAnalyticsInfo>>;
+}
+
+export interface RevenueTimeseriesAnalyticsResponse {
+  timezone: string;
+
+  range: {
+    startUtc: Date;
+    endUtc: Date;
+  };
+
+  granularity: TimeseriesGranularity;
+
+  currency: string;
+
+  items: RevenueTimeseriesItem[];
 }
