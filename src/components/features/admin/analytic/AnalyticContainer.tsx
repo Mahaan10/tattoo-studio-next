@@ -30,13 +30,18 @@ function AnalyticContainer() {
     revenueAnalyticsData,
     revenueAnalyticsIsError,
     overviewAnalyticsIsError,
+    timeseriesAnalyticsData,
+    timeseriesAnalyticsIsLoading,
+    timeseriesAnalyticsIsError
   } = useAnalytic({
     from: filters.from,
     to: filters.to,
     timezone: "Europe/Berlin",
     includeWalkIn: filters.includeWalkIn,
+    granularity: "day" // should be filters.granularity 
   });
   console.log("revenue =>", revenueAnalyticsData);
+  console.log("timeseries =>", timeseriesAnalyticsData)
   const bookingSourceData = useMemo(() => {
     if (!overviewAnalyticsData) return [];
 
@@ -81,7 +86,7 @@ function AnalyticContainer() {
 
       <AnalyticsCards analytics={overviewAnalyticsData!} />
 
-      <div className="grid gap-6 xl:grid-cols-2">
+      <div className="grid gap-6 grid-cols-1 2xl:grid-cols-2">
         <PieChartCard
           title="Booking Sources"
           description="Distribution by intake source"

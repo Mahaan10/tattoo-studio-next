@@ -38,7 +38,7 @@ function PieChartCard({ title, description, data, config }: PieChartCardProps) {
 
   return (
     <ChartCard title={title} description={description}>
-      <ChartContainer config={config} className="mx-auto h-85 w-full">
+      <ChartContainer config={config} className="mx-auto w-full h-70 sm:h-85 lg:h-95">
         <PieChart>
           <ChartTooltip
             cursor={false}
@@ -52,6 +52,7 @@ function PieChartCard({ title, description, data, config }: PieChartCardProps) {
             innerRadius={80}
             outerRadius={115}
             strokeWidth={5}
+            animationDuration={800}
             isAnimationActive
           >
             <Label

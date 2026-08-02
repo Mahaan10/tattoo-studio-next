@@ -38,10 +38,10 @@ function StatisticCard({
           <div>
             <p className="text-sm text-muted-foreground">{title}</p>
 
-            <h2 className="mt-3 text-4xl font-bold tracking-tight">{value}</h2>
+            <h2 className="mt-3 text-3xl sm:text-4xl font-bold tracking-tight">{value}</h2>
           </div>
 
-          <div className={cn("rounded-xl bg-primary/10 p-3", iconClassName)}>
+          <div className={cn("rounded-xl bg-primary/10 p-2 sm:p-3", iconClassName)}>
             <Icon className="h-6 w-6 text-primary" />
           </div>
         </div>

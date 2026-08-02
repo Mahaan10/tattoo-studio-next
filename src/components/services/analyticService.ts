@@ -2,6 +2,7 @@ import { AxiosResponse } from "axios";
 import {
   OverviewAnalyticsInfo,
   RevenueAnalyticsResponse,
+  TimeseriesAnalyticsResponse,
 } from "../schema & types/analytics/analytics.types";
 import http from "./httpService";
 
@@ -10,6 +11,10 @@ interface OverviewAnalyticsParams {
   to: string;
   timezone: string;
   includeWalkIn: boolean;
+}
+
+interface TimeseriesAnalyticsParams extends OverviewAnalyticsParams {
+  granularity: string;
 }
 
 export default function getOverviewAnalyticsApi({
@@ -46,4 +51,24 @@ export function getRevenueAnalyticsApi({
       },
     })
     .then(({ data }: AxiosResponse<RevenueAnalyticsResponse>) => data);
+}
+
+export function getTimeseriesAnalyticsApi({
+  from,
+  to,
+  timezone,
+  includeWalkIn,
+  granularity,
+}: TimeseriesAnalyticsParams): Promise<TimeseriesAnalyticsResponse> {
+  return http
+    .get("/admin/analytics/timeseries", {
+      params: {
+        from,
+        to,
+        timezone,
+        includeWalkIn,
+        granularity,
+      },
+    })
+    .then(({ data }: AxiosResponse<TimeseriesAnalyticsResponse>) => data);
 }

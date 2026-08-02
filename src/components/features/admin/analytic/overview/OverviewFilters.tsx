@@ -28,7 +28,7 @@ function OverviewFilters({ defaultValues, onSubmit }: OverviewFiltersProps) {
       onSubmit={handleSubmit(onSubmit)}
       className="rounded-xl border border-snow/20 bg-card p-5"
     >
-      <div className="grid gap-5 lg:grid-cols-4">
+      <div className="grid gap-5 grid-cols-1 sm:grid-cols-2 xl:grid-cols-4">
         <DatePickerField
           label="From"
           name="from"
@@ -55,7 +55,7 @@ function OverviewFilters({ defaultValues, onSubmit }: OverviewFiltersProps) {
           errors={errors.includeWalkIn}
         />
 
-        <div className="flex justify-end">
+        <div className="flex justify-end sm:items-end">
           <button
             type="submit"
             className="submit-btn w-full text-sm lg:text-base"

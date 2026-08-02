@@ -22,7 +22,7 @@ interface BarChartCardProps {
 function BarChartCard({ title, description, data, config }: BarChartCardProps) {
   return (
     <ChartCard title={title} description={description}>
-      <ChartContainer config={config} className="h-85 w-full">
+      <ChartContainer config={config} className="h-65 sm:h-80 lg:h-90 xl:h-95 w-full">
         <BarChart
           accessibilityLayer
           data={data}
@@ -43,9 +43,7 @@ function BarChartCard({ title, description, data, config }: BarChartCardProps) {
 
           <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
 
-          <Bar dataKey="value" radius={8}>
-            <LabelList dataKey="value" position="top" />
-          </Bar>
+          <Bar dataKey="value" radius={[8,8,0,0]} />
         </BarChart>
       </ChartContainer>
     </ChartCard>

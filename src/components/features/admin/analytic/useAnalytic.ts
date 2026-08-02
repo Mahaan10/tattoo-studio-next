@@ -1,5 +1,6 @@
 import getOverviewAnalyticsApi, {
   getRevenueAnalyticsApi,
+  getTimeseriesAnalyticsApi,
 } from "@/components/services/analyticService";
 import { formatDate } from "@/components/utils/formatter";
 import { useQuery } from "@tanstack/react-query";
@@ -10,6 +11,7 @@ interface UseAnalyticProps {
   to: Date;
   timezone: string;
   includeWalkIn: boolean;
+  granularity: string;
 }
 
 export default function useAnalytic({
@@ -17,6 +19,7 @@ export default function useAnalytic({
   to,
   timezone = "Europe/Berlin",
   includeWalkIn = true,
+  granularity = "day",
 }: UseAnalyticProps) {
   const fromFormattedDate = useMemo(
     () => (from ? formatDate(from) : ""),
@@ -68,6 +71,30 @@ export default function useAnalytic({
       }),
   });
 
+  /* Timeseries Analytics */
+  const {
+    data: timeseriesAnalyticsData,
+    isLoading: timeseriesAnalyticsIsLoading,
+    isError: timeseriesAnalyticsIsError,
+  } = useQuery({
+    queryKey: [
+      "timeseries",
+      fromFormattedDate,
+      toFormattedDate,
+      timezone,
+      includeWalkIn,
+      granularity,
+    ],
+    queryFn: () =>
+      getTimeseriesAnalyticsApi({
+        from: fromFormattedDate,
+        to: toFormattedDate,
+        timezone,
+        includeWalkIn,
+        granularity,
+      }),
+  });
+
   return {
     // overview analytics
     overviewAnalyticsData,
@@ -77,5 +104,9 @@ export default function useAnalytic({
     revenueAnalyticsData,
     revenueAnalyticsIsLoading,
     revenueAnalyticsIsError,
+    // timeseries analytics
+    timeseriesAnalyticsData,
+    timeseriesAnalyticsIsLoading,
+    timeseriesAnalyticsIsError,
   };
 }

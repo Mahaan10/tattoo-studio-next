@@ -50,3 +50,27 @@ export interface RevenueAnalyticsResponse {
   };
   byVatRate: RevenueAnalyticsInfo[];
 }
+
+export type TimeseriesGranularity = "day" | "week" | "month";
+
+export interface TimeseriesAnalyticsInfo {
+  key: string;
+  label: string;
+  startUtc: Date | string;
+  endUtc: Date | string;
+  total: number;
+  approved: number;
+  completed: number;
+  cancelled: number;
+  noShow: number;
+}
+
+export interface TimeseriesAnalyticsResponse {
+  timezone: string;
+  range: {
+    startUtc: Date;
+    endUtc: Date;
+  };
+  granularity: TimeseriesGranularity;
+  items: TimeseriesAnalyticsInfo[];
+}
