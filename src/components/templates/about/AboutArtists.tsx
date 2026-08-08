@@ -4,38 +4,12 @@ import useArtist from "@/components/features/artist/useArtist";
 import Image from "next/image";
 import Link from "next/link";
 
-interface Artist {
-  id: string;
-  name: string;
-  specialty: string;
-  image: string;
-}
-
-const artists: Artist[] = [
-  {
-    id: "1",
-    name: "Alex Morgan",
-    specialty: "Fine Line & Minimal",
-    image: "/images/artists/artist-1.jpg",
-  },
-  {
-    id: "2",
-    name: "Sarah Miller",
-    specialty: "Blackwork & Illustrative",
-    image: "/images/artists/artist-2.jpg",
-  },
-  {
-    id: "3",
-    name: "Daniel Smith",
-    specialty: "Traditional & Neo-Traditional",
-    image: "/images/artists/artist-3.jpg",
-  },
-];
-
 function AboutArtists() {
   const { allArtists, allArtistsIsLoading, allArtistsIsError } = useArtist();
 
   if (allArtistsIsLoading) return <p>Loading</p>;
+
+  if (allArtistsIsError) return <p>Error!!</p>;
   return (
     <section className="px-[5%] py-20 md:py-28">
       <div className="container mx-auto">
@@ -62,7 +36,7 @@ function AboutArtists() {
           {allArtists.map((artist) => (
             <Link
               key={artist.id}
-              href={`/artists/${artist.id}`}
+              href={`/tattoo-artists/${artist.slug}`}
               className="group block"
             >
               <div className="relative aspect-4/5 overflow-hidden rounded-2xl bg-muted">
@@ -82,7 +56,7 @@ function AboutArtists() {
                   </h3>
 
                   <p className="mt-1 text-sm text-muted-foreground">
-                    {artist.handle}
+                    @{artist.handle}
                   </p>
                 </div>
 
@@ -97,7 +71,7 @@ function AboutArtists() {
         {/* View all */}
         <div className="mt-12 flex justify-center md:mt-16">
           <Link
-            href="/artists"
+            href="/tattoo-artists"
             className="inline-flex items-center gap-3 border-b border-foreground pb-1 text-sm font-medium transition-opacity hover:opacity-60"
           >
             Meet all artists

@@ -59,17 +59,22 @@ function AboutFAQ() {
             </h2>
 
             <p className="mt-6 max-w-sm text-base leading-7 text-muted-foreground">
-              Everything you need to know before your appointment. If you
-              still have questions, don't hesitate to get in touch.
+              Everything you need to know before your appointment. If you still
+              have questions, don't hesitate to get in touch.
             </p>
           </div>
 
           {/* Accordion */}
-          <Accordion type="single" collapsible className="w-full">
+          <Accordion
+            type="single"
+            collapsible
+            className="w-full border border-snow/20 shadow-lg shadow-onyx rounded-md"
+          >
             {faqItems.map((item, index) => (
               <AccordionItem
                 key={item.question}
                 value={`item-${index}`}
+                className="px-2 border-b border-snow/20 hover:bg-onyx hover:text-current/50 rounded-md"
               >
                 <AccordionTrigger className="py-6 text-left text-base font-medium hover:no-underline md:text-lg">
                   {item.question}

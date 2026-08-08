@@ -27,7 +27,7 @@ function StudioExperience() {
   ];
 
   return (
-    <section className="bg-muted/40 px-[5%] py-20 md:py-28">
+    <section className="bg-onyx/40 px-[5%] py-20 md:py-28">
       <div className="container mx-auto">
         {/* Heading */}
         <div className="grid gap-8 md:grid-cols-[0.7fr_1.3fr] md:gap-20">
@@ -51,11 +51,11 @@ function StudioExperience() {
         </div>
 
         {/* Steps */}
-        <div className="mt-16 border-t border-border md:mt-24">
+        <div className="mt-16 border-t border-snow/20 md:mt-24">
           {steps.map((step) => (
             <div
               key={step.number}
-              className="grid gap-6 border-b border-border py-8 md:grid-cols-[100px_0.7fr_1.3fr] md:items-start md:gap-10 md:py-12"
+              className="grid gap-6 border-b border-snow/20 py-8 md:grid-cols-[100px_0.7fr_1.3fr] md:items-start md:gap-10 md:py-12"
             >
               <span className="text-sm font-medium text-muted-foreground">
                 {step.number}
