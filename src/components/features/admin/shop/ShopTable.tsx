@@ -6,6 +6,7 @@ import { useEffect } from "react";
 import { toast } from "react-toastify";
 import Table from "@/components/ui/Table";
 import Pagination from "@/components/templates/admin/Pagination";
+import ShopRow from "./ShopRow";
 
 function ShopTable() {
   const { allProducts, allProductsIsError, allProductsIsLoading } =
@@ -33,6 +34,7 @@ function ShopTable() {
           <th>Price</th>
           <th>Discount</th>
           <th>Active</th>
+          <th>Actions</th>
         </Table.Header>
         <Table.Body>
           {allProductsIsLoading ? (
@@ -50,13 +52,12 @@ function ShopTable() {
               </td>
             </Table.Row>
           ) : (
-            paginatedData.map((product, index) => (
-              //   <ArticlesRow
-              //     key={article.id}
-              //     article={article}
-              //     index={(currentPage - 1) * 6 + index + 1}
-              //   />
-              <h1>Shops</h1>
+            paginatedData.map((voucherProduct, index) => (
+              <ShopRow
+                key={voucherProduct.id}
+                voucherProduct={voucherProduct}
+                index={(currentPage - 1) * 6 + index + 1}
+              />
             ))
           )}
         </Table.Body>

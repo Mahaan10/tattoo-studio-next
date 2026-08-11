@@ -21,7 +21,7 @@ export default function useProducts(sessionId?: string) {
     isError: productsIsError,
     data: productsData,
   } = useQuery({
-    queryKey: ["products"],
+    queryKey: ["public-products"],
     queryFn: getProductsApi,
   });
 
@@ -34,7 +34,7 @@ export default function useProducts(sessionId?: string) {
 
       onSuccess: (data: PurchaseResponse) => {
         toast.success(t("toast.redirecting"));
-        queryClient.invalidateQueries({ queryKey: ["products"] });
+        // queryClient.invalidateQueries({ queryKey: ["products"] });
 
         window.location.href = data.stripePaymentUrl;
       },
@@ -61,7 +61,7 @@ export default function useProducts(sessionId?: string) {
     isLoading: allProductsIsLoading,
     isError: allProductsIsError,
   } = useQuery({
-    queryKey: ["products"],
+    queryKey: ["voucher-products"],
     queryFn: getVoucherProductsApi,
   });
 
@@ -76,7 +76,7 @@ export default function useProducts(sessionId?: string) {
 
     onSuccess: () => {
       toast.success("Voucher product created");
-      queryClient.invalidateQueries({ queryKey: ["products"] });
+      queryClient.invalidateQueries({ queryKey: ["voucher-products"] });
     },
 
     onError: () => {
