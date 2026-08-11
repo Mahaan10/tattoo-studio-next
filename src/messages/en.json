@@ -13,6 +13,7 @@
     "dashboard": "Dashboard",
     "appointments": "Appointments",
     "payments": "Payments",
+    "shop": "Shop",
     "campaigns": "Campaigns",
     "logout": "Logout",
     "adminLogin": "Admin Login"
@@ -46,6 +47,7 @@
     "guestArtist": "Guest Artist",
     "articles": "Articles",
     "payments": "Payments",
+    "shop": "Shop",
     "campaigns": "Campaigns",
 
     "article": {

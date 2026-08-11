@@ -5,6 +5,9 @@ import {
   ProductInfo,
   PurchaseInfo,
   PurchaseResponse,
+  VoucherProductInfo,
+  VoucherProductResponse,
+  VoucherProductsResponse,
 } from "../schema & types/product/product.types";
 
 export default function getProductsApi(): Promise<ProductInfo[]> {
@@ -31,4 +34,16 @@ export function checkPaymentStatus(
       },
     })
     .then(({ data }: AxiosResponse<PaymentStatusResponse>) => data);
+}
+
+export function getVoucherProductsApi(): Promise<VoucherProductsResponse> {
+  return http.get("/admin/voucher-products").then(({ data }: AxiosResponse<VoucherProductsResponse>) => data);
+}
+
+export function createVoucherProductApi(
+  newVoucherProduct: VoucherProductInfo,
+): Promise<VoucherProductResponse> {
+  return http
+    .post("/admin/voucher-products", newVoucherProduct)
+    .then(({ data }: AxiosResponse<VoucherProductResponse>) => data);
 }

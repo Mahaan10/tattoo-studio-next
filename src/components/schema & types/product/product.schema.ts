@@ -78,3 +78,71 @@ export const createPurchaseSchema = (productType: ProductType) =>
     });
 
 export type PurchaseFormData = z.infer<ReturnType<typeof createPurchaseSchema>>;
+
+
+
+export const createVoucherProductSchema = z
+  .object({
+    type: z.enum(["FULL_DAY", "HALF_DAY", "CUSTOM"], {
+      message: "Product type is required",
+    }),
+
+    name: z
+      .string()
+      .trim()
+      .min(2, "Name must be at least 2 characters")
+      .max(120, "Name must be at most 120 characters"),
+
+    priceCents: z
+      .number({
+        message: "Price is required",
+      })
+      .int("Price must be a whole number")
+      .positive("Price must be greater than 0")
+      .nullable()
+      .optional(),
+
+    discountPercent: z
+      .number()
+      .min(0, "Discount cannot be less than 0%")
+      .max(100, "Discount cannot be greater than 100%")
+      .nullable()
+      .optional(),
+
+    voucherTreatment: z.string().min(1, "Voucher treatment is required"),
+  })
+  .superRefine((data, ctx) => {
+    // FULL_DAY / HALF_DAY
+    if (data.type === "FULL_DAY" || data.type === "HALF_DAY") {
+      if (data.priceCents == null) {
+        ctx.addIssue({
+          code: "custom",
+          path: ["priceCents"],
+          message: "Price is required for this product type",
+        });
+      }
+    }
+
+    // CUSTOM
+    if (data.type === "CUSTOM") {
+      if (data.priceCents != null) {
+        ctx.addIssue({
+          code: "custom",
+          path: ["priceCents"],
+          message: "Custom vouchers cannot have a fixed price",
+        });
+      }
+
+      if (data.discountPercent != null) {
+        ctx.addIssue({
+          code: "custom",
+          path: ["discountPercent"],
+          message: "Custom vouchers cannot have a discount",
+        });
+      }
+    }
+  });
+
+export type CreateVoucherProductFormData = z.infer<
+  typeof createVoucherProductSchema
+>;

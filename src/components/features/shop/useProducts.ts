@@ -3,6 +3,8 @@
 import { PurchaseResponse } from "@/components/schema & types/product/product.types";
 import getProductsApi, {
   checkPaymentStatus,
+  createVoucherProductApi,
+  getVoucherProductsApi,
   makePurchaseVoucherApi,
 } from "@/components/services/productService";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -13,7 +15,7 @@ export default function useProducts(sessionId?: string) {
   const t = useTranslations("product");
   const queryClient = useQueryClient();
 
-  // Get all products
+  // Get public products
   const {
     isLoading: productsIsLoading,
     isError: productsIsError,
@@ -53,8 +55,37 @@ export default function useProducts(sessionId?: string) {
     enabled: !!sessionId,
   });
 
+  // get all products
+  const {
+    data: allProductsData,
+    isLoading: allProductsIsLoading,
+    isError: allProductsIsError,
+  } = useQuery({
+    queryKey: ["products"],
+    queryFn: getVoucherProductsApi,
+  });
+
+  const allProducts = allProductsData?.items ?? [];
+
+  // create voucher product
+  const {
+    isPending: createVoucherProductIsPending,
+    mutate: createVoucherProduct,
+  } = useMutation({
+    mutationFn: createVoucherProductApi,
+
+    onSuccess: () => {
+      toast.success("Voucher product created");
+      queryClient.invalidateQueries({ queryKey: ["products"] });
+    },
+
+    onError: () => {
+      toast.error("Voucher product not created, Try again later");
+    },
+  });
+
   return {
-    // Products
+    // Public Products
     products,
     productsIsLoading,
     productsIsError,
@@ -67,5 +98,14 @@ export default function useProducts(sessionId?: string) {
     paymentStatus,
     paymentStatusIsLoading,
     paymentStatusIsError,
+
+    // get all products
+    allProducts,
+    allProductsIsLoading,
+    allProductsIsError,
+
+    // create voucher product
+    createVoucherProductIsPending,
+    createVoucherProduct,
   };
 }

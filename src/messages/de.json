@@ -13,6 +13,7 @@
     "dashboard": "Dashboard",
     "appointments": "Termine",
     "payments": "Zahlungen",
+    "shop": "Geschäft",
     "campaigns": "Kampagnen",
     "logout": "Abmelden",
     "adminLogin": "Admin Anmeldung"
@@ -46,6 +47,7 @@
     "guestArtist": "Gastkünstler",
     "articles": "Artikel",
     "payments": "Zahlungen",
+    "shop": "Geschäft",
     "campaigns": "Kampagnen",
     "article": {
       "title": "Artikel",

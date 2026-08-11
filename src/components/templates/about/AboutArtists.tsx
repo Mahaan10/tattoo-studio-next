@@ -5,11 +5,11 @@ import Image from "next/image";
 import Link from "next/link";
 
 function AboutArtists() {
-  const { allArtists, allArtistsIsLoading, allArtistsIsError } = useArtist();
+  const { artistsLookbookItems, artistsLookbookIsLoading, artistsLookbookIsError } = useArtist();
 
-  if (allArtistsIsLoading) return <p>Loading</p>;
+  if (artistsLookbookIsLoading) return <p>Loading</p>;
 
-  if (allArtistsIsError) return <p>Error!!</p>;
+  if (artistsLookbookIsError) return <p>Error!!</p>;
   return (
     <section className="px-[5%] py-20 md:py-28">
       <div className="container mx-auto">
@@ -33,7 +33,7 @@ function AboutArtists() {
 
         {/* Artists */}
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {allArtists.map((artist) => (
+          {artistsLookbookItems.map((artist) => (
             <Link
               key={artist.id}
               href={`/tattoo-artists/${artist.slug}`}

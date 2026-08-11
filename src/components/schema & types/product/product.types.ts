@@ -40,3 +40,27 @@ export interface PaymentStatusResponse {
   status: string;
   context: string;
 }
+
+export interface VoucherProductInfo {
+  type: ProductType;
+  name: string;
+  priceCents: number | null;
+  discountPercent: number | null;
+  voucherTreatment: string;
+}
+
+export interface VoucherProductResponse extends VoucherProductInfo {
+  id: string;
+  nameDe: string;
+  nameEn: string;
+  isActive: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface VoucherProductsResponse {
+  total: number;
+  page: number;
+  limit: number;
+  items: VoucherProductResponse[];
+}
