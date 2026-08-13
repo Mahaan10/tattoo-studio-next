@@ -1,13 +1,16 @@
 import { AxiosResponse } from "axios";
 import http from "./httpService";
+
 import {
   PaymentStatusResponse,
   ProductInfo,
   PurchaseInfo,
   PurchaseResponse,
-  VoucherProductInfo,
+  CreateVoucherProductInfo,
+  UpdateVoucherProductInfo,
   VoucherProductResponse,
   VoucherProductsResponse,
+  UpdateVoucherProductStatusInfo,
 } from "../schema & types/product/product.types";
 
 export default function getProductsApi(): Promise<ProductInfo[]> {
@@ -37,13 +40,39 @@ export function checkPaymentStatus(
 }
 
 export function getVoucherProductsApi(): Promise<VoucherProductsResponse> {
-  return http.get("/admin/voucher-products").then(({ data }: AxiosResponse<VoucherProductsResponse>) => data);
+  return http
+    .get("/admin/voucher-products")
+    .then(({ data }: AxiosResponse<VoucherProductsResponse>) => data);
 }
 
 export function createVoucherProductApi(
-  newVoucherProduct: VoucherProductInfo,
+  newVoucherProduct: CreateVoucherProductInfo,
 ): Promise<VoucherProductResponse> {
   return http
     .post("/admin/voucher-products", newVoucherProduct)
+    .then(({ data }: AxiosResponse<VoucherProductResponse>) => data);
+}
+
+export function editVoucherProductApi({
+  voucherProductId,
+  newVoucherProduct,
+}: {
+  voucherProductId: string;
+  newVoucherProduct: UpdateVoucherProductInfo;
+}): Promise<VoucherProductResponse> {
+  return http
+    .patch(`/admin/voucher-products/${voucherProductId}`, newVoucherProduct)
+    .then(({ data }: AxiosResponse<VoucherProductResponse>) => data);
+}
+
+export function updateVoucherProductStatusApi({
+  voucherProductId,
+  data,
+}: {
+  voucherProductId: string;
+  data: UpdateVoucherProductStatusInfo;
+}): Promise<VoucherProductResponse> {
+  return http
+    .patch(`/admin/voucher-products/${voucherProductId}`, data)
     .then(({ data }: AxiosResponse<VoucherProductResponse>) => data);
 }

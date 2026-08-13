@@ -2,53 +2,66 @@
 
 import usePagination from "@/components/hook/usePagination";
 import useProducts from "../../shop/useProducts";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import Table from "@/components/ui/Table";
 import Pagination from "@/components/templates/admin/Pagination";
 import ShopRow from "./ShopRow";
+import { VoucherProductResponse } from "@/components/schema & types/product/product.types";
+import Modal from "@/components/ui/Modal";
+import ShopForm from "./ShopForm";
+import { useTranslations } from "next-intl";
 
 function ShopTable() {
-  const { allProducts, allProductsIsError, allProductsIsLoading } =
-    useProducts();
+  const t = useTranslations("admin.shops");
+  const {
+    allProducts,
+    allProductsIsError,
+    allProductsIsLoading,
+    updateVoucherProductStatus,
+    updateVoucherProductStatusIsPending,
+  } = useProducts();
 
   const { currentPage, setCurrentPage, totalPages, paginatedData } =
     usePagination(allProducts || []);
 
+  const [voucherProductToEdit, setVoucherProductToEdit] =
+    useState<VoucherProductResponse | null>(null);
+
   useEffect(() => {
     if (allProductsIsError) {
-      toast.error("Loading Error");
+      toast.error(t("table.loadError"));
     }
-  }, [allProductsIsError]);
+  }, [allProductsIsError, t]);
 
   if (allProductsIsError) {
-    return <div className="text-red-500 text-sm">Error!</div>;
+    return <div className="text-red-500 text-sm">{t("table.loadError")}</div>;
   }
-  console.log("shopProducts =>", allProducts);
+
   return (
     <>
       <Table>
         <Table.Header>
-          <th className="py-2">Index</th>
-          <th>Type</th>
-          <th>Price</th>
-          <th>Discount</th>
-          <th>Active</th>
-          <th>Actions</th>
+          <th className="py-2">{t("table.index")}</th>
+          <th>{t("table.type")}</th>
+          <th>{t("table.price")}</th>
+          <th>{t("table.discount")}</th>
+          <th>{t("table.active")}</th>
+          <th>{t("table.actions")}</th>
         </Table.Header>
         <Table.Body>
           {allProductsIsLoading ? (
             [...Array(6)].map((_, i) => (
               <Table.Row key={i}>
-                <td colSpan={9}>
+                <td colSpan={6}>
                   <div className="h-10 bg-snow/10 animate-pulse rounded" />
                 </td>
               </Table.Row>
             ))
           ) : allProducts?.length === 0 ? (
             <Table.Row>
-              <td colSpan={4} className="py-4">
-                Empty
+              <td colSpan={6} className="py-4">
+                {t("table.empty")}
               </td>
             </Table.Row>
           ) : (
@@ -57,6 +70,16 @@ function ShopTable() {
                 key={voucherProduct.id}
                 voucherProduct={voucherProduct}
                 index={(currentPage - 1) * 6 + index + 1}
+                onEdit={() => setVoucherProductToEdit(voucherProduct)}
+                onToggleActive={() =>
+                  updateVoucherProductStatus({
+                    voucherProductId: voucherProduct.id,
+                    data: {
+                      isActive: !voucherProduct.isActive,
+                    },
+                  })
+                }
+                isUpdating={updateVoucherProductStatusIsPending}
               />
             ))
           )}
@@ -68,6 +91,19 @@ function ShopTable() {
         onPageChange={setCurrentPage}
         totalPages={totalPages}
       />
+
+      {/* Edit Voucher Product */}
+      {voucherProductToEdit && (
+        <Modal
+          title={`Edit ${voucherProductToEdit.name}`}
+          onClose={() => setVoucherProductToEdit(null)}
+        >
+          <ShopForm
+            voucherProductToEdit={voucherProductToEdit}
+            onClose={() => setVoucherProductToEdit(null)}
+          />
+        </Modal>
+      )}
     </>
   );
 }

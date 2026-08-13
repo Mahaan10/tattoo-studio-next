@@ -4,8 +4,10 @@ import { PurchaseResponse } from "@/components/schema & types/product/product.ty
 import getProductsApi, {
   checkPaymentStatus,
   createVoucherProductApi,
+  editVoucherProductApi,
   getVoucherProductsApi,
   makePurchaseVoucherApi,
+  updateVoucherProductStatusApi,
 } from "@/components/services/productService";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useTranslations } from "next-intl";
@@ -13,6 +15,7 @@ import { toast } from "react-toastify";
 
 export default function useProducts(sessionId?: string) {
   const t = useTranslations("product");
+  const tAdminShop = useTranslations("admin.shops");
   const queryClient = useQueryClient();
 
   // Get public products
@@ -68,6 +71,7 @@ export default function useProducts(sessionId?: string) {
   const allProducts = allProductsData?.items ?? [];
 
   // create voucher product
+  // create voucher product
   const {
     isPending: createVoucherProductIsPending,
     mutate: createVoucherProduct,
@@ -75,12 +79,49 @@ export default function useProducts(sessionId?: string) {
     mutationFn: createVoucherProductApi,
 
     onSuccess: () => {
-      toast.success("Voucher product created");
+      toast.success(tAdminShop("toast.created"));
       queryClient.invalidateQueries({ queryKey: ["voucher-products"] });
     },
 
     onError: () => {
-      toast.error("Voucher product not created, Try again later");
+      toast.error(tAdminShop("toast.createFailed"));
+    },
+  });
+
+  // edit voucher product
+  // edit voucher product
+  const { isPending: editVoucherProductIsPending, mutate: editVoucherProduct } =
+    useMutation({
+      mutationFn: editVoucherProductApi,
+
+      onSuccess: () => {
+        toast.success(tAdminShop("toast.updated"));
+        queryClient.invalidateQueries({ queryKey: ["voucher-products"] });
+      },
+
+      onError: () => {
+        toast.error(tAdminShop("toast.updateFailed"));
+      },
+    });
+
+  // update isActive property
+  // update isActive property
+  const {
+    isPending: updateVoucherProductStatusIsPending,
+    mutate: updateVoucherProductStatus,
+  } = useMutation({
+    mutationFn: updateVoucherProductStatusApi,
+
+    onSuccess: () => {
+      toast.success(tAdminShop("toast.statusUpdated"));
+
+      queryClient.invalidateQueries({
+        queryKey: ["voucher-products"],
+      });
+    },
+
+    onError: () => {
+      toast.error(tAdminShop("toast.statusUpdateFailed"));
     },
   });
 
@@ -107,5 +148,13 @@ export default function useProducts(sessionId?: string) {
     // create voucher product
     createVoucherProductIsPending,
     createVoucherProduct,
+
+    // edit voucher product
+    editVoucherProduct,
+    editVoucherProductIsPending,
+
+    // Active status
+    updateVoucherProductStatus,
+    updateVoucherProductStatusIsPending,
   };
 }

@@ -32,7 +32,6 @@ function Home() {
                   alt={c.titleKey}
                   fill
                   preload
-                  
                   className="object-cover transition-transform duration-500 group-hover:blur-sm grayscale"
                 />
 

@@ -388,6 +388,60 @@
         "clientCheckedIn": "Kunde erfolgreich eingecheckt",
         "clientCheckInFailed": "Der Kunde konnte nicht eingecheckt werden. Bitte versuche es später erneut."
       }
+    },
+    "shops": {
+      "title": "Shop",
+      "createVoucher": "Gutschein erstellen",
+
+      "table": {
+        "index": "#",
+        "type": "Typ",
+        "price": "Preis",
+        "discount": "Rabatt",
+        "active": "Aktiv",
+        "actions": "Aktionen",
+        "empty": "Keine Gutscheine vorhanden",
+        "loadError": "Gutscheine konnten nicht geladen werden"
+      },
+
+      "form": {
+        "createTitle": "Neuen Gutschein erstellen",
+        "editTitle": "{name} bearbeiten",
+
+        "type": "Typ",
+        "name": "Name",
+        "price": "Preis (€)",
+        "discount": "Rabatt (%)",
+
+        "create": "Gutschein erstellen",
+        "update": "Gutschein aktualisieren",
+
+        "creating": "Wird erstellt",
+        "updating": "Wird aktualisiert"
+      },
+
+      "type": {
+        "fullDay": "Ganzer Tag",
+        "halfDay": "Halber Tag",
+        "custom": "Individuell"
+      },
+
+      "toast": {
+        "created": "Gutschein erfolgreich erstellt",
+        "createFailed": "Der Gutschein konnte nicht erstellt werden. Bitte versuche es später erneut",
+
+        "updated": "Gutschein erfolgreich aktualisiert",
+        "updateFailed": "Der Gutschein konnte nicht aktualisiert werden. Bitte versuche es später erneut",
+
+        "statusUpdated": "Gutscheinstatus erfolgreich aktualisiert",
+        "statusUpdateFailed": "Der Gutscheinstatus konnte nicht aktualisiert werden"
+      },
+
+      "accessibility": {
+        "activate": "Gutschein aktivieren",
+        "deactivate": "Gutschein deaktivieren",
+        "edit": "Gutschein bearbeiten"
+      }
     }
   },
 
@@ -395,7 +449,7 @@
     "studioName": "Tattoo Studio",
 
     "booking": "Termin buchen",
-    "guestArtist": "Gastkünstler",
+    "giftCard": "Geschenkgutschein",
 
     "artists": "Artists",
     "lookbook": "Lookbook",

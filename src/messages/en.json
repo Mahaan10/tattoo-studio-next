@@ -389,6 +389,60 @@
         "clientCheckedIn": "Client checked in successfully",
         "clientCheckInFailed": "Failed to check in client. Please try again later."
       }
+    },
+    "shops": {
+      "title": "Shop",
+      "createVoucher": "Create Voucher",
+
+      "table": {
+        "index": "#",
+        "type": "Type",
+        "price": "Price",
+        "discount": "Discount",
+        "active": "Active",
+        "actions": "Actions",
+        "empty": "No voucher products available",
+        "loadError": "Failed to load voucher products"
+      },
+
+      "form": {
+        "createTitle": "Create New Voucher",
+        "editTitle": "Edit {name}",
+
+        "type": "Type",
+        "name": "Name",
+        "price": "Price (€)",
+        "discount": "Discount (%)",
+
+        "create": "Create Voucher Product",
+        "update": "Update Voucher Product",
+
+        "creating": "Creating",
+        "updating": "Updating"
+      },
+
+      "type": {
+        "fullDay": "Full Day",
+        "halfDay": "Half Day",
+        "custom": "Custom"
+      },
+
+      "toast": {
+        "created": "Voucher product created successfully",
+        "createFailed": "Voucher product could not be created. Please try again later",
+
+        "updated": "Voucher product updated successfully",
+        "updateFailed": "Voucher product could not be updated. Please try again later",
+
+        "statusUpdated": "Voucher product status updated successfully",
+        "statusUpdateFailed": "Voucher product status could not be updated"
+      },
+
+      "accessibility": {
+        "activate": "Activate voucher product",
+        "deactivate": "Deactivate voucher product",
+        "edit": "Edit voucher product"
+      }
     }
   },
 
@@ -396,7 +450,7 @@
     "studioName": "Tattoo Studio",
 
     "booking": "Booking",
-    "guestArtist": "Guest Artist",
+    "giftCard": "Gift Card",
 
     "artists": "Artists",
     "lookbook": "Lookbook",

@@ -60,10 +60,10 @@ function HeroSection() {
           </Link>
 
           <Link
-            href="/guest"
+            href="/product"
             className="border border-snow/30 px-4 py-2 flex items-center justify-between w-55 rounded-full hover:border-snow/75 transition-colors duration-200 group"
           >
-            <span>{t("guestArtist")}</span>
+            <span>{t("giftCard")}</span>
             <MdArrowRightAlt
               size={22}
               className="group-hover:translate-x-1 transition-transform duration-200"

@@ -1,5 +1,8 @@
 export type ProductType = "FULL_DAY" | "HALF_DAY" | "CUSTOM";
+
 export type DeliveryType = "EMAIL" | "EMAIL_AND_POST";
+
+export type VoucherTreatment = "SINGLE_PURPOSE";
 
 export interface ProductInfo {
   id: string;
@@ -41,18 +44,33 @@ export interface PaymentStatusResponse {
   context: string;
 }
 
-export interface VoucherProductInfo {
+export interface CreateVoucherProductInfo {
   type: ProductType;
   name: string;
   priceCents: number | null;
-  discountPercent: number | null;
-  voucherTreatment: string;
+  discountPercent: number;
+  voucherTreatment: VoucherTreatment;
 }
 
-export interface VoucherProductResponse extends VoucherProductInfo {
+export interface UpdateVoucherProductInfo {
+  name: string;
+  priceCents: number | null;
+  discountPercent: number;
+}
+
+export interface UpdateVoucherProductStatusInfo {
+  isActive: boolean;
+}
+
+export interface VoucherProductResponse {
   id: string;
-  nameDe: string;
-  nameEn: string;
+  type: ProductType;
+  name: string;
+  nameDe: string | null;
+  nameEn: string | null;
+  priceCents: number | null;
+  discountPercent: number;
+  voucherTreatment: VoucherTreatment;
   isActive: boolean;
   createdAt: Date;
   updatedAt: Date;

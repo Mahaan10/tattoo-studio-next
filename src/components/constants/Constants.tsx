@@ -14,7 +14,7 @@ import {
   UserPlus,
   Users,
   Wallet,
-  ShoppingBasket
+  ShoppingBasket,
 } from "lucide-react";
 
 export interface MenuItem {
@@ -190,8 +190,8 @@ export const AdminSidebarItems: MenuItem[] = [
   {
     id: 8,
     titleKey: "shop",
-    icon: <ShoppingBasket className="size-5"/>,
-    href: "/admin/shop" 
+    icon: <ShoppingBasket className="size-5" />,
+    href: "/admin/shop",
   },
   {
     id: 9,
