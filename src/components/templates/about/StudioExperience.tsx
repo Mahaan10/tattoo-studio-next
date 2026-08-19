@@ -27,13 +27,13 @@ function StudioExperience() {
   ];
 
   return (
-    <section className="bg-onyx/40 px-[5%] py-20 md:py-28">
+    <section className="bg-onyx px-[5%] py-20 text-snow/60 md:py-28">
       <div className="container mx-auto">
         {/* Heading */}
         <div className="grid gap-8 md:grid-cols-[0.7fr_1.3fr] md:gap-20">
           <div>
             <p className="text-sm font-medium uppercase tracking-[0.2em] text-muted-foreground">
-              The experience
+              02 — The experience
             </p>
 
             <h2 className="mt-4 text-3xl font-semibold tracking-tight md:text-5xl">

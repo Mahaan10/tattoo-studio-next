@@ -5,7 +5,11 @@ import Image from "next/image";
 import Link from "next/link";
 
 function AboutArtists() {
-  const { artistsLookbookItems, artistsLookbookIsLoading, artistsLookbookIsError } = useArtist();
+  const {
+    artistsLookbookItems,
+    artistsLookbookIsLoading,
+    artistsLookbookIsError,
+  } = useArtist();
 
   if (artistsLookbookIsLoading) return <p>Loading</p>;
 
@@ -33,7 +37,7 @@ function AboutArtists() {
 
         {/* Artists */}
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {artistsLookbookItems.map((artist) => (
+          {artistsLookbookItems.slice(0, 3).map((artist) => (
             <Link
               key={artist.id}
               href={`/tattoo-artists/${artist.slug}`}

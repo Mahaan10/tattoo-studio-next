@@ -4,11 +4,11 @@ function StudioStory() {
       <div className="container mx-auto">
         <div className="grid gap-12 md:grid-cols-[0.7fr_1.3fr] md:gap-20">
           <div>
-            <p className="text-sm font-medium uppercase tracking-[0.2em] text-muted-foreground">
-              Our story
+            <p className="text-xs font-medium uppercase tracking-[0.25em] text-muted-foreground">
+              01 — Our story
             </p>
 
-            <h2 className="mt-4 max-w-md text-3xl font-semibold tracking-tight md:text-5xl">
+            <h2 className="mt-5 max-w-md text-3xl font-semibold leading-tight tracking-tight md:text-5xl">
               Built around the art, not the trend.
             </h2>
           </div>

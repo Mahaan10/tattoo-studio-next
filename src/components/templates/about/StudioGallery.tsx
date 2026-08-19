@@ -1,10 +1,24 @@
 import BlurImage from "../skeleton/BlurImage";
 
+const studioImages = [
+  {
+    src: "/images/studio/IMG-20260810-WA0010.jpg",
+    alt: "Tattoo studio interior",
+  },
+  {
+    src: "/images/studio/IMG-20260810-WA0011.jpg",
+    alt: "Tattoo artist workspace",
+  },
+  {
+    src: "/images/studio/IMG-20260810-WA0012.jpg",
+    alt: "Studio atmosphere",
+  },
+];
+
 function StudioGallery() {
   return (
     <section className="px-[5%] py-20 md:py-28">
       <div className="container mx-auto">
-        {/* Section heading */}
         <div className="mb-12 flex flex-col justify-between gap-6 md:mb-16 md:flex-row md:items-end">
           <div>
             <p className="text-sm font-medium uppercase tracking-[0.2em] text-muted-foreground">
@@ -23,60 +37,30 @@ function StudioGallery() {
           </p>
         </div>
 
-        {/* Editorial gallery */}
-        <div className="grid gap-4 md:grid-cols-12 md:gap-6">
-          {/* <BlurImage
-            src="/images/gallery/IMG_0258.jpg"
-            alt="Image"
-            fill
-            preload
-          /> */}
-          <div className="md:col-span-7">
-            <div className="group relative aspect-4/3 overflow-hidden rounded-2xl bg-muted">
+        <div className="grid gap-5 md:grid-cols-3 md:gap-6">
+          {studioImages.map((image, index) => (
+            <div
+              key={image.src}
+              className={`group relative aspect-3/4 overflow-hidden rounded-2xl ${
+                index === 1 ? "md:mt-20" : ""
+              }`}
+            >
               <BlurImage
-                src="/images/gallery/IMG_0265.jpg"
-                alt="Image"
+                src={image.src}
+                alt={image.alt}
                 fill
-                preload
+                sizes="(max-width: 768px) 100vw, 30vw"
+                className="object-cover transition-transform duration-700 group-hover:scale-[1.03]"
               />
             </div>
-          </div>
+          ))}
+        </div>
 
-          {/* Top-right image */}
-          <div className="md:col-span-5 md:pt-16">
-            <div className="group relative aspect-4/5 overflow-hidden rounded-2xl bg-muted">
-              <BlurImage
-                src="/images/gallery/IMG_0266.jpg"
-                alt="Image"
-                fill
-                preload
-              />
-            </div>
-          </div>
-
-          {/* Bottom-left small image */}
-          <div className="md:col-span-5 md:ml-[8%]">
-            <div className="group relative aspect-4/5 overflow-hidden rounded-2xl bg-muted">
-              <BlurImage
-                src="/images/gallery/IMG_3381.JPG"
-                alt="Image"
-                fill
-                preload
-              />
-            </div>
-          </div>
-
-          {/* Bottom-right image */}
-          <div className="md:col-span-7 md:pt-20">
-            <div className="group relative aspect-4/3 overflow-hidden rounded-2xl bg-muted">
-              <BlurImage
-                src="/images/gallery/IMG_3387.JPG"
-                alt="Image"
-                fill
-                preload
-              />
-            </div>
-          </div>
+        <div className="mt-16 flex justify-center text-center md:mt-24">
+          <p className="max-w-2xl text-2xl font-medium leading-tight tracking-tight md:text-4xl">
+            A calm environment for focused work, meaningful conversations, and
+            exceptional tattoos.
+          </p>
         </div>
       </div>
     </section>
