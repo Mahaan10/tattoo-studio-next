@@ -37,8 +37,14 @@ function Availability({ onNext }: AvailabilityProps) {
       : 0;
 
   useEffect(() => {
-    setValue("numberOfTables", 1);
-  }, [maxTablesAvailable, setValue]);
+    const currentTables = Number(watch("numberOfTables"));
+
+    if (!currentTables || currentTables > maxTablesAvailable) {
+      setValue("numberOfTables", 1, {
+        shouldValidate: true,
+      });
+    }
+  }, [maxTablesAvailable, setValue, watch]);
 
   useEffect(() => {
     if (range?.from) {

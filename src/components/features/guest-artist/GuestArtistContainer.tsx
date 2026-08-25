@@ -26,23 +26,30 @@ function GuestArtistContainer() {
     mode: "onTouched",
   });
 
-  const { handleSubmit, watch, setValue, trigger, reset } = methods;
+  const { handleSubmit, watch, trigger, reset } = methods;
 
   const startDate = watch("startDate");
   const endDate = watch("endDate");
 
   const { guestArtistBooking, guestArtistBookingIsPending } =
-    useGuestArtistBooking({ startDate, endDate });
+    useGuestArtistBooking({
+      startDate,
+      endDate,
+    });
 
   const nextStep = async () => {
     const valid = await trigger(["startDate", "endDate", "numberOfTables"]);
+
     if (!valid) return;
 
-    await new Promise((r) => setTimeout(r, 150));
+    await new Promise((resolve) => setTimeout(resolve, 150));
+
     setStep(2);
   };
 
-  const prevStep = () => setStep(1);
+  const prevStep = () => {
+    setStep(1);
+  };
 
   const onSubmit: SubmitHandler<GuestArtistBookingAppointment> = async (
     data,
@@ -58,46 +65,73 @@ function GuestArtistContainer() {
       numberOfTables: Number(data.numberOfTables),
       acknowledgment: data.acknowledgment,
     };
+
     console.log("payload", JSON.stringify(guestArtistBookingData, null, 2));
+
     guestArtistBooking(guestArtistBookingData);
 
-    await new Promise((r) => setTimeout(r, 150));
+    await new Promise((resolve) => setTimeout(resolve, 150));
+
     reset();
     setStep(1);
   };
 
   return (
-    <div className="pt-15 px-4 flex justify-center">
-      <div className="w-full max-w-sm bg-alabaster text-onyx rounded-2xl p-5 shadow-md">
-        <h1 className="text-2xl font-bold mb-1">Guest Artist Request</h1>
-        <p className="text-onyx/50 text-xs mb-5">
-          Payment is handled securely via Stripe.
-        </p>
+    <section className="bg-onyx px-[5%] py-20 text-alabaster md:py-28 lg:py-36">
+      <div className="mx-auto max-w-7xl">
+        {/* Section heading */}
+        <div className="mx-auto max-w-2xl text-center">
+          <span className="text-xs font-medium uppercase tracking-[0.25em] text-alabaster/40">
+            Artist Space
+          </span>
 
-        <FormStepper
-          step={step}
-          setStep={setStep}
-          trigger={trigger}
-          steps={GUEST_ARTIST_STEPS}
-        />
+          <h2 className="mt-5 text-4xl font-semibold leading-[1.05] tracking-[-0.04em] md:text-6xl">
+            Book your space.
+          </h2>
 
-        <FormProvider {...methods}>
-          <form
-            className="flex flex-col gap-4"
-            onSubmit={handleSubmit(onSubmit)}
-          >
-            {step === 1 && <Availability onNext={nextStep} />}
+          <p className="mx-auto mt-6 max-w-xl text-sm leading-relaxed text-alabaster/50 md:text-base">
+            Choose your dates and workspace requirements to check availability
+            at Block13.
+          </p>
+        </div>
 
-            {step === 2 && (
-              <Details
-                onBack={prevStep}
-                isSubmitting={guestArtistBookingIsPending}
+        {/* Booking area */}
+        <div className="mx-auto mt-14 max-w-2xl">
+          <div className="rounded-3xl bg-alabaster p-5 text-onyx shadow-2xl md:p-8 lg:p-10">
+            {/* Stepper */}
+            <div className="mb-10">
+              <FormStepper
+                step={step}
+                setStep={setStep}
+                trigger={trigger}
+                steps={GUEST_ARTIST_STEPS}
               />
-            )}
-          </form>
-        </FormProvider>
+            </div>
+
+            <FormProvider {...methods}>
+              <form
+                className="flex flex-col gap-5"
+                onSubmit={handleSubmit(onSubmit)}
+              >
+                {step === 1 && <Availability onNext={nextStep} />}
+
+                {step === 2 && (
+                  <Details
+                    onBack={prevStep}
+                    isSubmitting={guestArtistBookingIsPending}
+                  />
+                )}
+              </form>
+            </FormProvider>
+          </div>
+
+          {/* Payment reassurance */}
+          <p className="mt-5 text-center text-xs text-alabaster/35">
+            Secure payment via Stripe after submitting your booking request.
+          </p>
+        </div>
       </div>
-    </div>
+    </section>
   );
 }
 
